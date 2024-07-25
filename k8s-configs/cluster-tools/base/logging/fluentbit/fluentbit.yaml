@@ -97,11 +97,6 @@ spec:
                 configMapKeyRef:
                   name: cluster-info
                   key: log.level
-            - name: NR_CLUSTER_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: cluster-info
-                  key: newrelic_cluster_name
         livenessProbe:
           failureThreshold: 3
           httpGet:
