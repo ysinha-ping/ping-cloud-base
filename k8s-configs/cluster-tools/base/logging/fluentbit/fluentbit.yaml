@@ -8,6 +8,7 @@ data:
   log.level: "error"
   read.head: "True"
   read.tail: "Off"
+  newrelic_cluster_name: cluster_name
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -97,6 +98,11 @@ spec:
                 configMapKeyRef:
                   name: cluster-info
                   key: log.level
+            - name: NR_CLUSTER_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: cluster-info
+                  key: newrelic_cluster_name
         livenessProbe:
           failureThreshold: 3
           httpGet:
@@ -212,3 +218,4 @@ spec:
         effect: "NoExecute"
       - operator: "Exists"
         effect: "NoSchedule"
+
