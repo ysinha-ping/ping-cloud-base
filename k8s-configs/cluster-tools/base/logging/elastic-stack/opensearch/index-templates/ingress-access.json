@@ -12,14 +12,8 @@
     },
     "mappings": {
       "properties": {
-        "cluster_name": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "ignore_above": 256,
-              "type": "keyword"
-            }
-          }
+        "cluster_identifier": {
+          "type": "integer",
         },
         "kubernetes": {
           "properties": {
