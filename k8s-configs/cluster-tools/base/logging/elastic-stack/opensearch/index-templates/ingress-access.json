@@ -36,7 +36,7 @@
               }
             },
             "host": {
-              "type": "text",
+              "type": "integer",
               "fields": {
                 "keyword": {
                   "ignore_above": 256,
