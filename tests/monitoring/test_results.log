@@ -1,0 +1,64 @@
+2024-08-10 21:54:55,340:INFO:Found credentials in shared credentials file: ~/.aws/credentials
+2024-08-10 21:55:06,709:INFO:Checking logs for pods with label: app.kubernetes.io/component=storegateway
+2024-08-10 21:55:08,181:INFO:Logs for pod thanos-storegateway-0:
+ts=2024-08-08T18:35:07.573750537Z caller=factory.go:53 level=info msg="loading bucket configuration"
+ts=2024-08-08T18:35:07.574109726Z caller=inmemory.go:179 level=info msg="created in-memory index cache" maxItemSizeBytes=131072000 maxSizeBytes=262144000 maxItems=maxInt
+ts=2024-08-08T18:35:07.574438854Z caller=options.go:26 level=info protocol=gRPC msg="disabled TLS, key and cert must be set to enable"
+ts=2024-08-08T18:35:07.57522255Z caller=store.go:557 level=info msg="starting store node"
+ts=2
+2024-08-10 21:55:08,181:INFO:Checking logs for pods with label: app.kubernetes.io/component=compactor
+2024-08-10 21:55:08,877:INFO:Logs for pod thanos-compactor-656b66cd59-2dgdv:
+unable to retrieve container logs for containerd://a4f371ed28e7a4fab9693b475a7542ff6b8f69a0940bbe79199e81ed97f9efcf
+2024-08-10 21:55:09,095:INFO:Logs for pod thanos-compactor-656b66cd59-2dsnm:
+unable to retrieve container logs for containerd://6e9336d2889a31aa63e67e5c03b2fb6f75231cdb1f4fdd5642e1aa50f72f91f7
+2024-08-10 21:55:09,305:INFO:Logs for pod thanos-compactor-656b66cd59-2sdsd:
+unable to retrieve container logs for containerd://ec559f5d514d593eb33d091cf102acbfca24b86c85b28f7beaaac37b1c8a81d2
+2024-08-10 21:55:09,517:INFO:Logs for pod thanos-compactor-656b66cd59-75l6n:
+unable to retrieve container logs for containerd://2e941c04496b2f00bc9abdd51b6071b645c35b3447bce2899af59f18958fcd7c
+2024-08-10 21:55:09,724:INFO:Logs for pod thanos-compactor-656b66cd59-ccfk8:
+unable to retrieve container logs for containerd://48a2bd59a5fb4634869e8aabf7d33519294b219d5cd39211f7aa664b19f41cf5
+2024-08-10 21:55:09,931:INFO:Logs for pod thanos-compactor-656b66cd59-cslqp:
+unable to retrieve container logs for containerd://2a786085c02087e7e69d5ae6fedb8f5633265a28078286610a6bf7cb27bd99b9
+2024-08-10 21:55:10,145:INFO:Logs for pod thanos-compactor-656b66cd59-hfvz7:
+unable to retrieve container logs for containerd://9e7a11fc92b5152afdcb9f3a28023546f28c2b2e09b6b80a60ee9b927043c883
+2024-08-10 21:55:10,352:INFO:Logs for pod thanos-compactor-656b66cd59-mgdh6:
+unable to retrieve container logs for containerd://4b78bcdf98ee1a729d1d298154ed925eb2452f771c4477cdbfc7cd5435efb789
+2024-08-10 21:55:10,561:INFO:Logs for pod thanos-compactor-656b66cd59-n2kzf:
+unable to retrieve container logs for containerd://653718be2199f751c1919c2ccfeb57ce5dbeab330fb407fe62f31069a543b034
+2024-08-10 21:55:10,778:INFO:Logs for pod thanos-compactor-656b66cd59-r8lwf:
+ts=2024-08-10T13:36:26.99448335Z caller=factory.go:53 level=info msg="loading bucket configuration"
+ts=2024-08-10T13:36:26.994983841Z caller=compact.go:406 level=info msg="retention policy of raw samples is enabled" duration=360h0m0s
+ts=2024-08-10T13:36:26.995012372Z caller=compact.go:413 level=info msg="retention policy of 5 min aggregated samples is enabled" duration=360h0m0s
+ts=2024-08-10T13:36:26.995023598Z caller=compact.go:416 level=info msg="retention policy of 1 hour aggregated samples i
+2024-08-10 21:55:10,991:INFO:Logs for pod thanos-compactor-656b66cd59-v77wt:
+unable to retrieve container logs for containerd://2cc396cbe3c56cac5e5c11aef11631d6066aad90810c7c953f98c155a7ea3322
+2024-08-10 21:55:11,200:INFO:Logs for pod thanos-compactor-656b66cd59-vb4bj:
+unable to retrieve container logs for containerd://22f157efa2aec2cfd57fe124cd6ab7df26fb5326f8f3593174fa898bc995ea08
+2024-08-10 21:55:11,409:INFO:Logs for pod thanos-compactor-656b66cd59-vdfc7:
+unable to retrieve container logs for containerd://5e90d07eca63246d590ad1fa1b0184b6e3dcb9aec069c08233de7e5b68961a71
+2024-08-10 21:55:11,618:INFO:Logs for pod thanos-compactor-656b66cd59-vwnpx:
+unable to retrieve container logs for containerd://42c7d923a7c595cd46f0019426b70438ed5d43bf6a769b1f16ae99bf417ec30c
+2024-08-10 21:55:11,837:INFO:Logs for pod thanos-compactor-656b66cd59-xntj4:
+unable to retrieve container logs for containerd://24e22b7f7a54b969ecc41655d36346ce5025ca6c6f59a363fdfa40a1ecab4256
+2024-08-10 21:55:11,838:INFO:Checking logs for pods with label: app.kubernetes.io/component=receive
+2024-08-10 21:55:12,283:INFO:Logs for pod thanos-receive-0:
+ts=2024-08-08T18:36:36.120019861Z caller=receive.go:136 level=info component=receive mode=RouterIngestor msg="running receive"
+ts=2024-08-08T18:36:36.120081739Z caller=options.go:26 level=info component=receive protocol=HTTP msg="disabled TLS, key and cert must be set to enable"
+ts=2024-08-08T18:36:36.120124467Z caller=factory.go:53 level=info component=receive msg="loading bucket configuration"
+ts=2024-08-08T18:36:36.120383859Z caller=receive.go:740 level=info component=receive msg="default ten
+2024-08-10 21:55:12,503:INFO:Logs for pod thanos-receive-1:
+ts=2024-08-08T21:00:35.06578094Z caller=receive.go:136 level=info component=receive mode=RouterIngestor msg="running receive"
+ts=2024-08-08T21:00:35.06582442Z caller=options.go:26 level=info component=receive protocol=HTTP msg="disabled TLS, key and cert must be set to enable"
+ts=2024-08-08T21:00:35.065867969Z caller=factory.go:53 level=info component=receive msg="loading bucket configuration"
+ts=2024-08-08T21:00:35.066183086Z caller=receive.go:740 level=info component=receive msg="default tenan
+2024-08-10 21:55:12,723:INFO:Logs for pod thanos-receive-2:
+ts=2024-08-08T19:02:03.364338709Z caller=receive.go:136 level=info component=receive mode=RouterIngestor msg="running receive"
+ts=2024-08-08T19:02:03.364385172Z caller=options.go:26 level=info component=receive protocol=HTTP msg="disabled TLS, key and cert must be set to enable"
+ts=2024-08-08T19:02:03.364430968Z caller=factory.go:53 level=info component=receive msg="loading bucket configuration"
+ts=2024-08-08T19:02:03.36473421Z caller=receive.go:740 level=info component=receive msg="default tena
+2024-08-10 21:55:13,126:INFO:Checking pods with label: app.kubernetes.io/component=storegateway
+2024-08-10 21:55:13,947:INFO:Found 1 pods with label app.kubernetes.io/component=storegateway
+2024-08-10 21:55:13,947:INFO:Pod thanos-storegateway-0 status: Running, restarts: 0
+2024-08-10 21:55:13,947:INFO:Checking pods with label: app.kubernetes.io/component=compactor
+2024-08-10 21:55:14,599:INFO:Found 15 pods with label app.kubernetes.io/component=compactor
+2024-08-10 21:55:14,599:INFO:Pod thanos-compactor-656b66cd59-2dgdv status: Failed, restarts: 0
