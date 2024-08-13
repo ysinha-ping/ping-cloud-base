@@ -13,7 +13,7 @@
     "mappings": {
       "properties": {
         "cluster_identifier": {
-          "type": "integer",
+          "type": "integer"
         },
         "kubernetes": {
           "properties": {
@@ -339,7 +339,7 @@
                   "type": "integer"
                 },
                 "remote_ip": {
-                  "type": "text",
+                  "type": "integer",
                   "fields": {
                     "keyword": {
                       "ignore_above": 256,
@@ -348,10 +348,10 @@
                   }
                 },
                 "request_time": {
-                  "type": "float"
+                  "type": "text"
                 },
                 "request_length": {
-                  "type": "integer"
+                  "type": "text"
                 },
                 "body_sent": {
                   "properties": {
