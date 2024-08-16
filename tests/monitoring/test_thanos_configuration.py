@@ -12,31 +12,30 @@ class TestThanos(unittest.TestCase):
         self.iam_client = boto3.client('iam')
         self.ssm_client = boto3.client('ssm')
         self.s3_client = boto3.client('s3')
-        self.cluster_name = os.getenv("CLUSTER_NAME", "my-cluster")
+        
+        self.cluster_name = os.getenv("CLUSTER_NAME")
+        if not self.cluster_name:
+            logging.error("CLUSTER_NAME environment variable is not set. Exiting test.")
+            self.fail("CLUSTER_NAME environment variable is required but not set.")
+
         self.bucket_name = f"{self.cluster_name}-thanos-bucket"
         self.environments = os.getenv("SUPPORTED_ENV", "dev,test,stage,prod").split(',')
 
-        # Initialize Kubernetes client with correct config
         config.load_kube_config()
         self.k8s_client = client.CoreV1Api()
 
-    def check_role(self, env):
-        role_name = f"{self.cluster_name}-irsa-thanos-{env}"
+    def test_irsa_role_exists(self):
+        role_name = f"{self.cluster_name}-irsa-thanos"
         try:
             self.iam_client.get_role(RoleName=role_name)
         except self.iam_client.exceptions.NoSuchEntityException:
             self.fail(f"IRSA role {role_name} not found")
 
-    def test_irsa_roles(self):
-        for env in self.environments:
-            self.check_role(env)
-
     def test_iam_policy_attachment(self):
         policy_name = f"{self.cluster_name}-thanos-irsa-policy"
-        for env in self.environments:
-            role_name = f"{self.cluster_name}-irsa-thanos-{env}"  # Define role_name here
-            attached_policies = self.iam_client.list_attached_role_policies(RoleName=role_name)['AttachedPolicies']
-            self.assertIn(policy_name, [policy['PolicyName'] for policy in attached_policies], f"Policy {policy_name} not attached to role {role_name}")
+        role_name = f"{self.cluster_name}-irsa-thanos"
+        attached_policies = self.iam_client.list_attached_role_policies(RoleName=role_name)['AttachedPolicies']
+        self.assertIn(policy_name, [policy['PolicyName'] for policy in attached_policies], f"Policy {policy_name} not attached to role {role_name}")
 
     def test_ssm_parameters(self):
         for env in self.environments:
@@ -60,6 +59,7 @@ class TestThanos(unittest.TestCase):
             self.assertGreater(len(pods), 0, f"No pods found for {label}")
             for pod in pods:
                 self.assertEqual(pod.status.phase, "Running", f"Pod {pod.metadata.name} not running")
+                self.assertEqual(pod.status.container_statuses[0].restart_count, 0, f"Pod {pod.metadata.name} has restarts")
 
 if __name__ == "__main__":
     unittest.main()
