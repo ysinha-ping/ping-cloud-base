@@ -39,26 +39,29 @@ class TestThanos(unittest.TestCase):
         for label in labels:
             logging.info(f"Checking if pods with label {label} are running in namespace '{self.namespace}'")
 
-            
             if self.k8s_utils.wait_for_pod_running(label, self.namespace):
                 logging.info(f"Pods with label '{label}' are running.")
             else:
                 logging.error(f"No pods with label '{label}' are in the 'Running' state.")
                 self.fail(f"Pods with label '{label}' are not running.")
 
-            
             if not self.k8s_utils.wait_for_pod_ready(label, self.namespace):
                 logging.error(f"Pods with label '{label}' in namespace '{self.namespace}' are not ready.")
                 self.fail(f"Pods with label '{label}' are not ready.")
             else:
                 logging.info(f"Pods with label '{label}' are ready.")
-                
+            
+            pod_names = self.list_pods_by_label(label)
+            for pod_name in pod_names:
+                pod = self.core_client.read_namespaced_pod(name=pod_name, namespace=self.namespace)
+                for container_status in pod.status.container_statuses:
+                    if container_status.restart_count > 0:
+                        logging.error(f"Pod '{pod_name}' has restarted {container_status.restart_count} times.")
+                        self.fail(f"Pod '{pod_name}' has restarts. Test failed.")
             
             if label in time_limits:
-                pod_names = self.list_pods_by_label(label)
                 for pod_name in pod_names:
                     logging.info(f"Fetching logs for pod '{pod_name}' in namespace '{self.namespace}'")
-                    
                     logs = self.k8s_utils.get_latest_pod_logs(pod_name, None, self.namespace, 100)
                     time_limit = time_limits[label]
                     if self.check_logs_for_sync_pattern(logs, time_limit):
