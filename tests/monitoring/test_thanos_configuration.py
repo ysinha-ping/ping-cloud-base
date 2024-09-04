@@ -50,7 +50,7 @@ class TestThanos(unittest.TestCase):
                 self.fail(f"Pods with label '{label}' are not ready.")
             else:
                 logging.info(f"Pods with label '{label}' are ready.")
-            
+                
             pod_names = self.list_pods_by_label(label)
             for pod_name in pod_names:
                 pod = self.core_client.read_namespaced_pod(name=pod_name, namespace=self.namespace)
@@ -58,7 +58,9 @@ class TestThanos(unittest.TestCase):
                     if container_status.restart_count > 0:
                         logging.error(f"Pod '{pod_name}' has restarted {container_status.restart_count} times.")
                         self.fail(f"Pod '{pod_name}' has restarts. Test failed.")
-            
+                    else:
+                        logging.info(f"Pod '{pod_name}' has no restarts.")
+
             if label in time_limits:
                 for pod_name in pod_names:
                     logging.info(f"Fetching logs for pod '{pod_name}' in namespace '{self.namespace}'")
