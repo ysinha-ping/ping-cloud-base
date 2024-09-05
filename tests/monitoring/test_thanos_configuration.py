@@ -14,7 +14,7 @@ class TestThanos(unittest.TestCase):
         self.core_client = self.k8s_utils.core_client
         self.namespace = "prometheus"
         self.s3_client = boto3.client('s3')
-        self.cluster_name = os.getenv("CLUSTER_NAME")
+        self.cluster_name = os.environ("CLUSTER_NAME")
         self.bucket_name = f"{self.cluster_name}-thanos-bucket"
 
     def test_thanos_pods_running_and_ready(self):
