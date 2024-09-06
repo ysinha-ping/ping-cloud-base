@@ -60,6 +60,7 @@ class TestThanos(unittest.TestCase):
                             logs = self.k8s_utils.get_latest_pod_logs(pod_name, None, self.namespace, 100)
                             
                             if logs:
+                                time_limit = time_limits[label] 
                                 log_contains_sync_pattern = self.check_logs_for_sync_pattern(logs, time_limit)
                                 self.assertTrue(
                                     log_contains_sync_pattern, 
