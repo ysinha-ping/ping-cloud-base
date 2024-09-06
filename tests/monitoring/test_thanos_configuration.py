@@ -31,10 +31,7 @@ class TestThanos(unittest.TestCase):
                 logging.info(f"Checking if pods with label {label} are in the Ready state.")
                 
                 pods_ready = self.k8s_utils.wait_for_pod_ready(label, self.namespace)
-                self.assertTrue(
-                    pods_ready, 
-                    f"Pods with label '{label}' are not ready."
-                )
+                self.assertTrue(pods_ready, f"Pods with label '{label}' are not ready.")
                 logging.info(f"Pods with label '{label}' are ready.")
 
                 pod_names = self.k8s_utils.get_deployment_pod_names(label, self.namespace)
@@ -47,10 +44,8 @@ class TestThanos(unittest.TestCase):
                         self.assertIsNotNone(container_statuses, f"Pod '{pod_name}' has no container statuses or is not fully initialized.")
                         
                         for container_status in container_statuses:
-                            self.assertEqual(
-                                container_status.restart_count, 0, 
-                                f"Pod '{pod_name}' has restarted {container_status.restart_count} times."
-                            )
+                            self.assertEqual(container_status.restart_count, 0, 
+                                             f"Pod '{pod_name}' has restarted {container_status.restart_count} times.")
                             logging.info(f"Pod '{pod_name}' has no restarts.")
                 
                 if label in time_limits:
@@ -58,17 +53,15 @@ class TestThanos(unittest.TestCase):
                         with self.subTest(log_check=pod_name):
                             logging.info(f"Fetching logs for pod '{pod_name}' in namespace '{self.namespace}'")
                             logs = self.k8s_utils.get_latest_pod_logs(pod_name, None, self.namespace, 100)
-                            
-                            if logs:
-                                time_limit = time_limits[label] 
-                                log_contains_sync_pattern = self.check_logs_for_sync_pattern(logs, time_limit)
-                                self.assertTrue(
-                                    log_contains_sync_pattern, 
-                                    f"Pattern not found in logs for pod '{pod_name}' within last {time_limit} minutes."
-                                )
-                                logging.info(f"Successfully synchronized block metadata pattern found in logs for pod '{pod_name}' within last {time_limit} minutes.")
-                            else:
-                                logging.info(f"No logs available for pod '{pod_name}'.")
+                            self.assertIsNotNone(logs, f"Logs for pod '{pod_name}' are empty")
+
+                            time_limit = time_limits[label]
+                            log_contains_sync_pattern = self.check_logs_for_sync_pattern(logs, time_limit)
+                            self.assertTrue(
+                                log_contains_sync_pattern, 
+                                f"Pattern not found in logs for pod '{pod_name}' within last {time_limit} minutes."
+                            )
+                            logging.info(f"Successfully synchronized block metadata pattern found in logs for pod '{pod_name}' within last {time_limit} minutes.")
 
     def check_logs_for_sync_pattern(self, logs, time_limit):
         pattern = re.compile(r"successfully synchronized block metadata")
