@@ -1104,7 +1104,7 @@ cp ../.gitignore "${PROFILE_REPO_DIR}"
 
 echo "${PING_CLOUD_BASE_COMMIT_SHA}" > "${TARGET_DIR}/pcb-commit-sha.txt"
 
-set_var "THANOS_S3_BUCKET_NAME" "" "${CLUSTER_NAME}/pcpt" "${THANOS_BUCKET_URI_SUFFIX}"
+set_var "THANOS_S3_BUCKET_NAME" "" "/${CLUSTER_NAME}/pcpt" "${THANOS_BUCKET_URI_SUFFIX}"
 export THANOS_S3_BUCKET_NAME="${THANOS_S3_BUCKET_NAME#s3://}"
 
 # The SUPPORTED_ENVIRONMENT_TYPES variable can either be the CDE names (e.g. dev, test, stage, prod) or the CHUB name "customer-hub",
