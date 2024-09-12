@@ -1104,14 +1104,13 @@ cp ../.gitignore "${PROFILE_REPO_DIR}"
 
 echo "${PING_CLOUD_BASE_COMMIT_SHA}" > "${TARGET_DIR}/pcb-commit-sha.txt"
 
+# Define base path
 THANOS_BASE_PATH="/${CLUSTER_NAME}/pcpt"
 
-# Check if the SSM parameter for ACCOUNT_BASE_PATH customer-hub exists
-if aws ssm get-parameter --name "${ACCOUNT_BASE_PATH}customer-hub" --with-decryption >/dev/null 2>&1; then
-  echo "SSM parameter found, setting THANOS_S3_BUCKET_NAME to ${ACCOUNT_BASE_PATH}customer-hub"
+# Directly check the SSM path for the Thanos URI in customer-hub
+if aws ssm get-parameter --name "${ACCOUNT_BASE_PATH}customer-hub${THANOS_BUCKET_URI_SUFFIX}" --with-decryption >/dev/null 2>&1; then
   set_var "THANOS_S3_BUCKET_NAME" "" "${ACCOUNT_BASE_PATH}customer-hub" "${THANOS_BUCKET_URI_SUFFIX}"
 else
-  echo "WARN: Issue fetching SSM path ${ACCOUNT_BASE_PATH}customer-hub. SSM path does not exist, falling back to ${THANOS_BASE_PATH}"
   set_var "THANOS_S3_BUCKET_NAME" "" "${THANOS_BASE_PATH}" "${THANOS_BUCKET_URI_SUFFIX}"
 fi
 
