@@ -39,6 +39,17 @@ patchesStrategicMerge:
     primary_tenant_domain: ${PRIMARY_TENANT_DOMAIN}
     newrelic_cluster_name: ${NEW_RELIC_ENVIRONMENT_NAME}
 
+- |-
+  apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: cluster-info-shared
+  data:
+    cluster.name: ${CLUSTER_NAME}
+    logs.region: ${LOGS_REGION}
+    tenant_domain: ${TENANT_DOMAIN}
+    primary_tenant_domain: ${TENANT_DOMAIN}
+
 ### enrichment-bootstrap service account ###
 - |-
   apiVersion: v1
