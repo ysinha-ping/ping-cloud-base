@@ -1108,13 +1108,13 @@ THANOS_BASE_PATH="/${CLUSTER_NAME}/pcpt"
 
 # Check if the SSM parameter for ACCOUNT_BASE_PATH customer-hub exists
 if aws ssm get-parameter --name "${ACCOUNT_BASE_PATH}customer-hub" --with-decryption >/dev/null 2>&1; then
+  echo "SSM parameter found, setting THANOS_S3_BUCKET_NAME to ${ACCOUNT_BASE_PATH}customer-hub"
   set_var "THANOS_S3_BUCKET_NAME" "" "${ACCOUNT_BASE_PATH}customer-hub" "${THANOS_BUCKET_URI_SUFFIX}"
 else
-  # Fallback to using THANOS_BASE_PATH
+  echo "WARN: Issue fetching SSM path ${ACCOUNT_BASE_PATH}customer-hub. SSM path does not exist, falling back to ${THANOS_BASE_PATH}"
   set_var "THANOS_S3_BUCKET_NAME" "" "${THANOS_BASE_PATH}" "${THANOS_BUCKET_URI_SUFFIX}"
 fi
 
-# Set final S3 bucket name (Remove the 's3://' prefix if present)
 export THANOS_S3_BUCKET_NAME="${THANOS_S3_BUCKET_NAME#s3://}"
 
 # The SUPPORTED_ENVIRONMENT_TYPES variable can either be the CDE names (e.g. dev, test, stage, prod) or the CHUB name "customer-hub",
