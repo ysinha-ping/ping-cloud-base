@@ -1,11 +1,13 @@
+# create configmap for cluster name and aws region for CloudWatch Logs
+# need to replace the placeholders cluster_name and region_name
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cluster-info-shared
+  name: cluster-info
   namespace: elastic-stack-logging
 data:
   cluster.name: cluster_name
   logs.region: region_name
   tenant_domain: tenant_domain
   primary_tenant_domain: tenant_domain
-
+  newrelic_cluster_name: cluster_name
