@@ -10,9 +10,23 @@ resources:
   - opensearch-operator/crd
   - opensearch-operator
   - opensearch
-  - common
+  - common/configmap.yaml
 
 configMapGenerator:
   - name: elk-environment-variables
     envs:
       - env_vars
+
+patchesStrategicMerge:
+  - |-
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: cluster-info
+      namespace: elastic-stack-logging
+    data:
+      cluster.name: ${CLUSTER_NAME}
+      logs.region: ${LOGS_REGION}
+      tenant_domain: ${TENANT_DOMAIN}
+      primary_tenant_domain: ${TENANT_DOMAIN}
+      newrelic_cluster_name: ${NEW_RELIC_ENVIRONMENT_NAME}
