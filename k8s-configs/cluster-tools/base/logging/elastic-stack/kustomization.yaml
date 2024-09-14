@@ -10,7 +10,7 @@ resources:
   - opensearch-operator/crd
   - opensearch-operator
   - opensearch
-  - common/configmap.yaml
+  - common
 
 configMapGenerator:
   - name: elk-environment-variables
