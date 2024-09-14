@@ -11,3 +11,6 @@ data:
   tenant_domain: tenant_domain
   primary_tenant_domain: tenant_domain
   newrelic_cluster_name: cluster_name
+  log.level=error
+  read.head=True
+  read.tail=Off
