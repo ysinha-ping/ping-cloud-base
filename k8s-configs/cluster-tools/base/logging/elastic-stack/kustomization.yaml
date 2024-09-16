@@ -16,3 +16,6 @@ configMapGenerator:
   - name: elk-environment-variables
     envs:
       - env_vars
+  - name: cluster-info
+    files:
+      - common/configmap.yaml
