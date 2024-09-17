@@ -38,6 +38,9 @@ patchesStrategicMerge:
     tenant_domain: ${TENANT_DOMAIN}
     primary_tenant_domain: ${PRIMARY_TENANT_DOMAIN}
     newrelic_cluster_name: ${NEW_RELIC_ENVIRONMENT_NAME}
+    log.level: ${LOG_LEVEL}
+    read.head: ${READ_HEAD}
+    read.tail: ${READ_TAIL}
 
 ### enrichment-bootstrap service account ###
 - |-
