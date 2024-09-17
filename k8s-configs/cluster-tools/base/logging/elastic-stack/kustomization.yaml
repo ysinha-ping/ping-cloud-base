@@ -13,6 +13,6 @@ resources:
   - common
 
 configMapGenerator:
-  - name: elk-environment-variables
-    envs:
-      - env_vars
+- name: elk-environment-variables
+  envs:
+  - env_vars
