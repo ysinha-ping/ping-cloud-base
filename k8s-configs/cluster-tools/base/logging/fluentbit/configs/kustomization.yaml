@@ -17,4 +17,3 @@ configMapGenerator:
 
 resources:
   - pipelines
-#no newline
