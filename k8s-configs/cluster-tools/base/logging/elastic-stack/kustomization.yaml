@@ -16,3 +16,4 @@ configMapGenerator:
 - name: elk-environment-variables
   envs:
   - env_vars
+#updating 
