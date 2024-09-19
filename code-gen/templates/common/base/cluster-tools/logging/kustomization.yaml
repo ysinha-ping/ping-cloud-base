@@ -32,7 +32,6 @@ patchesStrategicMerge:
   kind: ConfigMap
   metadata:
     name: cluster-info
-    namespace: elastic-stack-logging
   data:
     cluster.name: ${CLUSTER_NAME}
     logs.region: ${REGION}
