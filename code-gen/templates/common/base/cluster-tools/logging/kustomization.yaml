@@ -32,6 +32,7 @@ patchesStrategicMerge:
   kind: ConfigMap
   metadata:
     name: cluster-info
+    namespace: elastic-stack-logging
   data:
     cluster.name: ${CLUSTER_NAME}
     logs.region: ${REGION}
@@ -44,6 +45,7 @@ patchesStrategicMerge:
   kind: ConfigMap
   metadata:
     name: fluent-bit-config
+    namespace: elastic-stack-logging
   data:
     log.level: "error"
     read.head: "True"
