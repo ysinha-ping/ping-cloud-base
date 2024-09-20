@@ -1,15 +1,3 @@
-# create configmap for cluster name and aws region for CloudWatch Logs
-# need to replace the placeholders cluster_name and region_name
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: fluent-bit-config
-data:
-  log.level: "error"
-  read.head: "True"
-  read.tail: "Off"
-  newrelic_cluster_name: cluster_name
----
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -101,7 +89,7 @@ spec:
             - name: NR_CLUSTER_NAME
               valueFrom:
                 configMapKeyRef:
-                  name: fluent-bit-config
+                  name: cluster-info
                   key: newrelic_cluster_name
         livenessProbe:
           failureThreshold: 3
