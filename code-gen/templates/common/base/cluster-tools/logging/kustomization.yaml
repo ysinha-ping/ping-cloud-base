@@ -38,6 +38,14 @@ patchesStrategicMerge:
     logs.region: ${REGION}
     tenant_domain: ${TENANT_DOMAIN}
     primary_tenant_domain: ${PRIMARY_TENANT_DOMAIN}
+
+- |-
+  apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: fluent-bit-config
+    namespace: elastic-stack-logging
+  data:
     newrelic_cluster_name: ${NEW_RELIC_ENVIRONMENT_NAME}
 
 ### enrichment-bootstrap service account ###
