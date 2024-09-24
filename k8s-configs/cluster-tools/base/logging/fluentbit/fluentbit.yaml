@@ -89,7 +89,7 @@ spec:
             - name: NR_CLUSTER_NAME
               valueFrom:
                 configMapKeyRef:
-                  name: fluent-bit-config
+                  name: cluster-info
                   key: newrelic_cluster_name
         livenessProbe:
           failureThreshold: 3
