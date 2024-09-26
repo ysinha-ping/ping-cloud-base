@@ -46,7 +46,7 @@ patchesJson6902:
     kind: ConfigMap
     name: fluent-bit-config
   patch: |-
-    - op: add
+    - op: replace
       path: /data/newrelic_cluster_name
       value: "${NEW_RELIC_ENVIRONMENT_NAME}"
 
