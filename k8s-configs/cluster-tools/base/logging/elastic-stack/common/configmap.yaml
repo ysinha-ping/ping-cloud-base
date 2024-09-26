@@ -13,4 +13,3 @@ data:
   logs.region: region_name
   tenant_domain: tenant_domain
   primary_tenant_domain: tenant_domain
-  newrelic_cluster_name: cluster_name
