@@ -181,21 +181,6 @@ patchesStrategicMerge:
   kind: DaemonSet
   metadata:
     namespace: newrelic
-    name: nri-bundle-nrk8s-controlplane
-  spec:    
-    template:
-      spec:
-        containers:
-          - name: controlplane
-            env:
-            - name: "NRI_KUBERNETES_CLUSTERNAME"
-              value: ${NEW_RELIC_ENVIRONMENT_NAME}
-
-- |-
-  apiVersion: apps/v1
-  kind: DaemonSet
-  metadata:
-    namespace: newrelic
     name: nri-bundle-nrk8s-kubelet
   spec:
     template:
