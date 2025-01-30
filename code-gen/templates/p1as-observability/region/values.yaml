@@ -17,86 +17,8 @@ cloudwatch:
 
 
 #Newrelic related values
-nri-bundle:
-  newrelic-infrastructure:
-    enabled: true
-    common:
-      config:
-        interval: 30s
-        namespaceSelector:
-          matchExpressions:
-            - key: kubernetes.io/metadata.name
-              operator: NotIn
-              values:
-                - default
-                - health
-                - kube-node-lease
-                - kube-public
-                - kube-system
-                - pod-reaper
-                - newrelic
-    priorityClassName: system-node-critical 
-    integrations:
-      pingmetadata.yaml:
-        integrations:
-          - config:
-              apis:
-                - event_type: pingmetaDataOutputSample
-                  jq: .version
-                  url: http://metadata.ping-cloud:5000
-              name: pingmetadata
-            interval: 2m
-            name: nri-flex
-    kubelet:            
-      agentConfig: 
-        enable_process_metrics: true
-    ksm:
-      config:
-        selector: "app.kubernetes.io/name=kube-state-metrics"
-
-  newrelic-prometheus-agent:
-    enabled: true
-    images:
-      prometheus:
-        repository: "prom/prometheus"
-    config:
-      kubernetes:
-        jobs:
-          - job_name_prefix: default
-            target_discovery:
-              endpoints: true
-              filter:
-                annotations:
-                  prometheus.io/scrape: true
-              pod: true
-          - job_name_prefix: newrelic
-            integrations_filter:
-              enabled: false
-            tls_config:
-              insecure_skip_verify: true
-            target_discovery:
-              endpoints: true
-              filter:
-                annotations:
-                  newrelic.io/scrape: true
-              pod: true
-
-
-  nri-kube-events:
-    enabled: true
-
-
 global:
-  cluster: "test-cluster"
-  isMicroserviceDeploy: true
-  customSecretName: "newrelic-license-key"
-  customSecretLicenseKey: "NEW_RELIC_LICENSE_KEY"
-  lowDataMode: true
-  images:
-    registry: "public.ecr.aws/r2h3l6e4/pingcloud-clustertools"
-  sealedSecrets: false
+  cluster: ${TENANT_NAME}_${ENV_TYPE}_${REGION}_k8s-cluster
   secrets:
     newrelic:
-      newRelicLicenseKey: MTIzNDU2Nzg5MGFiY2RlZjEyMzQ1Njc4OTBhYmNkZWYxMjM0NTY3OA==
-    ping-cloud:
-      newRelicLicenseKey: MTIzNDU2Nzg5MGFiY2RlZjEyMzQ1Njc4OTBhYmNkZWYxMjM0NTY3OA==
+      newRelicLicenseKey: ${NEW_RELIC_LICENSE_KEY_BASE64}
