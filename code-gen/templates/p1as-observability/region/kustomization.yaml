@@ -22,7 +22,7 @@ helmCharts:
       - values.yaml   # app specific values.yaml
     version: v2.1-release-branch-latest
     namespace: newrelic
-    repo: oci://public.ecr.aws/r2h3l6e4/dev   
+    repo: oci://${ECR_REGISTRY_NAME}/dev   
   
 ### This field is used to trigger a resync of the helm chart ###
 configMapGenerator:
