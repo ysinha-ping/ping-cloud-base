@@ -18,7 +18,7 @@ cloudwatch:
 
 #Newrelic related values
 global:
-  cluster: ${TENANT_NAME}_${ENV_TYPE}_${REGION}_k8s-cluster
+  cluster: ${TENANT_NAME}_${ENV}_${REGION}_k8s-cluster
   secrets:
     newrelic:
       newRelicLicenseKey: ${NEW_RELIC_LICENSE_KEY_BASE64}
