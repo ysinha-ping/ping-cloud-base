@@ -16,6 +16,9 @@ global:
   ############################################################
   sealedSecrets: false
   secrets:
+    newrelic:
+      newrelic-license-key:
+        newrelicLicenseKey: MTIzNDU2Nzg5MGFiY2RlZjEyMzQ1Njc4OTBhYmNkZWYxMjM0NTY3OA==
     ping-cloud:
       ###### Shared Secrets ######
 
@@ -62,8 +65,6 @@ global:
       # More info here: https://confluence.pingidentity.com/display/proserv/Enabling+X.509+Authentication+with+PingDirectory
       # pdTruststoreCertOne: certOneData
       # pdTruststoreCertTwo: certTwoData
-    newrelic:
-      newrelicLicenseKey: MTIzNDU2Nzg5MGFiY2RlZjEyMzQ1Njc4OTBhYmNkZWYxMjM0NTY3OA==
       
   ########################################################
   # Multi-region parameters
