@@ -3,7 +3,7 @@
 ### 2.1.0
 
 - Update PingDirectory resource limits
-- Add p1as-observability to PCB New Relic
+- Add p1as Observability to PCB New Relic
 - Use code sharing methods for Logger.lib.sh
 - Reconcile Grafana differences with p1as-observability
 - Kustomize: Fix kustomizations to not be completely empty in order to support v5.1+
