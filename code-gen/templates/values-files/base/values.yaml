@@ -17,8 +17,7 @@ global:
   sealedSecrets: false
   secrets:
     newrelic:
-      newrelic-license-key:
-        newrelicLicenseKey: MTIzNDU2Nzg5MGFiY2RlZjEyMzQ1Njc4OTBhYmNkZWYxMjM0NTY3OA==
+      newRelicLicenseKey: ${NEW_RELIC_LICENSE_KEY_BASE64}
     ping-cloud:
       ###### Shared Secrets ######
 
