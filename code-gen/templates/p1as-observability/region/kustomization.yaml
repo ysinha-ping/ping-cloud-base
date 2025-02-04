@@ -15,6 +15,7 @@ helmCharts:
     version: v2.1-release-branch-latest
     namespace: amazon-cloudwatch
     repo: oci://${ECR_REGISTRY_NAME}/dev
+
   - name: p1as-newrelic
     additionalValuesFiles:
       - ../../values-files/base/values.yaml   # base values.yaml
