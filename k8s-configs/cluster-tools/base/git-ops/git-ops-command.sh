@@ -243,7 +243,9 @@ cleanup() {
   test $? -ne 0 && cat "${LOG_FILE}"
   rm -f "${LOG_FILE}"
   cd - >/dev/null 2>&1
-  test ! -z "${TMP_DIR}" && rm -rf "${TMP_DIR}"
+  # NOTE: this rm -rf should always exit zero and is usually the last thing executed by the script given it's the exit
+  # trap function
+  rm -rf "${TMP_DIR}"
 }
 
 ########################################################################################################################
@@ -370,8 +372,6 @@ monorepo_main() {
     log "generating yaml files from '${BUILD_DIR}' to '${OUT_DIR}'"
     eval "${KUSTOMIZE_EXECUTABLE} build --load-restrictor LoadRestrictionsNone ${BUILD_DIR} --output ${OUT_DIR}"
   fi
-
-  exit 0
 }
 
 ########################################################################################################################
