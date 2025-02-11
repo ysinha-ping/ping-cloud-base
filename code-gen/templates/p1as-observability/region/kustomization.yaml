@@ -23,8 +23,8 @@ helmCharts:
       - values.yaml   # app specific values.yaml
     version: v2.1-release-branch-latest
     namespace: newrelic
-    repo: oci://${ECR_REGISTRY_NAME}/dev   
-  
+    repo: oci://${ECR_REGISTRY_NAME}/dev
+
 ### This field is used to trigger a resync of the helm chart ###
 configMapGenerator:
   - name: observability-last-update-reason
