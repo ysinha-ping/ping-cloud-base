@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentbit-storage-exporter
+  namespace: elastic-stack-logging
+data:
+  exporter.py: |
+    import time
+    import requests
+    from flask import Flask, Response
+
+    app = Flask(__name__)
+
+    FLUENTBIT_URL = "http://localhost:2020/api/v1/storage"
+
+    def parse_bytes(value):
+        units = {"b": 1, "k": 1024, "m": 1024**2, "g": 1024**3}
+        if isinstance(value, str):
+            num = float(value[:-1])
+            unit = value[-1].lower()
+            return int(num * units.get(unit, 1))
+        return int(value)
+
+    def collect_metrics():
+        try:
+            resp = requests.get(FLUENTBIT_URL, timeout=2)
+            data = resp.json()
+        except Exception as e:
+            return f"# Failed to scrape Fluent Bit storage API: {e}\n"
+
+        lines = []
+
+        # Global chunk metrics
+        chunks = data.get("storage_layer", {}).get("chunks", {})
+        for key, value in chunks.items():
+            lines.append(f'fluentbit_storage_chunks{{type="{key}"}} {value}')
+
+        # Per input plugin
+        for plugin, details in data.get("input_chunks", {}).items():
+            status = details.get("status", {})
+            chunks_data = details.get("chunks", {})
+
+            overlimit = status.get("overlimit", False)
+            lines.append(f'fluentbit_input_overlimit{{plugin="{plugin}"}} {int(overlimit)}')
+
+            lines.append(f'fluentbit_input_mem_size_bytes{{plugin="{plugin}"}} {parse_bytes(status.get("mem_size", "0b"))}')
+            lines.append(f'fluentbit_input_mem_limit_bytes{{plugin="{plugin}"}} {parse_bytes(status.get("mem_limit", "0b"))}')
+
+            for metric_name, value in chunks_data.items():
+                if "size" in metric_name:
+                    value = parse_bytes(value)
+                lines.append(f'fluentbit_input_chunks_{metric_name}{{plugin="{plugin}"}} {value}')
+
+        return "\n".join(lines) + "\n"
+
+    @app.route("/metrics")
+    def metrics():
+        return Response(collect_metrics(), mimetype="text/plain")
+
+    if __name__ == "__main__":
+        app.run(host="0.0.0.0", port=8089)
