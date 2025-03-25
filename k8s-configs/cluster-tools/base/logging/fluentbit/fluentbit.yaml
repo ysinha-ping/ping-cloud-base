@@ -166,7 +166,7 @@ spec:
               readOnly: true
         - name: fluentbit-storage-exporter
           image: python:3.9-slim
-          command: ["python3", "-u", "/exporter/exporter.py"]
+          command: ["sh", "-c", "pip install requests && python3 -u /exporter/exporter.py"]
           ports:
             - containerPort: 8089
           volumeMounts:
