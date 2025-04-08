@@ -302,9 +302,12 @@ customer_role:
   hidden: false
   cluster_permissions:
     - "kibana_all_read"
-    - "cluster:admin/opensearch/notifications/*"
     - "cluster:admin/opendistro/reports/*"
+    - "cluster:admin/opensearch/reports/*"
+    - "cluster:admin/opensearch/reporting/*"
+    - "cluster:admin/opensearch/notifications/*"
     - "cluster:admin/opensearch/ql/datasources/read"
+    - "cluster_monitor"
   index_permissions:
     - index_patterns:
         - "*"
