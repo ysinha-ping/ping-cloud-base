@@ -314,6 +314,7 @@ customer_role:
       allowed_actions:
         - "read"
         - "indices:monitor/settings/get"
+        - "indices:admin/create"
         - "kibana_all_read"
     - index_patterns:
         - ".kibana*"
