@@ -306,6 +306,9 @@ customer_role:
     - "cluster:admin/opendistro/reports/instance/get"
     - "cluster:admin/opendistro/reports/instance/list"
     - "cluster:admin/opendistro/reports/menu/download"
+    - "cluster:admin/opendistro/reports/definition/get"
+    - "cluster:admin/opendistro/reports/definition/list"
+    - "cluster:admin/opendistro/reports/definition/on_demand"
     - "cluster:admin/opensearch/ql/datasources/read"
   index_permissions:
     - index_patterns:
@@ -320,6 +323,10 @@ customer_role:
         - "crud"
         - "create_index"
   tenant_permissions:
+    - tenant_patterns:
+        - "global_tenant"
+      allowed_actions:
+        - "kibana_all_write"
     - tenant_patterns:
         - "customer"
       allowed_actions:
