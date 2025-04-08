@@ -312,6 +312,7 @@ customer_role:
       allowed_actions:
         - "read"
         - "kibana_all_read"
+        - "indices:monitor/settings/get"
     - index_patterns:
         - ".kibana*"
       allowed_actions:
