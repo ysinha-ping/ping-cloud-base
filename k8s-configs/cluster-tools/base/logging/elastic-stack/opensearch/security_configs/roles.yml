@@ -303,12 +303,7 @@ customer_role:
   cluster_permissions:
     - "kibana_all_read"
     - "cluster:admin/opensearch/notifications/*"
-    - "cluster:admin/opendistro/reports/instance/get"
-    - "cluster:admin/opendistro/reports/instance/list"
-    - "cluster:admin/opendistro/reports/menu/download"
-    - "cluster:admin/opendistro/reports/definition/get"
-    - "cluster:admin/opendistro/reports/definition/list"
-    - "cluster:admin/opendistro/reports/definition/on_demand"
+    - "cluster:admin/opendistro/reports/*"
     - "cluster:admin/opensearch/ql/datasources/read"
   index_permissions:
     - index_patterns:
