@@ -301,20 +301,25 @@ customer_role:
   reserved: false
   hidden: false
   cluster_permissions:
-  - "kibana_all_read" # action group
-  - "cluster:admin/opensearch/notifications/*" # direct permissions attach
+    - "kibana_all_read"
+    - "cluster:admin/opensearch/notifications/*"
   index_permissions:
-  - index_patterns:
-    - "*"
-    allowed_actions:
-    - "read"
-    - "kibana_all_read"
+    - index_patterns:
+        - "*"
+      allowed_actions:
+        - "read"
+        - "kibana_all_read"
+    - index_patterns:
+        - ".kibana*"
+      allowed_actions:
+        - "crud"
+        - "create_index"
   tenant_permissions:
-  - tenant_patterns:
-    - "global_tenant"
-    allowed_actions:
-    - "kibana_all_read"
-  - tenant_patterns:
-    - "customer"
-    allowed_actions:
-    - "kibana_all_write"
+    - tenant_patterns:
+        - "global_tenant"
+      allowed_actions:
+        - "kibana_all_write"
+    - tenant_patterns:
+        - "customer"
+      allowed_actions:
+        - "kibana_all_write"
