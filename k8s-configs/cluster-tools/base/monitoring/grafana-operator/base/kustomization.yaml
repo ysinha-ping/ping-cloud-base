@@ -5,14 +5,14 @@ resources:
 
 # Patch the CRDs such that argocd will sync them properly
 patchesJson6902:
-  - target:
-      version: v1
-      kind: CustomResourceDefinition
-      name: grafanas.grafana.integreatly.org
-    patch: |-
-      - op: add
-        path: /metadata/annotations/argocd.argoproj.io~1sync-options
-        value: "ServerSideApply=true"
+#  - target:
+#      version: v1
+#      kind: CustomResourceDefinition
+#      name: grafanas.grafana.integreatly.org
+#    patch: |-
+#      - op: add
+#        path: /metadata/annotations/argocd.argoproj.io~1sync-options
+#        value: "ServerSideApply=true"
 
   - target:
       version: v1
@@ -23,20 +23,20 @@ patchesJson6902:
         path: /metadata/annotations/argocd.argoproj.io~1sync-options
         value: "ServerSideApply=true"  
 
-  - target:
-      version: v1
-      kind: CustomResourceDefinition
-      name: grafanadatasources.grafana.integreatly.org
-    patch: |-
-      - op: add
-        path: /metadata/annotations/argocd.argoproj.io~1sync-options
-        value: "ServerSideApply=true"  
+#  - target:
+#      version: v1
+#      kind: CustomResourceDefinition
+#      name: grafanadatasources.grafana.integreatly.org
+#    patch: |-
+#      - op: add
+#        path: /metadata/annotations/argocd.argoproj.io~1sync-options
+#        value: "ServerSideApply=true"  
 
-  - target:
-      version: v1
-      kind: CustomResourceDefinition
-      name: grafanafolders.grafana.integreatly.org
-    patch: |-
-      - op: add
-        path: /metadata/annotations/argocd.argoproj.io~1sync-options
-        value: "ServerSideApply=true"
+#  - target:
+#      version: v1
+#      kind: CustomResourceDefinition
+#      name: grafanafolders.grafana.integreatly.org
+#    patch: |-
+#      - op: add
+#        path: /metadata/annotations/argocd.argoproj.io~1sync-options
+#        value: "ServerSideApply=true"
