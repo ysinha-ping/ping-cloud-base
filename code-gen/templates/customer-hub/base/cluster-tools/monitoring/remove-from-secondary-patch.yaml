@@ -1,14 +1,14 @@
-#kind: Service
-#apiVersion: v1
-#metadata:
-#  name: prometheus
-#  namespace: prometheus
-#  annotations:
-#    $patch: delete
-#spec:
-#  type: ExternalName
-#  externalName: prometheus-central.${PRIMARY_DNS_ZONE}
-#  $patch: replace
+kind: Service
+apiVersion: v1
+metadata:
+ name: prometheus
+ namespace: prometheus
+ annotations:
+   $patch: delete
+spec:
+ type: ExternalName
+ externalName: prometheus-central.${PRIMARY_DNS_ZONE}
+ $patch: replace
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -87,8 +87,6 @@ metadata:
   namespace: prometheus
 $patch: delete
 ---
-<<<<<<< HEAD
-=======
 #apiVersion: grafana.integreatly.org/v1beta1
 #kind: GrafanaDatasource
 #metadata:
@@ -131,7 +129,6 @@ $patch: delete
 #  namespace: prometheus
 #$patch: delete
 #---
->>>>>>> c8a9379a5 (Update to comment out Grafana resources)
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -139,8 +136,6 @@ metadata:
   namespace: prometheus
 $patch: delete
 ---
-<<<<<<< HEAD
-=======
 #apiVersion: grafana.integreatly.org/v1beta1
 #kind: Grafana
 #metadata:
@@ -155,17 +150,13 @@ $patch: delete
 #  namespace: prometheus
 #$patch: delete
 #---
->>>>>>> c8a9379a5 (Update to comment out Grafana resources)
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
   name: volume-autoscaler
   namespace: prometheus
-<<<<<<< HEAD
 $patch: delete
-=======
-$patch: delete
----
+#---
 #apiVersion: apps/v1
 #kind: Deployment
 #metadata:
@@ -205,5 +196,3 @@ $patch: delete
 #  name: grafana-operator-controller-manager
 #  namespace: prometheus
 #$patch: delete
-
->>>>>>> c8a9379a5 (Update to comment out Grafana resources)
