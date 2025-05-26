@@ -5,4 +5,4 @@ namespace: prometheus
 resources:
 - grafana.yaml
 - service.yaml
-- datasources.yaml
+#- datasources.yaml
