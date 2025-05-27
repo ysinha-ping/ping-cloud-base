@@ -128,11 +128,7 @@ $patch: delete
 #  name: pingdashboards
 #  namespace: prometheus
 #$patch: delete
-<<<<<<< HEAD
-#---
-=======
 ---
->>>>>>> bf542539a (update changes)
 apiVersion: v1
 kind: ConfigMap
 metadata:
