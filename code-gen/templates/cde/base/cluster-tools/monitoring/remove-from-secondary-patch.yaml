@@ -86,20 +86,20 @@ metadata:
   name: p1asingress
   namespace: prometheus
 $patch: delete
----
-apiVersion: grafana.integreatly.org/v1beta1
-kind: GrafanaDatasource
-metadata:
-  name: prometheus
-  namespace: prometheus
-$patch: delete
----
-apiVersion: grafana.integreatly.org/v1beta1
-kind: GrafanaDatasource
-metadata:
-  name: os-pa-audit
-  namespace: prometheus
-$patch: delete
+# ---
+# apiVersion: grafana.integreatly.org/v1beta1
+# kind: GrafanaDatasource
+# metadata:
+#   name: prometheus
+#   namespace: prometheus
+# $patch: delete
+# ---
+# apiVersion: grafana.integreatly.org/v1beta1
+# kind: GrafanaDatasource
+# metadata:
+#   name: os-pa-audit
+#   namespace: prometheus
+# $patch: delete
 #---
 #apiVersion: grafana.integreatly.org/v1beta1
 #kind: GrafanaDatasource
