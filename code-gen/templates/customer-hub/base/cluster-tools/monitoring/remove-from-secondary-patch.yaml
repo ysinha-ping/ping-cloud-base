@@ -1,14 +1,14 @@
 kind: Service
 apiVersion: v1
 metadata:
- name: prometheus
- namespace: prometheus
- annotations:
-   $patch: delete
+  name: prometheus
+  namespace: prometheus
+  annotations:
+    $patch: delete
 spec:
- type: ExternalName
- externalName: prometheus-central.${PRIMARY_DNS_ZONE}
- $patch: replace
+  type: ExternalName
+  externalName: prometheus-central.${PRIMARY_DNS_ZONE}
+  $patch: replace
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -87,48 +87,48 @@ metadata:
   namespace: prometheus
 $patch: delete
 ---
-#apiVersion: grafana.integreatly.org/v1beta1
-#kind: GrafanaDatasource
-#metadata:
-#  name: prometheus
-#  namespace: prometheus
-#$patch: delete
-#---
-#apiVersion: grafana.integreatly.org/v1beta1
-#kind: GrafanaDatasource
-#metadata:
-#  name: os-pa-audit
-#  namespace: prometheus
-#$patch: delete
-#---
-#apiVersion: grafana.integreatly.org/v1beta1
-#kind: GrafanaDatasource
-#metadata:
-#  name: os-pf-audit
-#  namespace: prometheus
-#$patch: delete
-#---
-#apiVersion: grafana.integreatly.org/v1beta1
-#kind: GrafanaFolder
-#metadata:
-#  name: kubernetesdashboards
-#  namespace: prometheus
-#$patch: delete
-#---
-#apiVersion: grafana.integreatly.org/v1beta1
-#kind: GrafanaFolder
-#metadata:
-#  name: monitoringdashboards
-#  namespace: prometheus
-#$patch: delete
-#---
-#apiVersion: grafana.integreatly.org/v1beta1
-#kind: GrafanaFolder
-#metadata:
-#  name: pingdashboards
-#  namespace: prometheus
-#$patch: delete
-#---
+# apiVersion: grafana.integreatly.org/v1beta1
+# kind: GrafanaDatasource
+# metadata:
+#   name: prometheus
+#   namespace: prometheus
+# $patch: delete
+# ---
+# apiVersion: grafana.integreatly.org/v1beta1
+# kind: GrafanaDatasource
+# metadata:
+#   name: os-pa-audit
+#   namespace: prometheus
+# $patch: delete
+# ---
+# apiVersion: grafana.integreatly.org/v1beta1
+# kind: GrafanaDatasource
+# metadata:
+#   name: os-pf-audit
+#   namespace: prometheus
+# $patch: delete
+# ---
+# apiVersion: grafana.integreatly.org/v1beta1
+# kind: GrafanaFolder
+# metadata:
+#   name: kubernetesdashboards
+#   namespace: prometheus
+# $patch: delete
+# ---
+# apiVersion: grafana.integreatly.org/v1beta1
+# kind: GrafanaFolder
+# metadata:
+#   name: monitoringdashboards
+#   namespace: prometheus
+# $patch: delete
+# ---
+# apiVersion: grafana.integreatly.org/v1beta1
+# kind: GrafanaFolder
+# metadata:
+#   name: pingdashboards
+#   namespace: prometheus
+# $patch: delete
+# ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -136,20 +136,20 @@ metadata:
   namespace: prometheus
 $patch: delete
 ---
-#apiVersion: grafana.integreatly.org/v1beta1
-#kind: Grafana
-#metadata:
-#  name: grafana
-#  namespace: prometheus
-#$patch: delete
-#---
-#kind: Service
-#apiVersion: v1
-#metadata:
-#  name: grafana
-#  namespace: prometheus
-#$patch: delete
-#---
+# apiVersion: grafana.integreatly.org/v1beta1
+# kind: Grafana
+# metadata:
+#   name: grafana
+#   namespace: prometheus
+# $patch: delete
+# ---
+# kind: Service
+# apiVersion: v1
+# metadata:
+#   name: grafana
+#   namespace: prometheus
+# $patch: delete
+# ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
