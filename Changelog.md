@@ -10,6 +10,7 @@
 - Explicitly set Lets Encrypt configuration via cert-manager
 - Remove PA_LOG_LEVEL from log4j file
 - Add pod-reaper enabled label to PingCentral
+- Add p1as-Observability to PCB Grafana
 
 _Changes:_
 
@@ -18,6 +19,7 @@ _Changes:_
 - [X] PDO-8834 Update bootstrap pods to use new bootstrap IRSA role
 - [X] PDO-9021 Enable p1as-cluster-tools microservice in PCB
 - [X] PDO-9312 Get pingone URL from env variable
+- [X] PDO-9231 Add p1as-observability to PCB: Grafana
 - [X] PDO-9376 FluentBit: Adjust Buffer and Limit Configuration
 - [X] PDO-9414 Set initialDelaySeconds and failureThreshold on readiness probe for PingAccess and 
 - [X] PDO-9533 Remove PA_LOG_LEVEL from log4j file
