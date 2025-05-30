@@ -7,6 +7,7 @@
 - FluentBit: Adjust Buffer and Limit Configuration by removing Mem_Buf_Limit and storage.pause_on_chunks_overlimit parameters
 - Set initialDelaySeconds and failureThreshold on readiness probe for PingAccess and PingAccess-WAS
 - Explicitly set Lets Encrypt configuration via cert-manager
+- Add p1as-Observability to PCB Grafana
 
 _Changes:_
 
@@ -14,6 +15,7 @@ _Changes:_
 - [X] PDO-8754 OSD: Enable Save Query and CSV Export of Logs
 - [X] PDO-8834 Update bootstrap pods to use new bootstrap IRSA role
 - [X] PDO-9021 Enable p1as-cluster-tools microservice in PCB
+- [X] PDO-9231 Add p1as-observability to PCB: Grafana
 - [X] PDO-9376 FluentBit: Adjust Buffer and Limit Configuration
 - [X] PDO-9414 Set initialDelaySeconds and failureThreshold on readiness probe for PingAccess and PingAccess-WAS
 
