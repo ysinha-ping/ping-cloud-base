@@ -1,13 +1,8 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaFolder
 metadata:
-<<<<<<< HEAD
   name: pgodashboards
   namespace: prometheus
-=======
- name: pgodashboards
- namespace: prometheus
->>>>>>> d254da68c (update changes)
 $patch: delete
 ---
 apiVersion: grafana.integreatly.org/v1beta1
