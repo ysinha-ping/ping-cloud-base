@@ -87,48 +87,6 @@ metadata:
   namespace: prometheus
 $patch: delete
 ---
-# apiVersion: grafana.integreatly.org/v1beta1
-# kind: GrafanaDatasource
-# metadata:
-#   name: prometheus
-#   namespace: prometheus
-# $patch: delete
-# ---
-# apiVersion: grafana.integreatly.org/v1beta1
-# kind: GrafanaDatasource
-# metadata:
-#   name: os-pa-audit
-#   namespace: prometheus
-# $patch: delete
-#---
-#apiVersion: grafana.integreatly.org/v1beta1
-#kind: GrafanaDatasource
-#metadata:
-#  name: os-pf-audit
-#  namespace: prometheus
-#$patch: delete
-#---
-#apiVersion: grafana.integreatly.org/v1beta1
-#kind: GrafanaFolder
-#metadata:
-#  name: kubernetesdashboards
-#  namespace: prometheus
-#$patch: delete
-#---
-#apiVersion: grafana.integreatly.org/v1beta1
-#kind: GrafanaFolder
-#metadata:
-#  name: monitoringdashboards
-#  namespace: prometheus
-#$patch: delete
-#---
-#apiVersion: grafana.integreatly.org/v1beta1
-#kind: GrafanaFolder
-#metadata:
-#  name: pingdashboards
-#  namespace: prometheus
-#$patch: delete
-#---
 apiVersion: v1
 kind: ConfigMap
 metadata:
