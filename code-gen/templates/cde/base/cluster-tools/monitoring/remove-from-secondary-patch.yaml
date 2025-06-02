@@ -128,7 +128,7 @@ $patch: delete
 #  name: pingdashboards
 #  namespace: prometheus
 #$patch: delete
----
+#---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -136,20 +136,6 @@ metadata:
  namespace: prometheus
 $patch: delete
 ---
-#apiVersion: grafana.integreatly.org/v1beta1
-#kind: Grafana
-#metadata:
-#  name: grafana
-#  namespace: prometheus
-#$patch: delete
-#---
-#kind: Service
-#apiVersion: v1
-#metadata:
-#  name: grafana
-#  namespace: prometheus
-#$patch: delete
-#---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
@@ -198,43 +184,3 @@ metadata:
   name: pabyserver
   namespace: prometheus
 $patch: delete
-#---
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  labels:
-#    app: grafana-operator-controller-manager
-#  name: grafana-operator-controller-manager
-#  namespace: prometheus
-#$patch: delete
-#---
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  labels:
-#    app: grafana-operator-controller-manager
-#  name: grafana-operator-metrics-service
-#  namespace: prometheus
-#$patch: delete
-#---
-#apiVersion: rbac.authorization.k8s.io/v1
-#kind: RoleBinding
-#metadata:
-#  name: grafana-operator-permissions
-#  namespace: prometheus
-#$patch: delete
-#---
-#apiVersion: rbac.authorization.k8s.io/v1
-#kind: Role
-#metadata:
-#  name: grafana-operator-permissions
-#  namespace: prometheus
-#$patch: delete
-#---
-#apiVersion: v1
-#automountServiceAccountToken: true
-#kind: ServiceAccount
-#metadata:
-#  name: grafana-operator-controller-manager
-#  namespace: prometheus
-#$patch: delete
