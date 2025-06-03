@@ -13,7 +13,7 @@
 ########################################################################################################################
 pingcloud-scripts::source_script() {
     local script_name="${1}"
-    local version="pdo-9231"
+    local version="${2:-pdo-9231}"
     local aws_profile="${3:-${AWS_PROFILE}}"
     local usage="pingcloud-scripts::source_script SCRIPT_NAME VERSION [aws_profile]"
 
@@ -21,14 +21,14 @@ pingcloud-scripts::source_script() {
     echo "[DEBUG] Version set to: ${version}"
     echo "[DEBUG] AWS profile: ${aws_profile}"
 
-    LOCAL=false
-    echo "[DEBUG] LOCAL explicitly set to false"
+    # LOCAL=false
+    # echo "[DEBUG] LOCAL explicitly set to false"
 
-    # if [[ "${LOCAL}" == "true" ]]; then
-    #     # NOTE: You must set LOCAL and the location for PCC_PATH to enable local testing
-    #     source "${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
-    #     return 0
-    # fi
+    if [[ "${LOCAL}" == "true" ]]; then
+        # NOTE: You must set LOCAL and the location for PCC_PATH to enable local testing
+        source "${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
+        return 0
+    fi
 
     if [[ $# -lt 2 ]]; then
         echo "Too few arguments provided. Usage: ${usage}"
@@ -63,7 +63,7 @@ pingcloud-scripts::source_script() {
     fi
     
     echo "[DEBUG] Downloading from s3://${src_bucket}/${script_name}/${version}/${script_name}.tar.gz"
-    
+
     aws --profile "${aws_profile}" --only-show-errors s3 cp \
         "s3://${src_bucket}/${script_name}/${version}/${script_name}.tar.gz" "${tmp_dir}/${script_name}.tar.gz"
 
