@@ -13,7 +13,7 @@
 ########################################################################################################################
 pingcloud-scripts::source_script() {
     local script_name="${1}"
-    local version="${2}"
+    local version="pdo-9231"
     local aws_profile="${3:-${AWS_PROFILE}}"
     local usage="pingcloud-scripts::source_script SCRIPT_NAME VERSION [aws_profile]"
 
@@ -29,7 +29,7 @@ pingcloud-scripts::source_script() {
     fi
 
     local tmp_dir="/tmp/pingcloud-scripts/${version}"
-    local src_bucket="pingcloud-scripts"
+    local src_bucket="pingcloud-scripts-dev"
 
     # If not a version of format x.x.x, assume it's in dev s3 bucket
     if [[ ! "${version}" =~ ^[0-9]+.[0-9]+.[0-9]+$ ]]; then
