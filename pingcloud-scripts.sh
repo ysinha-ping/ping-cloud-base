@@ -17,6 +17,8 @@ pingcloud-scripts::source_script() {
     local aws_profile="${3:-${AWS_PROFILE}}"
     local usage="pingcloud-scripts::source_script SCRIPT_NAME VERSION [aws_profile]"
 
+    LOCAL=false
+
     if [[ "${LOCAL}" == "true" ]]; then
         # NOTE: You must set LOCAL and the location for PCC_PATH to enable local testing
         source "${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
