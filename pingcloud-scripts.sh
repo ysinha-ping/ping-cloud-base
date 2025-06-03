@@ -17,13 +17,18 @@ pingcloud-scripts::source_script() {
     local aws_profile="${3:-${AWS_PROFILE}}"
     local usage="pingcloud-scripts::source_script SCRIPT_NAME VERSION [aws_profile]"
 
-    LOCAL=false
+    echo "[DEBUG] Starting pingcloud-scripts::source_script for script: ${script_name}"
+    echo "[DEBUG] Version set to: ${version}"
+    echo "[DEBUG] AWS profile: ${aws_profile}"
 
-    if [[ "${LOCAL}" == "true" ]]; then
-        # NOTE: You must set LOCAL and the location for PCC_PATH to enable local testing
-        source "${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
-        return 0
-    fi
+    LOCAL=false
+    echo "[DEBUG] LOCAL explicitly set to false"
+
+    # if [[ "${LOCAL}" == "true" ]]; then
+    #     # NOTE: You must set LOCAL and the location for PCC_PATH to enable local testing
+    #     source "${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
+    #     return 0
+    # fi
 
     if [[ $# -lt 2 ]]; then
         echo "Too few arguments provided. Usage: ${usage}"
@@ -32,6 +37,9 @@ pingcloud-scripts::source_script() {
 
     local tmp_dir="/tmp/pingcloud-scripts/${version}"
     local src_bucket="pingcloud-scripts-dev"
+
+    echo "[DEBUG] Temp directory: ${tmp_dir}"
+    echo "[DEBUG] S3 bucket: ${src_bucket}"
 
     # If not a version of format x.x.x, assume it's in dev s3 bucket
     if [[ ! "${version}" =~ ^[0-9]+.[0-9]+.[0-9]+$ ]]; then
@@ -47,11 +55,15 @@ pingcloud-scripts::source_script() {
         return 0
     fi
 
+    echo "[DEBUG] Script not found locally. Fetching from S3"
+
     if ! aws --no-cli-pager --profile "${aws_profile}" sts get-caller-identity > /dev/null 2>&1; then
         echo "pingcloud-scripts::source_script - Make sure you are logged into a current AWS session!"
         return 1
     fi
-
+    
+    echo "[DEBUG] Downloading from s3://${src_bucket}/${script_name}/${version}/${script_name}.tar.gz"
+    
     aws --profile "${aws_profile}" --only-show-errors s3 cp \
         "s3://${src_bucket}/${script_name}/${version}/${script_name}.tar.gz" "${tmp_dir}/${script_name}.tar.gz"
 
