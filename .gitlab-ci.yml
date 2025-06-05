@@ -141,7 +141,7 @@ deploy:
     - |
       aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | \
         helm registry login --username AWS --password-stdin ${ECR_REGISTRY_NAME}
-    - helm show crds oci://${ECR_REGISTRY_NAME}/dev/p1as-grafana --version v2.2-release-branch-latest > /tmp/grafana-crds.yaml
+    - helm show crds oci://${ECR_REGISTRY_NAME}/dev/p1as-grafana --version v2.2-pdo-6002-grafana > /tmp/grafana-crds.yaml
     - kubectl apply -f /tmp/grafana-crds.yaml
   dependencies:
     - find-cluster
