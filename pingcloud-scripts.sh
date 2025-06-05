@@ -1,10 +1,16 @@
 #!/bin/bash
 
-# pingcloud-scripts::source_script - Sources a script either from local path or S3
+# NOTE: If this file is updated ANYWHERE, it must be updated across ALL repos
+# TODO: Figure out a way to not have this duplicated as well (but something needs to bootstrap the source...)
+
+########################################################################################################################
+# pingcloud-scripts::source_script - Sources a given script and version from S3 or locally from the
+#   ping-cloud-common/pingcloud-scripts repo/directory
 # Arguments:
-# $1 - script_name (e.g., k8s_utils, bash_utils)
-# $2 - version (e.g., pdo-9231 or 1.3.0)
-# $3 - aws_profile (optional)
+# $1 - name - the name of the script to source
+# $2 - version - the version of the script to source
+# $3 - aws_profile - optional - the AWS_PROFILE to use
+########################################################################################################################
 
 pingcloud-scripts::source_script() {
     local script_name="${1}"
