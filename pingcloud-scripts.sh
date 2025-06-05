@@ -21,8 +21,8 @@ pingcloud-scripts::source_script() {
     echo "[DEBUG] Version set to: ${version}"
     echo "[DEBUG] AWS profile: ${aws_profile}"
 
-    LOCAL=false
-    echo "[DEBUG] LOCAL explicitly set to false"
+    LOCAL=true
+    echo "[DEBUG] LOCAL explicitly set to true"
 
     # if [[ "${LOCAL}" == "true" ]]; then
     #     # NOTE: You must set LOCAL and the location for PCC_PATH to enable local testing
