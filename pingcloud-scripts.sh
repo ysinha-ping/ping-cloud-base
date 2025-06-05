@@ -21,12 +21,12 @@ pingcloud-scripts::source_script() {
     echo "[DEBUG] Version set to: ${version}"
     echo "[DEBUG] AWS profile: ${aws_profile}"
 
-    if [[ "${LOCAL}" == "true" ]]; then
+    if [[ "${script_name}" == "k8s_utils" ]]; then
         if [[ -z "${PCC_PATH}" ]]; then
-            echo "[ERROR] LOCAL=true but PCC_PATH is not set"
+            echo "[ERROR] PCC_PATH not set but required for local sourcing of ${script_name}"
             return 1
         fi
-        echo "[DEBUG] Sourcing locally from ${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
+        echo "[DEBUG] Sourcing ${script_name} locally from ${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
         source "${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
         return 0
     fi
