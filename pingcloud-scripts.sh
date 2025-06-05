@@ -16,31 +16,19 @@ pingcloud-scripts::source_script() {
     echo "[DEBUG] Version set to: ${version}"
     echo "[DEBUG] AWS profile: ${aws_profile}"
 
-    # Local override: always load k8s_utils from local path
-    if [[ "${script_name}" == "k8s_utils" ]]; then
-        if [[ -z "${PCC_PATH}" ]]; then
-            echo "[ERROR] PCC_PATH not set; cannot load k8s_utils locally."
-            return 1
-        fi
-        echo "[DEBUG] Sourcing locally from ${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
-        source "${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
-        return 0
-    fi
-
-    # If globally LOCAL is true, source all scripts locally
-    if [[ "${LOCAL}" == "true" ]]; then
-        if [[ -z "${PCC_PATH}" ]]; then
-            echo "[ERROR] LOCAL=true but PCC_PATH is not set"
-            return 1
-        fi
-        echo "[DEBUG] Sourcing locally from ${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
-        source "${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
-        return 0
-    fi
-
     if [[ $# -lt 2 ]]; then
         echo "Too few arguments provided. Usage: ${usage}"
         return 1
+    fi
+
+    if [[ "${script_name}" == "k8s_utils" ]]; then
+        if [[ -z "${PCC_PATH}" ]]; then
+            echo "[ERROR] LOCAL sourcing enabled for '${script_name}', but PCC_PATH is not set"
+            return 1
+        fi
+        echo "[DEBUG] Sourcing locally from ${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
+        source "${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
+        return 0
     fi
 
     local tmp_dir="/tmp/pingcloud-scripts/${version}"
@@ -51,20 +39,16 @@ pingcloud-scripts::source_script() {
 
     mkdir -p "${tmp_dir}"
 
-    if [[ -f "${tmp_dir}/${script_name}.sh" ]]; then
-        echo "[DEBUG] Script found in cache: ${tmp_dir}/${script_name}.sh"
-        source "${tmp_dir}/${script_name}.sh"
-        return 0
-    fi
-
-    echo "[DEBUG] Script not found locally. Fetching from S3"
+    rm -f "${tmp_dir:?}/${script_name}.tar.gz" "${tmp_dir:?}/${script_name}.sh"
 
     if ! aws --no-cli-pager --profile "${aws_profile}" sts get-caller-identity > /dev/null 2>&1; then
         echo "pingcloud-scripts::source_script - Make sure you are logged into a current AWS session!"
         return 1
     fi
 
+    echo "[DEBUG] Script not found locally. Fetching from S3"
     echo "[DEBUG] Downloading from s3://${src_bucket}/${script_name}/${version}/${script_name}.tar.gz"
+
     aws --profile "${aws_profile}" --only-show-errors s3 cp \
         "s3://${src_bucket}/${script_name}/${version}/${script_name}.tar.gz" \
         "${tmp_dir}/${script_name}.tar.gz"
