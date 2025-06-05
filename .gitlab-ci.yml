@@ -137,11 +137,12 @@ deploy:
     - default-gitlab-runner-ping-cloud
   image: ${K8S_DEPLOY_TOOLS}
   script:
-  - |
-    echo "Installing Grafana CRDs from Helm chart before Kustomize apply"
-    helm show crds oci://${ECR_REGISTRY_NAME}/dev/p1as-grafana --version v2.2-release-branch-latest > /tmp/grafana-crds.yaml
-    kubectl apply -f /tmp/grafana-crds.yaml
-    ${SHARED_CI_SCRIPTS_DIR}/k8s/deploy/deploy.sh
+    - echo "Installing Grafana CRDs from Helm chart before Kustomize apply"
+    - |
+      aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | \
+        helm registry login --username AWS --password-stdin ${ECR_REGISTRY_NAME}
+    - helm show crds oci://${ECR_REGISTRY_NAME}/dev/p1as-grafana --version v2.2-release-branch-latest > /tmp/grafana-crds.yaml
+    - kubectl apply -f /tmp/grafana-crds.yaml
   dependencies:
     - find-cluster
 
