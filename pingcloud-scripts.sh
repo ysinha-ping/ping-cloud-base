@@ -21,11 +21,14 @@ pingcloud-scripts::source_script() {
     echo "[DEBUG] Version set to: ${version}"
     echo "[DEBUG] AWS profile: ${aws_profile}"
 
-    if [[ "${LOCAL}" == "true" ]]; then
-        # NOTE: You must set LOCAL and the location for PCC_PATH to enable local testing
-        source "${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
-        return 0
-    fi
+    LOCAL=false
+    echo "[DEBUG] LOCAL explicitly set to false"
+
+    # if [[ "${LOCAL}" == "true" ]]; then
+    #     # NOTE: You must set LOCAL and the location for PCC_PATH to enable local testing
+    #     source "${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
+    #     return 0
+    # fi
 
     if [[ $# -lt 2 ]]; then
         echo "Too few arguments provided. Usage: ${usage}"
