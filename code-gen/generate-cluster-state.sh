@@ -615,6 +615,7 @@ organize_code_for_csr() {
     unset PRIMARY_REGION_ONLY_DEPLOY
 
     # source the config or continue to next app if config not there
+    export APP_NAME="${app_name}"
     source "${app_path}/config.sh" || continue
 
     echo ---

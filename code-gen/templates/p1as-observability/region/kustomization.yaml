@@ -5,6 +5,7 @@ resources:
   - ../base/custom-resources
   - custom-resources
   - ../base/namespace.yaml
+  - ../base/crds-annotations.yaml
 
 helmCharts:
   - name: p1as-cloudwatch
@@ -33,7 +34,6 @@ helmCharts:
     version: v2.2-release-branch-latest
     namespace: prometheus
     repo: oci://${ECR_REGISTRY_NAME}/dev
-    includeCRDs: true
 
 ### This field is used to trigger a resync of the helm chart ###
 configMapGenerator:
