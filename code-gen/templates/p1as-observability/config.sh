@@ -2,6 +2,7 @@
 
 export CDE_DEPLOY=true
 export HAS_PROFILE_DIR=false
+export CHUB_DEPLOY=true
 
 # Set CHUB_DEPLOY dynamically based on APP_NAME
 case "${APP_NAME}" in
