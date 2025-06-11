@@ -7,6 +7,9 @@ resources:
   - ../base/namespace.yaml
   - ../base/crds-annotations
 
+generators:
+  - chartInflationGenerators.yaml
+
 helmCharts:
   - name: p1as-cloudwatch
     additionalValuesFiles:
@@ -26,19 +29,6 @@ helmCharts:
     namespace: newrelic
     repo: oci://${ECR_REGISTRY_NAME}/dev
 
-generators:
-  - |-
-    apiVersion: builtin
-    kind: HelmChartInflationGenerator
-    metadata:
-      name: p1as-grafana-chart
-    chartName: p1as-grafana
-    repo: oci://${ECR_REGISTRY_NAME}/dev
-    version: v2.2-release-branch-latest
-    releaseName: p1as-grafana
-    namespace: prometheus
-    includeCRDs: true
- 
 ### This field is used to trigger a resync of the helm chart ###
 configMapGenerator:
   - name: observability-last-update-reason
