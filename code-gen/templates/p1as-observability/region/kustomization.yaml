@@ -26,15 +26,19 @@ helmCharts:
     namespace: newrelic
     repo: oci://${ECR_REGISTRY_NAME}/dev
 
-  - name: p1as-grafana
-    additionalValuesFiles:
-      - ../../values-files/base/values.yaml   # base values.yaml
-      - ../../values-files/${REGION_NICK_NAME}/values.yaml   # regional values.yaml
-      - values.yaml   # app specific values.yaml
-    version: v2.2-release-branch-latest
-    namespace: prometheus
+generators:
+  - |-
+    apiVersion: builtin
+    kind: HelmChartInflationGenerator
+    metadata:
+      name: p1as-grafana-chart
+    chartName: p1as-grafana
     repo: oci://${ECR_REGISTRY_NAME}/dev
-
+    version: v2.2-release-branch-latest
+    releaseName: p1as-grafana
+    namespace: prometheus
+    includeCRDs: true
+ 
 ### This field is used to trigger a resync of the helm chart ###
 configMapGenerator:
   - name: observability-last-update-reason
