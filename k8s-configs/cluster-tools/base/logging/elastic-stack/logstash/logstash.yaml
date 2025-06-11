@@ -35,7 +35,7 @@ spec:
                 topologyKey: "topology.kubernetes.io/zone"
       initContainers:
         - name: opensearch-bootstrap
-          image: 705370621539.dkr.ecr.us-west-2.amazonaws.com/pingcloud-monitoring/os-bootstrap:PDO-9455-new
+          image: public.ecr.aws/r2h3l6e4/pingcloud-monitoring/os-bootstrap/dev:v2.2-release-branch-latest
           imagePullPolicy: Always
           env:
           - name: OS_HOST
