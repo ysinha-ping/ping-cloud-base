@@ -27,15 +27,14 @@ pingcloud-scripts::source_script() {
         return 1
     fi
 
-    if [[ "${script_name}" == "k8s_utils" ]]; then
-        if [[ -z "${PCC_PATH}" ]]; then
-            echo "[ERROR] LOCAL sourcing enabled for '${script_name}', but PCC_PATH is not set"
-            return 1
-        fi
-        echo "[DEBUG] Sourcing locally from ${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
-        source "${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
-        return 0
+    if [[ -z "${PCC_PATH}" ]]; then
+        echo "[ERROR] LOCAL sourcing enabled for '${script_name}', but PCC_PATH is not set"
+        return 1
     fi
+    
+    echo "[DEBUG] Sourcing locally from ${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
+    source "${PCC_PATH}/pingcloud-scripts/${script_name}/${script_name}.sh"
+    return 0
 
     local tmp_dir="/tmp/pingcloud-scripts/${version}"
     local src_bucket="pingcloud-scripts-dev"
