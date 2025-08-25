@@ -158,7 +158,7 @@ P14C_INTEGRATION_IMAGE_TAG=v2.2-release-branch-latest
 ############################################################
 # Ping observability image tags
 ############################################################
-OS_BOOTSTRAP_IMAGE_TAG=v2.2-release-branch-latest
+OS_BOOTSTRAP_IMAGE_TAG=pdo-9826-ingress
 LOGSTASH_IMAGE_TAG=pdo-9826-ingress
 
 ############################################################
