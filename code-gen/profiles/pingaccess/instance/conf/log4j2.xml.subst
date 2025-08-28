@@ -270,9 +270,9 @@
         <Console name="CONSOLE-PA" target="SYSTEM_OUT">
             <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
                 <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
-                <KeyValuePair key="level" value="%p"/>
+                <KeyValuePair key="logLevel" value="%p"/>
                 <KeyValuePair key="exchangeId" value="%X{exchangeId}"/>
-                <KeyValuePair key="logger" value="%c"/>
+                <KeyValuePair key="className" value="%c"/>
                 <KeyValuePair key="message" value="%m{nolookups}"/>
                 <KeyValuePair key="log_name" value="pingaccess"/>
             </JSONLayout>
