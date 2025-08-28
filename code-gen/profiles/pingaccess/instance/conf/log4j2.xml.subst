@@ -132,6 +132,7 @@
         <!-- ======================= -->
         <AsyncRoot level="INFO" includeLocation="false">
             <AppenderRef ref="File"/>
+            <AppenderRef ref="CONSOLE-PA"/>
             <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
         </AsyncRoot>
 
@@ -140,6 +141,7 @@
         <!-- ======================= -->
         <Logger name="apiaudit" level="INFO" additivity="false">
             <AppenderRef ref="APIAuditLog-File"/>
+            <AppenderRef ref="CONSOLE-PA-API-AUDIT"/>
             <!--<AppenderRef ref="CONSOLE_AUDIT"/>-->
             <!--<AppenderRef ref="ApiAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="ApiAuditLog-SQLServer-Database-Failover"/>-->
@@ -149,6 +151,7 @@
         </Logger>
         <Logger name="engineaudit" level="INFO" additivity="false">
             <AppenderRef ref="EngineAuditLog-File"/>
+            <AppenderRef ref="CONSOLE-PA-ENGINE-AUDIT"/>
             <!--<AppenderRef ref="CONSOLE_AUDIT"/>-->
             <!--<AppenderRef ref="EngineAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="EngineAuditLog-SQLServer-Database-Failover"/>-->
@@ -158,6 +161,7 @@
         </Logger>
         <Logger name="agentaudit" level="INFO" additivity="false">
             <AppenderRef ref="AgentAuditLog-File"/>
+            <AppenderRef ref="CONSOLE-PA-AGENT-AUDIT"/>
             <!--<AppenderRef ref="CONSOLE_AUDIT"/>-->
             <!--<AppenderRef ref="AgentAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="AgentAuditLog-SQLServer-Database-Failover"/>-->
@@ -167,6 +171,7 @@
         </Logger>
         <Logger name="sidebandclientaudit" level="INFO" additivity="false">
             <AppenderRef ref="SidebandClientAuditLog-File"/>
+            <AppenderRef ref="CONSOLE-PA-SIDEBAND-CLIENT-AUDIT"/>
             <!--<AppenderRef ref="CONSOLE_AUDIT"/>-->
             <!--<AppenderRef ref="SidebandClientAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="SidebandClientAuditLog-SQLServer-Database-Failover"/>-->
@@ -176,6 +181,7 @@
         </Logger>
         <Logger name="sidebandaudit" level="INFO" additivity="false">
             <AppenderRef ref="SidebandAuditLog-File"/>
+            <AppenderRef ref="CONSOLE-PA-SIDEBAND-AUDIT"/>
             <!--<AppenderRef ref="CONSOLE_AUDIT"/>-->
             <!--<AppenderRef ref="SidebandAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="SidebandAuditLog-SQLServer-Database-Failover"/>-->
@@ -261,6 +267,16 @@
             </Policies>
             <DefaultRolloverStrategy max="4" />
         </RollingFile>
+        <Console name="CONSOLE-PA" target="SYSTEM_OUT">
+            <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
+                <KeyValuePair key="level" value="%p"/>
+                <KeyValuePair key="exchangeId" value="%X{exchangeId}"/>
+                <KeyValuePair key="logger" value="%c"/>
+                <KeyValuePair key="message" value="%m{nolookups}"/>
+                <KeyValuePair key="log_name" value="pingaccess"/>
+            </JSONLayout>
+        </Console>
 
         <!-- API auditing file logging configuration-->
         <RollingFile name="APIAuditLog-File"
@@ -279,6 +295,21 @@
             </Policies>
             <DefaultRolloverStrategy max="4" />
         </RollingFile>
+        <Console name="CONSOLE-PA-API-AUDIT" target="SYSTEM_OUT">
+            <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
+                <KeyValuePair key="exchangeId" value="$${ctx:exchangeId:-}"/>
+                <KeyValuePair key="trackingId" value="$${ctx:AUDIT.trackingId:-}"/>
+                <KeyValuePair key="roundTripMS" value="$${ctx:AUDIT.roundTripMS:-}"/>
+                <KeyValuePair key="subject" value="$${ctx:AUDIT.subject:-}"/>
+                <KeyValuePair key="authMech" value="$${ctx:AUDIT.authMech:-}"/>
+                <KeyValuePair key="client" value="$${ctx:AUDIT.client:-}"/>
+                <KeyValuePair key="method" value="$${ctx:AUDIT.method:-}"/>
+                <KeyValuePair key="requestUri" value="$${ctx:AUDIT.requestUri:-}"/>
+                <KeyValuePair key="responseCode" value="$${ctx:AUDIT.responseCode:-}"/>
+                <KeyValuePair key="log_name" value="pingaccess_api_audit"/>
+            </JSONLayout>
+        </Console>
 
         <!-- API Audit log : JDBC appender template for Oracle
 
@@ -509,6 +540,28 @@
             </Policies>
             <DefaultRolloverStrategy max="4" />
         </RollingFile>
+        <Console name="CONSOLE-PA-ENGINE-AUDIT" target="SYSTEM_OUT">
+            <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
+                <KeyValuePair key="exchangeId" value="$${ctx:exchangeId:-}"/>
+                <KeyValuePair key="trackingId" value="$${ctx:AUDIT.trackingId:-}"/>
+                <KeyValuePair key="roundTripMS" value="$${ctx:AUDIT.roundTripMS:-}"/>
+                <KeyValuePair key="proxyRoundTripMS" value="$${ctx:AUDIT.proxyRoundTripMS:-}"/>
+                <KeyValuePair key="resource" value="$${ctx:AUDIT.resource:-}"/>
+                <KeyValuePair key="subject" value="$${ctx:AUDIT.subject:-}"/>
+                <KeyValuePair key="authMech" value="$${ctx:AUDIT.authMech:-}"/>
+                <KeyValuePair key="client" value="$${ctx:AUDIT.client:-}"/>
+                <KeyValuePair key="method" value="$${ctx:AUDIT.method:-}"/>
+                <KeyValuePair key="requestUri" value="$${ctx:AUDIT.requestUri:-}"/>
+                <KeyValuePair key="responseCode" value="$${ctx:AUDIT.responseCode:-}"/>
+                <KeyValuePair key="failedRuleType" value="$${ctx:AUDIT.failedRuleType:-}"/>
+                <KeyValuePair key="failedRuleName" value="$${ctx:AUDIT.failedRuleName:-}"/>
+                <KeyValuePair key="applicationName" value="$${ctx:AUDIT.applicationName:-}"/>
+                <KeyValuePair key="resourceName" value="$${ctx:AUDIT.resourceName:-}"/>
+                <KeyValuePair key="pathPrefix" value="$${ctx:AUDIT.pathPrefix:-}"/>
+                <KeyValuePair key="log_name" value="pingaccess_engine_audit"/>
+            </JSONLayout>
+        </Console>
 
         <!-- Engine Audit log : JDBC appender template for Oracle
 
@@ -759,6 +812,23 @@
             </Policies>
             <DefaultRolloverStrategy max="4" />
         </RollingFile>
+        <Console name="CONSOLE-PA-AGENT-AUDIT" target="SYSTEM_OUT">
+            <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
+                <KeyValuePair key="exchangeId" value="$${ctx:exchangeId:-}"/>
+                <KeyValuePair key="trackingId" value="$${ctx:AUDIT.trackingId:-}"/>
+                <KeyValuePair key="roundTripMS" value="$${ctx:AUDIT.roundTripMS:-}"/>
+                <KeyValuePair key="resource" value="$${ctx:AUDIT.resource:-}"/>
+                <KeyValuePair key="client" value="$${ctx:AUDIT.client:-}"/>
+                <KeyValuePair key="method" value="$${ctx:AUDIT.method:-}"/>
+                <KeyValuePair key="requestUri" value="$${ctx:AUDIT.requestUri:-}"/>
+                <KeyValuePair key="responseCode" value="$${ctx:AUDIT.responseCode:-}"/>
+                <KeyValuePair key="applicationName" value="$${ctx:AUDIT.applicationName:-}"/>
+                <KeyValuePair key="resourceName" value="$${ctx:AUDIT.resourceName:-}"/>
+                <KeyValuePair key="pathPrefix" value="$${ctx:AUDIT.pathPrefix:-}"/>
+                <KeyValuePair key="log_name" value="pingaccess_agent_audit"/>
+            </JSONLayout>
+        </Console>
 
         <!-- Agent Audit log : JDBC appender template for Oracle
 
@@ -982,6 +1052,21 @@
             </Policies>
             <DefaultRolloverStrategy max="4" />
         </RollingFile>
+        <Console name="CONSOLE-PA-SIDEBAND-CLIENT-AUDIT" target="SYSTEM_OUT">
+            <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
+                <KeyValuePair key="exchangeId" value="$${ctx:exchangeId:-}"/>
+                <KeyValuePair key="trackingId" value="$${ctx:AUDIT.trackingId:-}"/>
+                <KeyValuePair key="roundTripMS" value="$${ctx:AUDIT.roundTripMS:-}"/>
+                <KeyValuePair key="client" value="$${ctx:AUDIT.client:-}"/>
+                <KeyValuePair key="method" value="$${ctx:AUDIT.method:-}"/>
+                <KeyValuePair key="requestUri" value="$${ctx:AUDIT.requestUri:-}"/>
+                <KeyValuePair key="responseCode" value="$${ctx:AUDIT.responseCode:-}"/>
+                <KeyValuePair key="sidebandName" value="$${ctx:AUDIT.sidebandName:-}"/>
+                <KeyValuePair key="sidebandDecision" value="$${ctx:AUDIT.sidebandDecision:-}"/>
+                <KeyValuePair key="log_name" value="pingaccess_sideband_client_audit"/>
+            </JSONLayout>
+        </Console>
 
         <!-- Sideband Client Audit log : JDBC appender template for Oracle
 
@@ -1201,6 +1286,24 @@
             </Policies>
             <DefaultRolloverStrategy max="4" />
         </RollingFile>
+        <Console name="CONSOLE-PA-SIDEBAND-AUDIT" target="SYSTEM_OUT">
+            <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
+                <KeyValuePair key="exchangeId" value="$${ctx:exchangeId:-}"/>
+                <KeyValuePair key="trackingId" value="$${ctx:AUDIT.trackingId:-}"/>
+                <KeyValuePair key="roundTripMS" value="$${ctx:AUDIT.roundTripMS:-}"/>
+                <KeyValuePair key="resource" value="$${ctx:AUDIT.resource:-}"/>
+                <KeyValuePair key="client" value="$${ctx:AUDIT.client:-}"/>
+                <KeyValuePair key="method" value="$${ctx:AUDIT.method:-}"/>
+                <KeyValuePair key="requestUri" value="$${ctx:AUDIT.requestUri:-}"/>
+                <KeyValuePair key="responseCode" value="$${ctx:AUDIT.responseCode:-}"/>
+                <KeyValuePair key="applicationName" value="$${ctx:AUDIT.applicationName:-}"/>
+                <KeyValuePair key="resourceName" value="$${ctx:AUDIT.resourceName:-}"/>
+                <KeyValuePair key="pathPrefix" value="$${ctx:AUDIT.pathPrefix:-}"/>
+                <KeyValuePair key="sidebandName" value="$${ctx:AUDIT.sidebandName:-}"/>
+                <KeyValuePair key="log_name" value="pingaccess_sideband_audit"/>
+            </JSONLayout>
+        </Console>
 
         <!-- Sideband Audit log : JDBC appender template for Oracle
 
