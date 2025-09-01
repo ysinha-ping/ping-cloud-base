@@ -131,18 +131,18 @@
         <!-- Set up the Root logger  -->
         <!-- ======================= -->
         <AsyncRoot level="INFO" includeLocation="false">
-            <AppenderRef ref="File"/>
             <AppenderRef ref="CONSOLE-PA"/>
             <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <!--<AppenderRef ref="File"/>-->
         </AsyncRoot>
 
         <!-- ======================= -->
         <!-- Audit log configuration -->
         <!-- ======================= -->
         <Logger name="apiaudit" level="INFO" additivity="false">
-            <AppenderRef ref="APIAuditLog-File"/>
             <AppenderRef ref="CONSOLE-PA-API-AUDIT"/>
             <!--<AppenderRef ref="CONSOLE_AUDIT"/>-->
+            <!--<AppenderRef ref="APIAuditLog-File"/>-->
             <!--<AppenderRef ref="ApiAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="ApiAuditLog-SQLServer-Database-Failover"/>-->
             <!--<AppenderRef ref="ApiAuditLog-PostgreSQL"/>-->
@@ -150,9 +150,9 @@
             <AppenderRef ref="ApiAuditLog-HarFile"/>
         </Logger>
         <Logger name="engineaudit" level="INFO" additivity="false">
-            <AppenderRef ref="EngineAuditLog-File"/>
             <AppenderRef ref="CONSOLE-PA-ENGINE-AUDIT"/>
             <!--<AppenderRef ref="CONSOLE_AUDIT"/>-->
+            <!--<AppenderRef ref="EngineAuditLog-File"/>-->
             <!--<AppenderRef ref="EngineAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="EngineAuditLog-SQLServer-Database-Failover"/>-->
             <!--<AppenderRef ref="EngineAuditLog-PostgreSQL"/>-->
@@ -160,9 +160,9 @@
             <!--<AppenderRef ref="EngineAuditLog-HarFile"/>-->
         </Logger>
         <Logger name="agentaudit" level="INFO" additivity="false">
-            <AppenderRef ref="AgentAuditLog-File"/>
             <AppenderRef ref="CONSOLE-PA-AGENT-AUDIT"/>
             <!--<AppenderRef ref="CONSOLE_AUDIT"/>-->
+            <!--<AppenderRef ref="AgentAuditLog-File"/>-->
             <!--<AppenderRef ref="AgentAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="AgentAuditLog-SQLServer-Database-Failover"/>-->
             <!--<AppenderRef ref="AgentAuditLog-PostgreSQL"/>-->
@@ -170,9 +170,9 @@
             <!--<AppenderRef ref="AgentAuditLog-HarFile"/>-->
         </Logger>
         <Logger name="sidebandclientaudit" level="INFO" additivity="false">
-            <AppenderRef ref="SidebandClientAuditLog-File"/>
             <AppenderRef ref="CONSOLE-PA-SIDEBAND-CLIENT-AUDIT"/>
             <!--<AppenderRef ref="CONSOLE_AUDIT"/>-->
+            <!--<AppenderRef ref="SidebandClientAuditLog-File"/>-->
             <!--<AppenderRef ref="SidebandClientAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="SidebandClientAuditLog-SQLServer-Database-Failover"/>-->
             <!--<AppenderRef ref="SidebandClientAuditLog-PostgreSQL"/>-->
@@ -180,9 +180,9 @@
             <!--<AppenderRef ref="SidebandClientAuditLog-HarFile"/>-->
         </Logger>
         <Logger name="sidebandaudit" level="INFO" additivity="false">
-            <AppenderRef ref="SidebandAuditLog-File"/>
             <AppenderRef ref="CONSOLE-PA-SIDEBAND-AUDIT"/>
             <!--<AppenderRef ref="CONSOLE_AUDIT"/>-->
+            <!--<AppenderRef ref="SidebandAuditLog-File"/>-->
             <!--<AppenderRef ref="SidebandAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="SidebandAuditLog-SQLServer-Database-Failover"/>-->
             <!--<AppenderRef ref="SidebandAuditLog-PostgreSQL"/>-->
@@ -251,22 +251,6 @@
         <!-- ================================= -->
 
         <!-- Main log : A size based file rolling appender -->
-        <RollingFile name="File"
-                     fileName="${sys:pa.home}/log/pingaccess.log"
-                     filePattern="${sys:pa.home}/log/pingaccess.log.%i"
-                     ignoreExceptions="false">
-            <PatternLayout>
-                <!-- Uncomment this if you want to use UTF-8 encoding instead of system's default encoding. -->
-                <!--
-                <charset>UTF-8</charset>
-                -->
-                <pattern>%d{ISO8601} %5p [%X{exchangeId}] %c - %m{nolookups}%n</pattern>
-            </PatternLayout>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="100 MB" />
-            </Policies>
-            <DefaultRolloverStrategy max="4" />
-        </RollingFile>
         <Console name="CONSOLE-PA" target="SYSTEM_OUT">
             <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
                 <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
@@ -279,22 +263,6 @@
         </Console>
 
         <!-- API auditing file logging configuration-->
-        <RollingFile name="APIAuditLog-File"
-                     fileName="${sys:pa.home}/log/pingaccess_api_audit.log"
-                     filePattern="${sys:pa.home}/log/pingaccess_api_audit.log.%i"
-                     ignoreExceptions="false">
-            <PatternLayout>
-                <!-- Uncomment this if you want to use UTF-8 encoding instead of system's default encoding. -->
-                <!--
-                <charset>UTF-8</charset>
-                -->
-                <pattern>%d{ISO8601}| %X{exchangeId}| %X{AUDIT.trackingId}| %X{AUDIT.roundTripMS} ms| %X{AUDIT.subject}| %X{AUDIT.authMech}| %X{AUDIT.client}| %X{AUDIT.method}| %X{AUDIT.requestUri}| %X{AUDIT.responseCode} %n</pattern>
-            </PatternLayout>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="100 MB" />
-            </Policies>
-            <DefaultRolloverStrategy max="4" />
-        </RollingFile>
         <Console name="CONSOLE-PA-API-AUDIT" target="SYSTEM_OUT">
             <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
                 <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
@@ -524,22 +492,6 @@
         <!-- | %clientResponseHeader{a-header-name}-->
         <!-- | %appRequestHeader{a-header-name}-->
         <!-- | %clientRequestHeader{a-header-name}-->
-        <RollingFile name="EngineAuditLog-File"
-                     fileName="${sys:pa.home}/log/pingaccess_engine_audit.log"
-                     filePattern="${sys:pa.home}/log/pingaccess_engine_audit.log.%i"
-                     ignoreExceptions="false">
-            <PatternLayout>
-                <!-- Uncomment this if you want to use UTF-8 encoding instead of system's default encoding. -->
-                <!--
-                <charset>UTF-8</charset>
-                -->
-                <pattern>%d{ISO8601}| %X{exchangeId}| %X{AUDIT.trackingId}| %X{AUDIT.roundTripMS} ms| %X{AUDIT.proxyRoundTripMS} ms| %X{AUDIT.resource}| %X{AUDIT.subject}| %X{AUDIT.authMech}| %X{AUDIT.client}| %X{AUDIT.method}| %X{AUDIT.requestUri}| %X{AUDIT.responseCode}| %X{AUDIT.failedRuleType}| %X{AUDIT.failedRuleName}| %X{AUDIT.applicationName}| %X{AUDIT.resourceName}| %X{AUDIT.pathPrefix} %n</pattern>
-            </PatternLayout>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="100 MB" />
-            </Policies>
-            <DefaultRolloverStrategy max="4" />
-        </RollingFile>
         <Console name="CONSOLE-PA-ENGINE-AUDIT" target="SYSTEM_OUT">
             <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
                 <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
@@ -796,22 +748,6 @@
         <!-- | %agent{h}-->
         <!-- | %agent{t}-->
         <!-- | %agent{v}-->
-        <RollingFile name="AgentAuditLog-File"
-                     fileName="${sys:pa.home}/log/pingaccess_agent_audit.log"
-                     filePattern="${sys:pa.home}/log/pingaccess_agent_audit.log.%i"
-                     ignoreExceptions="false">
-            <PatternLayout>
-                <!-- Uncomment this if you want to use UTF-8 encoding instead of system's default encoding. -->
-                <!--
-                <charset>UTF-8</charset>
-                -->
-                <pattern>%d{ISO8601}| %X{exchangeId}| %X{AUDIT.trackingId}| %X{AUDIT.roundTripMS} ms| %X{AUDIT.resource}| %X{AUDIT.client}| %X{AUDIT.method}| %X{AUDIT.requestUri}| %X{AUDIT.responseCode}| %X{AUDIT.applicationName}| %X{AUDIT.resourceName}| %X{AUDIT.pathPrefix} %n</pattern>
-            </PatternLayout>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="100 MB" />
-            </Policies>
-            <DefaultRolloverStrategy max="4" />
-        </RollingFile>
         <Console name="CONSOLE-PA-AGENT-AUDIT" target="SYSTEM_OUT">
             <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
                 <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
@@ -1036,22 +972,6 @@
         <!-- | %clientResponseHeader{a-header-name}-->
         <!-- | %appRequestHeader{a-header-name}-->
         <!-- | %clientRequestHeader{a-header-name}-->
-        <RollingFile name="SidebandClientAuditLog-File"
-                     fileName="${sys:pa.home}/log/pingaccess_sideband_client_audit.log"
-                     filePattern="${sys:pa.home}/log/pingaccess_sideband_client_audit.log.%i"
-                     ignoreExceptions="false">
-            <PatternLayout>
-                <!-- Uncomment this if you want to use UTF-8 encoding instead of system's default encoding. -->
-                <!--
-                <charset>UTF-8</charset>
-                -->
-                <pattern>%d{ISO8601}| %X{exchangeId}| %X{AUDIT.trackingId}| %X{AUDIT.roundTripMS} ms| %X{AUDIT.client}| %X{AUDIT.method}| %X{AUDIT.requestUri}| %X{AUDIT.responseCode}| %X{AUDIT.sidebandName}| %X{AUDIT.sidebandDecision} %n</pattern>
-            </PatternLayout>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="100 MB" />
-            </Policies>
-            <DefaultRolloverStrategy max="4" />
-        </RollingFile>
         <Console name="CONSOLE-PA-SIDEBAND-CLIENT-AUDIT" target="SYSTEM_OUT">
             <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
                 <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
@@ -1270,22 +1190,6 @@
         <!-- | %clientResponseHeader{a-header-name}-->
         <!-- | %appRequestHeader{a-header-name}-->
         <!-- | %clientRequestHeader{a-header-name}-->
-        <RollingFile name="SidebandAuditLog-File"
-                     fileName="${sys:pa.home}/log/pingaccess_sideband_audit.log"
-                     filePattern="${sys:pa.home}/log/pingaccess_sideband_audit.log.%i"
-                     ignoreExceptions="false">
-            <PatternLayout>
-                <!-- Uncomment this if you want to use UTF-8 encoding instead of system's default encoding. -->
-                <!--
-                <charset>UTF-8</charset>
-                -->
-                <pattern>%d{ISO8601}| %X{exchangeId}| %X{AUDIT.trackingId}| %X{AUDIT.roundTripMS} ms| %X{AUDIT.resource}| %X{AUDIT.client}| %X{AUDIT.method}| %X{AUDIT.requestUri}| %X{AUDIT.responseCode}| %X{AUDIT.applicationName}| %X{AUDIT.resourceName}| %X{AUDIT.pathPrefix}| %X{AUDIT.sidebandName} %n</pattern>
-            </PatternLayout>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="100 MB" />
-            </Policies>
-            <DefaultRolloverStrategy max="4" />
-        </RollingFile>
         <Console name="CONSOLE-PA-SIDEBAND-AUDIT" target="SYSTEM_OUT">
             <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
                 <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>

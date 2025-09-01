@@ -4,13 +4,6 @@
         <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{ISO8601} %5p %m%n"/>
         </Console>
-        <RollingFile name="FILE" fileName="${sys:pa.upgrade.home}/log/upgrade.log"
-                     filePattern="${sys:pa.upgrade.home}/log/upgrade-%d{MM-dd-yyyy}-%i.log.gz">
-            <PatternLayout pattern="%d{ISO8601} %5p %c:%L - %m%n"/>
-            <Policies>
-                <OnStartupTriggeringPolicy/>
-            </Policies>
-        </RollingFile>
         <Console name="CONSOLE-UPGRADE" target="SYSTEM_OUT">
             <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
                 <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
@@ -21,13 +14,6 @@
                 <KeyValuePair key="log_name" value="upgrade"/>
             </JSONLayout>
         </Console>
-        <RollingFile name="AUDIT" fileName="${sys:pa.upgrade.home}/log/audit.log"
-                     filePattern="${sys:pa.upgrade.home}/log/audit-%d{MM-dd-yyyy}-%i.log.gz">
-            <PatternLayout pattern="%d{ISO8601} %m%n"/>
-            <Policies>
-                <OnStartupTriggeringPolicy/>
-            </Policies>
-        </RollingFile>
         <Console name="CONSOLE-AUDIT" target="SYSTEM_OUT">
             <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
                 <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
@@ -52,7 +38,6 @@
             <AppenderRef ref="AUDIT"/>
         </logger>
         <logger name="audit" level="INFO" additivity="false">
-            <AppenderRef ref="AUDIT"/>
             <AppenderRef ref="CONSOLE-AUDIT"/>
         </logger>
         <logger name="org.apache.http" level="WARN"/>
