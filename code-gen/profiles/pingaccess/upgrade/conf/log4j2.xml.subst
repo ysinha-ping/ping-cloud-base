@@ -47,7 +47,6 @@
         <logger name="class org.jose4j" level="WARN"/>
         <Root level="debug">
             <AppenderRef level="info" ref="STDOUT"/>
-            <AppenderRef level="debug" ref="FILE"/>
         </Root>
     </Loggers>
 </Configuration>
