@@ -18,8 +18,7 @@
     <Loggers>
         <!-- PingAccess Loggers-->
         <AsyncLogger name="com.pingidentity" level="INFO" additivity="false" includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
             <!--<AppenderRef ref="CONSOLE" />-->
             <!--<AppenderRef ref="SYSLOG" />-->
         </AsyncLogger>
@@ -60,87 +59,73 @@
 
         <!-- Changes to this section will not be required to effectively troubleshoot PingAccess -->
         <AsyncLogger name="com.netflix" level="WARN" additivity="false" includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
         </AsyncLogger>
         <AsyncLogger name="com.netflix.config.sources.URLConfigurationSource" level="FATAL" additivity="false"
                      includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
         </AsyncLogger>
         <AsyncLogger name="net.sf.ehcache" level="WARN" additivity="false" includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
         </AsyncLogger>
         <AsyncLogger name="net.sf.ehcache.config.CacheConfiguration" level="ERROR" additivity="false"
                      includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
         </AsyncLogger>
         <AsyncLogger name="org.springframework" level="WARN" additivity="false" includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
         </AsyncLogger>
         <AsyncLogger name="org.springframework.orm.jpa" level="WARN" additivity="false" includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
         </AsyncLogger>
         <AsyncLogger name="org.hibernate" level="WARN" additivity="false" includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
         </AsyncLogger>
         <AsyncLogger name="org.hibernate.orm.deprecation" level="FATAL" additivity="false" includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
         </AsyncLogger>
         <AsyncLogger name="org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory" level="ERROR" additivity="false" includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
         </AsyncLogger>
         <AsyncLogger name="org.hibernate.jpa.internal.util.LogHelper" level="FATAL" additivity="false"
                      includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
         </AsyncLogger>
         <AsyncLogger name="org.apache.http" level="WARN" additivity="false" includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
         </AsyncLogger>
         <AsyncLogger name="java.sql.DatabaseMetaData" level="WARN" additivity="false" includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
         </AsyncLogger>
         <AsyncLogger name="com.wordnik.swagger" level="WARN" additivity="false" includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
         </AsyncLogger>
         <AsyncLogger name="io.netty" level="WARN" additivity="false" includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
         </AsyncLogger>
         <AsyncLogger name="org.jose4j.jwe.kdf" level="WARN" additivity="false" includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
         </AsyncLogger>
         <AsyncLogger name="org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator" level="ERROR" additivity="false" includeLocation="false">
-            <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-SIEM"/>
         </AsyncLogger>
 
         <!-- ======================= -->
         <!-- Set up the Root logger  -->
         <!-- ======================= -->
         <AsyncRoot level="INFO" includeLocation="false">
-            <AppenderRef ref="File"/>
+            <AppenderRef ref="CONSOLE-PA"/>
             <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <!--<AppenderRef ref="File"/>-->
         </AsyncRoot>
 
         <!-- ======================= -->
         <!-- Audit log configuration -->
         <!-- ======================= -->
         <Logger name="apiaudit" level="INFO" additivity="false">
-            <AppenderRef ref="APIAuditLog-File"/>
+            <AppenderRef ref="CONSOLE-PA-API-AUDIT"/>
             <!--<AppenderRef ref="CONSOLE_AUDIT"/>-->
+            <!--<AppenderRef ref="APIAuditLog-File"/>-->
             <!--<AppenderRef ref="ApiAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="ApiAuditLog-SQLServer-Database-Failover"/>-->
             <!--<AppenderRef ref="ApiAuditLog-PostgreSQL"/>-->
@@ -148,8 +133,9 @@
             <AppenderRef ref="ApiAuditLog-HarFile"/>
         </Logger>
         <Logger name="engineaudit" level="INFO" additivity="false">
-            <AppenderRef ref="EngineAuditLog-File"/>
+            <AppenderRef ref="CONSOLE-PA-ENGINE-AUDIT"/>
             <!--<AppenderRef ref="CONSOLE_AUDIT"/>-->
+            <!--<AppenderRef ref="EngineAuditLog-File"/>-->
             <!--<AppenderRef ref="EngineAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="EngineAuditLog-SQLServer-Database-Failover"/>-->
             <!--<AppenderRef ref="EngineAuditLog-PostgreSQL"/>-->
@@ -157,8 +143,9 @@
             <!--<AppenderRef ref="EngineAuditLog-HarFile"/>-->
         </Logger>
         <Logger name="agentaudit" level="INFO" additivity="false">
-            <AppenderRef ref="AgentAuditLog-File"/>
+            <AppenderRef ref="CONSOLE-PA-AGENT-AUDIT"/>
             <!--<AppenderRef ref="CONSOLE_AUDIT"/>-->
+            <!--<AppenderRef ref="AgentAuditLog-File"/>-->
             <!--<AppenderRef ref="AgentAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="AgentAuditLog-SQLServer-Database-Failover"/>-->
             <!--<AppenderRef ref="AgentAuditLog-PostgreSQL"/>-->
@@ -166,8 +153,9 @@
             <!--<AppenderRef ref="AgentAuditLog-HarFile"/>-->
         </Logger>
         <Logger name="sidebandclientaudit" level="INFO" additivity="false">
-            <AppenderRef ref="SidebandClientAuditLog-File"/>
+            <AppenderRef ref="CONSOLE-PA-SIDEBAND-CLIENT-AUDIT"/>
             <!--<AppenderRef ref="CONSOLE_AUDIT"/>-->
+            <!--<AppenderRef ref="SidebandClientAuditLog-File"/>-->
             <!--<AppenderRef ref="SidebandClientAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="SidebandClientAuditLog-SQLServer-Database-Failover"/>-->
             <!--<AppenderRef ref="SidebandClientAuditLog-PostgreSQL"/>-->
@@ -175,8 +163,9 @@
             <!--<AppenderRef ref="SidebandClientAuditLog-HarFile"/>-->
         </Logger>
         <Logger name="sidebandaudit" level="INFO" additivity="false">
-            <AppenderRef ref="SidebandAuditLog-File"/>
+            <AppenderRef ref="CONSOLE-PA-SIDEBAND-AUDIT"/>
             <!--<AppenderRef ref="CONSOLE_AUDIT"/>-->
+            <!--<AppenderRef ref="SidebandAuditLog-File"/>-->
             <!--<AppenderRef ref="SidebandAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="SidebandAuditLog-SQLServer-Database-Failover"/>-->
             <!--<AppenderRef ref="SidebandAuditLog-PostgreSQL"/>-->
@@ -245,40 +234,33 @@
         <!-- ================================= -->
 
         <!-- Main log : A size based file rolling appender -->
-        <RollingFile name="File"
-                     fileName="${sys:pa.home}/log/pingaccess.log"
-                     filePattern="${sys:pa.home}/log/pingaccess.log.%i"
-                     ignoreExceptions="false">
-            <PatternLayout>
-                <!-- Uncomment this if you want to use UTF-8 encoding instead of system's default encoding. -->
-                <!--
-                <charset>UTF-8</charset>
-                -->
-                <pattern>%d{ISO8601} %5p [%X{exchangeId}] %c - %m{nolookups}%n</pattern>
-            </PatternLayout>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="100 MB" />
-            </Policies>
-            <DefaultRolloverStrategy max="4" />
-        </RollingFile>
+        <Console name="CONSOLE-PA" target="SYSTEM_OUT">
+            <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
+                <KeyValuePair key="logLevel" value="%p"/>
+                <KeyValuePair key="exchangeId" value="%X{exchangeId}"/>
+                <KeyValuePair key="className" value="%c"/>
+                <KeyValuePair key="message" value="%m{nolookups}"/>
+                <KeyValuePair key="log_name" value="pingaccess"/>
+            </JSONLayout>
+        </Console>
 
         <!-- API auditing file logging configuration-->
-        <RollingFile name="APIAuditLog-File"
-                     fileName="${sys:pa.home}/log/pingaccess_api_audit.log"
-                     filePattern="${sys:pa.home}/log/pingaccess_api_audit.log.%i"
-                     ignoreExceptions="false">
-            <PatternLayout>
-                <!-- Uncomment this if you want to use UTF-8 encoding instead of system's default encoding. -->
-                <!--
-                <charset>UTF-8</charset>
-                -->
-                <pattern>%d{ISO8601}| %X{exchangeId}| %X{AUDIT.trackingId}| %X{AUDIT.roundTripMS} ms| %X{AUDIT.subject}| %X{AUDIT.authMech}| %X{AUDIT.client}| %X{AUDIT.method}| %X{AUDIT.requestUri}| %X{AUDIT.responseCode} %n</pattern>
-            </PatternLayout>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="100 MB" />
-            </Policies>
-            <DefaultRolloverStrategy max="4" />
-        </RollingFile>
+        <Console name="CONSOLE-PA-API-AUDIT" target="SYSTEM_OUT">
+            <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
+                <KeyValuePair key="exchangeId" value="$${ctx:exchangeId:-}"/>
+                <KeyValuePair key="trackingId" value="$${ctx:AUDIT.trackingId:-}"/>
+                <KeyValuePair key="roundTripMS" value="$${ctx:AUDIT.roundTripMS:-}"/>
+                <KeyValuePair key="subject" value="$${ctx:AUDIT.subject:-}"/>
+                <KeyValuePair key="authMech" value="$${ctx:AUDIT.authMech:-}"/>
+                <KeyValuePair key="client" value="$${ctx:AUDIT.client:-}"/>
+                <KeyValuePair key="method" value="$${ctx:AUDIT.method:-}"/>
+                <KeyValuePair key="requestUri" value="$${ctx:AUDIT.requestUri:-}"/>
+                <KeyValuePair key="responseCode" value="$${ctx:AUDIT.responseCode:-}"/>
+                <KeyValuePair key="log_name" value="pingaccess_api_audit"/>
+            </JSONLayout>
+        </Console>
 
         <!-- API Audit log : JDBC appender template for Oracle
 
@@ -493,22 +475,28 @@
         <!-- | %clientResponseHeader{a-header-name}-->
         <!-- | %appRequestHeader{a-header-name}-->
         <!-- | %clientRequestHeader{a-header-name}-->
-        <RollingFile name="EngineAuditLog-File"
-                     fileName="${sys:pa.home}/log/pingaccess_engine_audit.log"
-                     filePattern="${sys:pa.home}/log/pingaccess_engine_audit.log.%i"
-                     ignoreExceptions="false">
-            <PatternLayout>
-                <!-- Uncomment this if you want to use UTF-8 encoding instead of system's default encoding. -->
-                <!--
-                <charset>UTF-8</charset>
-                -->
-                <pattern>%d{ISO8601}| %X{exchangeId}| %X{AUDIT.trackingId}| %X{AUDIT.roundTripMS} ms| %X{AUDIT.proxyRoundTripMS} ms| %X{AUDIT.resource}| %X{AUDIT.subject}| %X{AUDIT.authMech}| %X{AUDIT.client}| %X{AUDIT.method}| %X{AUDIT.requestUri}| %X{AUDIT.responseCode}| %X{AUDIT.failedRuleType}| %X{AUDIT.failedRuleName}| %X{AUDIT.applicationName}| %X{AUDIT.resourceName}| %X{AUDIT.pathPrefix} %n</pattern>
-            </PatternLayout>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="100 MB" />
-            </Policies>
-            <DefaultRolloverStrategy max="4" />
-        </RollingFile>
+        <Console name="CONSOLE-PA-ENGINE-AUDIT" target="SYSTEM_OUT">
+            <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
+                <KeyValuePair key="exchangeId" value="$${ctx:exchangeId:-}"/>
+                <KeyValuePair key="trackingId" value="$${ctx:AUDIT.trackingId:-}"/>
+                <KeyValuePair key="roundTripMS" value="$${ctx:AUDIT.roundTripMS:-}"/>
+                <KeyValuePair key="proxyRoundTripMS" value="$${ctx:AUDIT.proxyRoundTripMS:-}"/>
+                <KeyValuePair key="resource" value="$${ctx:AUDIT.resource:-}"/>
+                <KeyValuePair key="subject" value="$${ctx:AUDIT.subject:-}"/>
+                <KeyValuePair key="authMech" value="$${ctx:AUDIT.authMech:-}"/>
+                <KeyValuePair key="client" value="$${ctx:AUDIT.client:-}"/>
+                <KeyValuePair key="method" value="$${ctx:AUDIT.method:-}"/>
+                <KeyValuePair key="requestUri" value="$${ctx:AUDIT.requestUri:-}"/>
+                <KeyValuePair key="responseCode" value="$${ctx:AUDIT.responseCode:-}"/>
+                <KeyValuePair key="failedRuleType" value="$${ctx:AUDIT.failedRuleType:-}"/>
+                <KeyValuePair key="failedRuleName" value="$${ctx:AUDIT.failedRuleName:-}"/>
+                <KeyValuePair key="applicationName" value="$${ctx:AUDIT.applicationName:-}"/>
+                <KeyValuePair key="resourceName" value="$${ctx:AUDIT.resourceName:-}"/>
+                <KeyValuePair key="pathPrefix" value="$${ctx:AUDIT.pathPrefix:-}"/>
+                <KeyValuePair key="log_name" value="pingaccess_engine_audit"/>
+            </JSONLayout>
+        </Console>
 
         <!-- Engine Audit log : JDBC appender template for Oracle
 
@@ -743,22 +731,23 @@
         <!-- | %agent{h}-->
         <!-- | %agent{t}-->
         <!-- | %agent{v}-->
-        <RollingFile name="AgentAuditLog-File"
-                     fileName="${sys:pa.home}/log/pingaccess_agent_audit.log"
-                     filePattern="${sys:pa.home}/log/pingaccess_agent_audit.log.%i"
-                     ignoreExceptions="false">
-            <PatternLayout>
-                <!-- Uncomment this if you want to use UTF-8 encoding instead of system's default encoding. -->
-                <!--
-                <charset>UTF-8</charset>
-                -->
-                <pattern>%d{ISO8601}| %X{exchangeId}| %X{AUDIT.trackingId}| %X{AUDIT.roundTripMS} ms| %X{AUDIT.resource}| %X{AUDIT.client}| %X{AUDIT.method}| %X{AUDIT.requestUri}| %X{AUDIT.responseCode}| %X{AUDIT.applicationName}| %X{AUDIT.resourceName}| %X{AUDIT.pathPrefix} %n</pattern>
-            </PatternLayout>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="100 MB" />
-            </Policies>
-            <DefaultRolloverStrategy max="4" />
-        </RollingFile>
+        <Console name="CONSOLE-PA-AGENT-AUDIT" target="SYSTEM_OUT">
+            <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
+                <KeyValuePair key="exchangeId" value="$${ctx:exchangeId:-}"/>
+                <KeyValuePair key="trackingId" value="$${ctx:AUDIT.trackingId:-}"/>
+                <KeyValuePair key="roundTripMS" value="$${ctx:AUDIT.roundTripMS:-}"/>
+                <KeyValuePair key="resource" value="$${ctx:AUDIT.resource:-}"/>
+                <KeyValuePair key="client" value="$${ctx:AUDIT.client:-}"/>
+                <KeyValuePair key="method" value="$${ctx:AUDIT.method:-}"/>
+                <KeyValuePair key="requestUri" value="$${ctx:AUDIT.requestUri:-}"/>
+                <KeyValuePair key="responseCode" value="$${ctx:AUDIT.responseCode:-}"/>
+                <KeyValuePair key="applicationName" value="$${ctx:AUDIT.applicationName:-}"/>
+                <KeyValuePair key="resourceName" value="$${ctx:AUDIT.resourceName:-}"/>
+                <KeyValuePair key="pathPrefix" value="$${ctx:AUDIT.pathPrefix:-}"/>
+                <KeyValuePair key="log_name" value="pingaccess_agent_audit"/>
+            </JSONLayout>
+        </Console>
 
         <!-- Agent Audit log : JDBC appender template for Oracle
 
@@ -966,22 +955,21 @@
         <!-- | %clientResponseHeader{a-header-name}-->
         <!-- | %appRequestHeader{a-header-name}-->
         <!-- | %clientRequestHeader{a-header-name}-->
-        <RollingFile name="SidebandClientAuditLog-File"
-                     fileName="${sys:pa.home}/log/pingaccess_sideband_client_audit.log"
-                     filePattern="${sys:pa.home}/log/pingaccess_sideband_client_audit.log.%i"
-                     ignoreExceptions="false">
-            <PatternLayout>
-                <!-- Uncomment this if you want to use UTF-8 encoding instead of system's default encoding. -->
-                <!--
-                <charset>UTF-8</charset>
-                -->
-                <pattern>%d{ISO8601}| %X{exchangeId}| %X{AUDIT.trackingId}| %X{AUDIT.roundTripMS} ms| %X{AUDIT.client}| %X{AUDIT.method}| %X{AUDIT.requestUri}| %X{AUDIT.responseCode}| %X{AUDIT.sidebandName}| %X{AUDIT.sidebandDecision} %n</pattern>
-            </PatternLayout>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="100 MB" />
-            </Policies>
-            <DefaultRolloverStrategy max="4" />
-        </RollingFile>
+        <Console name="CONSOLE-PA-SIDEBAND-CLIENT-AUDIT" target="SYSTEM_OUT">
+            <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
+                <KeyValuePair key="exchangeId" value="$${ctx:exchangeId:-}"/>
+                <KeyValuePair key="trackingId" value="$${ctx:AUDIT.trackingId:-}"/>
+                <KeyValuePair key="roundTripMS" value="$${ctx:AUDIT.roundTripMS:-}"/>
+                <KeyValuePair key="client" value="$${ctx:AUDIT.client:-}"/>
+                <KeyValuePair key="method" value="$${ctx:AUDIT.method:-}"/>
+                <KeyValuePair key="requestUri" value="$${ctx:AUDIT.requestUri:-}"/>
+                <KeyValuePair key="responseCode" value="$${ctx:AUDIT.responseCode:-}"/>
+                <KeyValuePair key="sidebandName" value="$${ctx:AUDIT.sidebandName:-}"/>
+                <KeyValuePair key="sidebandDecision" value="$${ctx:AUDIT.sidebandDecision:-}"/>
+                <KeyValuePair key="log_name" value="pingaccess_sideband_client_audit"/>
+            </JSONLayout>
+        </Console>
 
         <!-- Sideband Client Audit log : JDBC appender template for Oracle
 
@@ -1185,22 +1173,24 @@
         <!-- | %clientResponseHeader{a-header-name}-->
         <!-- | %appRequestHeader{a-header-name}-->
         <!-- | %clientRequestHeader{a-header-name}-->
-        <RollingFile name="SidebandAuditLog-File"
-                     fileName="${sys:pa.home}/log/pingaccess_sideband_audit.log"
-                     filePattern="${sys:pa.home}/log/pingaccess_sideband_audit.log.%i"
-                     ignoreExceptions="false">
-            <PatternLayout>
-                <!-- Uncomment this if you want to use UTF-8 encoding instead of system's default encoding. -->
-                <!--
-                <charset>UTF-8</charset>
-                -->
-                <pattern>%d{ISO8601}| %X{exchangeId}| %X{AUDIT.trackingId}| %X{AUDIT.roundTripMS} ms| %X{AUDIT.resource}| %X{AUDIT.client}| %X{AUDIT.method}| %X{AUDIT.requestUri}| %X{AUDIT.responseCode}| %X{AUDIT.applicationName}| %X{AUDIT.resourceName}| %X{AUDIT.pathPrefix}| %X{AUDIT.sidebandName} %n</pattern>
-            </PatternLayout>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="100 MB" />
-            </Policies>
-            <DefaultRolloverStrategy max="4" />
-        </RollingFile>
+        <Console name="CONSOLE-PA-SIDEBAND-AUDIT" target="SYSTEM_OUT">
+            <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
+                <KeyValuePair key="exchangeId" value="$${ctx:exchangeId:-}"/>
+                <KeyValuePair key="trackingId" value="$${ctx:AUDIT.trackingId:-}"/>
+                <KeyValuePair key="roundTripMS" value="$${ctx:AUDIT.roundTripMS:-}"/>
+                <KeyValuePair key="resource" value="$${ctx:AUDIT.resource:-}"/>
+                <KeyValuePair key="client" value="$${ctx:AUDIT.client:-}"/>
+                <KeyValuePair key="method" value="$${ctx:AUDIT.method:-}"/>
+                <KeyValuePair key="requestUri" value="$${ctx:AUDIT.requestUri:-}"/>
+                <KeyValuePair key="responseCode" value="$${ctx:AUDIT.responseCode:-}"/>
+                <KeyValuePair key="applicationName" value="$${ctx:AUDIT.applicationName:-}"/>
+                <KeyValuePair key="resourceName" value="$${ctx:AUDIT.resourceName:-}"/>
+                <KeyValuePair key="pathPrefix" value="$${ctx:AUDIT.pathPrefix:-}"/>
+                <KeyValuePair key="sidebandName" value="$${ctx:AUDIT.sidebandName:-}"/>
+                <KeyValuePair key="log_name" value="pingaccess_sideband_audit"/>
+            </JSONLayout>
+        </Console>
 
         <!-- Sideband Audit log : JDBC appender template for Oracle
 
