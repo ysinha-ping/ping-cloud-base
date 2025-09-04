@@ -32,10 +32,10 @@
             <AppenderRef ref="NOTIFICATION_ITEMS"/>
         </logger>
         <logger name="com.pingidentity.pingcommons.upgrade.file.PropertyFileMigrator" level="DEBUG">
-            <AppenderRef ref="AUDIT"/>
+            <AppenderRef ref="CONSOLE-AUDIT"/>
         </logger>
         <logger name="com.pingidentity.pa.upgrade.file.FilesystemUpgrader" level="DEBUG">
-            <AppenderRef ref="AUDIT"/>
+            <AppenderRef ref="CONSOLE-AUDIT"/>
         </logger>
         <logger name="audit" level="INFO" additivity="false">
             <AppenderRef ref="CONSOLE-AUDIT"/>
@@ -45,8 +45,8 @@
         <logger name="org.apache.commons.beanutils" level="WARN"/>
         <logger name="org.jose4j" level="WARN"/>
         <logger name="class org.jose4j" level="WARN"/>
-        <Root level="debug">
-            <AppenderRef level="info" ref="STDOUT"/>
+        <Root level="info">
+            <AppenderRef ref="STDOUT"/>
         </Root>
     </Loggers>
 </Configuration>
