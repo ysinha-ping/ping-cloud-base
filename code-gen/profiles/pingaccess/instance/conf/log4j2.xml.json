@@ -18,8 +18,9 @@
     <Loggers>
         <!-- PingAccess Loggers-->
         <AsyncLogger name="com.pingidentity" level="INFO" additivity="false" includeLocation="false">
-            <AppenderRef ref="CONSOLE-PA"/>
             <!--<AppenderRef ref="File" />-->
+            <!--<AppenderRef ref="CONSOLE-SIEM"/>-->
+            <AppenderRef ref="CONSOLE-PA"/>
             <!--<AppenderRef ref="CONSOLE" />-->
             <!--<AppenderRef ref="SYSLOG" />-->
         </AsyncLogger>
