@@ -228,7 +228,7 @@
                 <KeyValuePair key="responseCode" value="$${ctx:AUDIT.responseCode:-}"/>
                 <KeyValuePair key="sidebandName" value="$${ctx:AUDIT.sidebandName:-}"/>
                 <KeyValuePair key="sidebandDecision" value="$${ctx:AUDIT.sidebandDecision:-}"/>
-                <KeyValuePair key="logPurpose" value="Audit_PA" />
+                <KeyValuePair key="logPurpose" value="Audit_SIEM" />
               </JSONLayout>
             </PingSyslogLayout>
         </Console>
