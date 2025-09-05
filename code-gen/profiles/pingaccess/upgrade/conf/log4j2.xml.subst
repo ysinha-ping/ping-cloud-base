@@ -40,6 +40,9 @@
         <logger name="audit" level="INFO" additivity="false">
             <AppenderRef ref="CONSOLE-AUDIT"/>
         </logger>
+        <logger name="upgrade" level="INFO" additivity="false">
+            <AppenderRef ref="CONSOLE-UPGRADE"/>
+        </logger>
         <logger name="org.apache.http" level="WARN"/>
         <logger name="org.springframework" level="WARN"/>
         <logger name="org.apache.commons.beanutils" level="WARN"/>
