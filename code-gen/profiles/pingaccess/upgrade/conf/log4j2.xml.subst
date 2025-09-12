@@ -18,7 +18,7 @@
                 <KeyValuePair key="className" value="%c"/>
                 <KeyValuePair key="position" value="%L"/>
                 <KeyValuePair key="message" value="%m{nolookups}"/>
-                <KeyValuePair key="log_name" value="upgrade"/>
+                <KeyValuePair key="log_name" value="pingaccess_upgrade"/>
             </JSONLayout>
         </Console>
         <RollingFile name="AUDIT" fileName="${sys:pa.upgrade.home}/log/audit.log"
@@ -32,7 +32,7 @@
             <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
                 <KeyValuePair key="timestamp" value="%d{ISO8601}"/>
                 <KeyValuePair key="message" value="%m{nolookups}"/>
-                <KeyValuePair key="log_name" value="audit"/>
+                <KeyValuePair key="log_name" value="pingaccess_audit"/>
             </JSONLayout>
         </Console>
         <DeferredMemory name="ACTION_ITEMS"/>

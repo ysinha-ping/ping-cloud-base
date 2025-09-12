@@ -505,6 +505,18 @@
             <DefaultRolloverStrategy max="4" />
         </RollingFile>
         <Console name="CONSOLE-PA-API-AUDIT-HAR" target="SYSTEM_OUT">
+            <Filters>
+                <StatusCodeRegExFilter regex="2.."/>
+                <ContextMapFilter onMatch="NEUTRAL" onMismatch="DENY" operator="or">
+                    <KeyValuePair key="AUDIT.http-client-request-method" value="PUT"/>
+                    <KeyValuePair key="AUDIT.http-client-request-method" value="POST"/>
+                    <KeyValuePair key="AUDIT.http-client-request-method" value="PATCH"/>
+                </ContextMapFilter>
+                <!-- Very important filter below: only allow application/json content-type which will filter out APIs that has binaries included in its response -->
+                <ContextMapFilter onMatch="ACCEPT" onMismatch="DENY" operator="or">
+                    <KeyValuePair key="AUDIT.http-client-response-header-content-type" value="application/json"/>
+                </ContextMapFilter>
+            </Filters>
             <JSONLayout compact="true" eventEol="true" objectMessageAsJsonObject="true" properties="true">
                 <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd HH:mm:ss,S}"/>
                 <KeyValuePair key="exchangeId" value="$${ctx:exchangeId:-}"/>
@@ -518,6 +530,7 @@
                 <KeyValuePair key="log_name" value="pingaccess_api_audit_har"/>
             </JSONLayout>
         </Console>
+
 
         <!-- Engine auditing file logging configuration-->
         <!-- Additional Engine Audit values available:-->
