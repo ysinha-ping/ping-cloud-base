@@ -23,6 +23,7 @@
 - Update generate code to have granular control for removing helm charts in chub envs
 - Add self-service annotations and labels to ingresses
 - Update to use aws-for-fluent-bit:2.31.7 and refactor pipeline config
+- Update Placeholder for Opensearch IAM Role ARN value
 
 _Changes:_
 
@@ -50,7 +51,7 @@ _Changes:_
 - [X] PDO-10066 Add self-service annotations and labels to ingresses
 - [X] PDO-10087 Prevent customer changes to environment during upgrades via maintenance page
 - [X] PDO-10166 FluentBit - Use aws-for-fluent-bit image and consolidate all the pipelines
-
+- [X] PDO-10193 OpenSearch: Added placeholder for "IAM role ARN" field for the notification channel required by latest OpenSearch version (v2.19)
 
 ### 2.1.1
 
