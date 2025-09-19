@@ -3,12 +3,12 @@
     "config_id": "sns_sreappalerts",
     "config": {
       "name": "sns_sreappalerts",
-      "description": "",
+      "description": "SRE Alerts channel",
       "config_type": "sns",
       "is_enabled": true,
       "sns": {
         "topic_arn": "arn:aws:sns:us-west-2:705370621539:ysinha-topic",
-        "role_arn": "arn:aws:iam::705370621539:role/ysinha-primary-irsa-opensearch"
+        "role_arn": "arn:aws:iam::705370621539:role/OpensearchSNS"
       }
     }
   },
@@ -16,12 +16,12 @@
     "config_id": "sns_customerhub",
     "config": {
       "name": "sns_customerhub",
-      "description": "",
+      "description": "Customer Hub channel",
       "config_type": "sns",
       "is_enabled": true,
       "sns": {
-        "topic_arn": "arn:aws:sns:us-west-2:000000000000:PLACEHOLDER",
-        "role_arn": "arn:aws:iam::000000000000:role/PLACEHOLDER"
+        "topic_arn": "arn:aws:sns:us-west-2:705370621539:ysinha-topic",
+        "role_arn": "arn:aws:iam::705370621539:role/OpensearchSNS"
       }
     }
   }
