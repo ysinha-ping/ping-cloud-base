@@ -7,7 +7,8 @@
       "config_type": "sns",
       "is_enabled": true,
       "sns": {
-        "topic_arn": "arn:aws:sns:us-west-2:000000000000:PLACEHOLDER"
+        "topic_arn": "arn:aws:sns:us-west-2:705370621539:ysinha-topic",
+        "role_arn": "arn:aws:iam::705370621539:role/ysinha-primary-irsa-opensearch"
       }
     }
   },
@@ -19,7 +20,8 @@
       "config_type": "sns",
       "is_enabled": true,
       "sns": {
-        "topic_arn": "arn:aws:sns:us-west-2:000000000000:PLACEHOLDER"
+        "topic_arn": "arn:aws:sns:us-west-2:000000000000:PLACEHOLDER",
+        "role_arn": "arn:aws:iam::000000000000:role/PLACEHOLDER"
       }
     }
   }
