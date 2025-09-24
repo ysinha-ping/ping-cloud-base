@@ -457,3 +457,9 @@ pa.cluster.serverstate.replicationIntervalMilliseconds=1000
 #   Log4j 2 Settings
 #   ---------------------------
 log4j2.formatMsgNoLookups=true
+
+# Tell Log4j where to find JSON templates
+pa.log4j.json.templates.uri=/opt/out/instance/conf/log4j/json-templates
+
+# To ensure the JVM actually gets this property
+java.args=-Dpa.log4j.json.templates.uri=/opt/out/instance/conf/log4j/json-templates
