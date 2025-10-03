@@ -217,7 +217,7 @@
                      fileName="${sys:pa.home}/log/pingaccess.log"
                      filePattern="${sys:pa.home}/log/pingaccess.log.%i"
                      ignoreExceptions="false">
-            <JsonTemplateLayout eventTemplateUri="${sys:pa.log4j.json.templates.uri}/pingaccess-log.json"/>
+            <JsonTemplateLayout eventTemplateUri="file:///opt/out/instance/conf/log4j/json-templates/pingaccess-log.json"/>
             <Policies>
                 <SizeBasedTriggeringPolicy size="100000 KB"/>
             </Policies>
@@ -295,7 +295,7 @@
                      fileName="${sys:pa.home}/log/pingaccess_api_audit.log"
                      filePattern="${sys:pa.home}/log/pingaccess_api_audit.%d{yyyy-MM-dd}.log"
                      ignoreExceptions="false">
-            <JsonTemplateLayout eventTemplateUri="${sys:pa.log4j.json.templates.uri}/api-audit-log.json"/>
+            <JsonTemplateLayout eventTemplateUri="file:///opt/out/instance/conf/log4j/json-templates/api-audit-log.json"/>
             <Policies>
                 <TimeBasedTriggeringPolicy />
             </Policies>
@@ -605,7 +605,7 @@
                      fileName="${sys:pa.home}/log/pingaccess_engine_audit.log"
                      filePattern="${sys:pa.home}/log/pingaccess_engine_audit.%d{yyyy-MM-dd}.log"
                      ignoreExceptions="false">
-            <JsonTemplateLayout eventTemplateUri="${sys:pa.log4j.json.templates.uri}/engine-audit-log.json"/>
+            <JsonTemplateLayout eventTemplateUri="file:///opt/out/instance/conf/log4j/json-templates/engine-audit-log.json"/>
             <Policies>
                 <TimeBasedTriggeringPolicy />
             </Policies>
@@ -947,7 +947,7 @@
                      fileName="${sys:pa.home}/log/pingaccess_agent_audit.log"
                      filePattern="${sys:pa.home}/log/pingaccess_agent_audit.%d{yyyy-MM-dd}.log"
                      ignoreExceptions="false">
-            <JsonTemplateLayout eventTemplateUri="${sys:pa.log4j.json.templates.uri}/agent-audit-log.json"/>
+            <JsonTemplateLayout eventTemplateUri="file:///opt/out/instance/conf/log4j/json-templates/agent-audit-log.json"/>
             <Policies>
                 <TimeBasedTriggeringPolicy />
             </Policies>
@@ -1264,7 +1264,7 @@
                      fileName="${sys:pa.home}/log/pingaccess_sideband_client_audit.log"
                      filePattern="${sys:pa.home}/log/pingaccess_sideband_client_audit.%d{yyyy-MM-dd}.log"
                      ignoreExceptions="false">
-            <JsonTemplateLayout eventTemplateUri="${sys:pa.log4j.json.templates.uri}/sideband-client-audit-log.json"/>
+            <JsonTemplateLayout eventTemplateUri="file:///opt/out/instance/conf/log4j/json-templates/sideband-client-audit-log.json"/>
             <Policies>
                 <TimeBasedTriggeringPolicy />
             </Policies>
@@ -1577,7 +1577,7 @@
                      fileName="${sys:pa.home}/log/pingaccess_sideband_audit.log"
                      filePattern="${sys:pa.home}/log/pingaccess_sideband_audit.%d{yyyy-MM-dd}.log"
                      ignoreExceptions="false">
-            <JsonTemplateLayout eventTemplateUri="${sys:pa.log4j.json.templates.uri}/sideband-audit-log.json"/>
+            <JsonTemplateLayout eventTemplateUri="file:///opt/out/instance/conf/log4j/json-templates/sideband-audit-log.json"/>
             <Policies>
                 <TimeBasedTriggeringPolicy />
             </Policies>
