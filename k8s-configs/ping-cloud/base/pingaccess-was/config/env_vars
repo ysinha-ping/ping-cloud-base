@@ -75,6 +75,8 @@ PD_CLUSTER_PORT=8989
 # - 90-restore-backup-s3.sh script exit before proceeding if value is false
 RESTORE_BACKUP=true
 
+JAVA_OPTS=-Dpa.log4j.json.templates.uri=file:/opt/out/instance/conf/log4j/json-templates
+
 # Set to true to skip liveness probe.
 SKIP_LIVENESS=false
 
