@@ -97,7 +97,8 @@
         <!-- ========================= -->
 
         <!-- Changes to this section will not be required to effectively troubleshoot PingAccess -->
-        <AsyncLogger name="org.ehcache" level="WARN"/>
+        <AsyncLogger name="net.sf.ehcache" level="WARN"/>
+        <AsyncLogger name="net.sf.ehcache.config.CacheConfiguration" level="ERROR"/>
         <AsyncLogger name="org.springframework" level="WARN"/>
         <AsyncLogger name="org.springframework.orm.jpa" level="WARN"/>
         <AsyncLogger name="org.hibernate" level="WARN"/>
