@@ -134,7 +134,7 @@ spec:
               cpu: "150m"
               memory: 100Mi
         - name: logstash
-          image: public.ecr.aws/r2h3l6e4/pingcloud-monitoring/logstash/dev:pdo-7360
+          image: public.ecr.aws/r2h3l6e4/pingcloud-monitoring/logstash/dev:test-pdo-7360
           imagePullPolicy: Always
           command:
             - "/bin/sh"
