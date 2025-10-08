@@ -117,8 +117,8 @@
         <!-- Set up the Root logger  -->
         <!-- ======================= -->
         <AsyncRoot level="INFO" includeLocation="false">
-            <AppenderRef ref="File" />
-            <!--<AppenderRef ref="File-JSON" />-->
+            <AppenderRef ref="File-JSON" />
+            <!--<AppenderRef ref="File" />-->
             <!--<AppenderRef ref="CONSOLE" />-->
             <!--<AppenderRef ref="CONSOLE-JSON" />-->
             <!--<AppenderRef ref="SYSLOG" />-->
@@ -128,8 +128,8 @@
         <!-- Audit log configuration -->
         <!-- ======================= -->
         <Logger name="apiaudit" level="${sys:pa.log.level.apiaudit:-INFO}" additivity="false">
-            <AppenderRef ref="APIAuditLog-File"/>
-            <!--<AppenderRef ref="ApiAuditLog-JSON" />-->
+            <AppenderRef ref="ApiAuditLog-JSON" />
+            <!--<AppenderRef ref="APIAuditLog-File"/>-->
             <!--<AppenderRef ref="CONSOLE-ApiAuditLog-JSON" />-->
             <!--<AppenderRef ref="ApiAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="ApiAuditLog-SQLServer-Database-Failover"/>-->
@@ -140,8 +140,8 @@
             <!--<AppenderRef ref="ApiAuditLogToCEF-Syslog-Failover"/>-->
         </Logger>
         <Logger name="engineaudit" level="${sys:pa.log.level.engineaudit:-INFO}" additivity="false">
-            <AppenderRef ref="EngineAuditLog-File"/>
-            <!--<AppenderRef ref="EngineAuditLog-JSON"/>-->
+            <AppenderRef ref="EngineAuditLog-JSON"/>
+            <!--<AppenderRef ref="EngineAuditLog-File"/>-->
             <!--<AppenderRef ref="CONSOLE-EngineAuditLog-JSON"/>-->
             <!--<AppenderRef ref="EngineAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="EngineAuditLog-SQLServer-Database-Failover"/>-->
@@ -152,8 +152,8 @@
             <!--<AppenderRef ref="EngineAuditLogToCEF-Syslog-Failover"/>-->
         </Logger>
         <Logger name="agentaudit" level="${sys:pa.log.level.agentaudit:-INFO}" additivity="false">
-            <AppenderRef ref="AgentAuditLog-File"/>
-            <!--<AppenderRef ref="AgentAuditLog-JSON"/>-->
+            <AppenderRef ref="AgentAuditLog-JSON"/>
+            <!--<AppenderRef ref="AgentAuditLog-File"/>-->
             <!--<AppenderRef ref="CONSOLE-AgentAuditLog-JSON"/>-->
             <!--<AppenderRef ref="AgentAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="AgentAuditLog-SQLServer-Database-Failover"/>-->
@@ -164,8 +164,8 @@
             <!--<AppenderRef ref="AgentAuditLogToCEF-Syslog-Failover"/>-->
         </Logger>
         <Logger name="sidebandclientaudit" level="${sys:pa.log.level.sidebandclientaudit:-INFO}" additivity="false">
-            <AppenderRef ref="SidebandClientAuditLog-File"/>
-            <!--<AppenderRef ref="SidebandClientAuditLog-JSON"/>-->
+            <AppenderRef ref="SidebandClientAuditLog-JSON"/>
+            <!--<AppenderRef ref="SidebandClientAuditLog-File"/>-->
             <!--<AppenderRef ref="CONSOLE-SidebandClientAuditLog-JSON"/>-->
             <!--<AppenderRef ref="SidebandClientAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="SidebandClientAuditLog-SQLServer-Database-Failover"/>-->
@@ -176,8 +176,8 @@
             <!--<AppenderRef ref="SidebandClientAuditLogToCEF-Syslog-Failover"/>-->
         </Logger>
         <Logger name="sidebandaudit" level="${sys:pa.log.level.sidebandaudit:-INFO}" additivity="false">
-            <AppenderRef ref="SidebandAuditLog-File"/>
-            <!--<AppenderRef ref="SidebandAuditLog-JSON"/>-->
+            <AppenderRef ref="SidebandAuditLog-JSON"/>
+            <!--<AppenderRef ref="SidebandAuditLog-File"/>-->
             <!--<AppenderRef ref="CONSOLE-SidebandAuditLog-JSON"/>-->
             <!--<AppenderRef ref="SidebandAuditLog-Database-Failover"/>-->
             <!--<AppenderRef ref="SidebandAuditLog-SQLServer-Database-Failover"/>-->

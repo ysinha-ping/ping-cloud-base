@@ -4,6 +4,9 @@
         <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{ISO8601} %5p %m%n"/>
         </Console>
+        <Console name="STDOUT_JSON" target="SYSTEM_OUT">
+            <JsonTemplateLayout eventTemplateUri="file:///opt/out/instance/conf/log4j/json-templates/console-stdout-log.json"/>
+        </Console>
         <RollingFile name="FILE" fileName="${sys:pa.upgrade.home}/log/upgrade.log"
                      filePattern="${sys:pa.upgrade.home}/log/upgrade-%d{MM-dd-yyyy}-%i.log.gz">
             <PatternLayout pattern="%d{ISO8601} %5p %c:%L - %m%n"/>
@@ -18,6 +21,22 @@
                 <OnStartupTriggeringPolicy/>
             </Policies>
         </RollingFile>
+
+        <RollingFile name="FILE_JSON" fileName="${sys:pa.upgrade.home}/log/upgrade.json.log"
+                     filePattern="${sys:pa.upgrade.home}/log/upgrade.json-%d{MM-dd-yyyy}-%i.log.gz">
+            <JsonTemplateLayout eventTemplateUri="file:///opt/out/instance/conf/log4j/json-templates/upgrade-log.json"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="AUDIT_JSON" fileName="${sys:pa.upgrade.home}/log/audit.json.log"
+                     filePattern="${sys:pa.upgrade.home}/log/audit.json-%d{MM-dd-yyyy}-%i.log.gz">
+            <JsonTemplateLayout eventTemplateUri="file:///opt/out/instance/conf/log4j/json-templates/upgrade-audit-log.json"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+
         <DeferredMemory name="ACTION_ITEMS"/>
         <DeferredMemory name="NOTIFICATION_ITEMS"/>
     </Appenders>
@@ -29,13 +48,16 @@
             <AppenderRef ref="NOTIFICATION_ITEMS"/>
         </logger>
         <logger name="com.pingidentity.pingcommons.upgrade.file.PropertyFileMigrator" level="DEBUG">
-            <AppenderRef ref="AUDIT"/>
+            <AppenderRef ref="AUDIT_JSON"/>
         </logger>
         <logger name="com.pingidentity.pa.upgrade.file.FilesystemUpgrader" level="DEBUG">
-            <AppenderRef ref="AUDIT"/>
+            <AppenderRef ref="AUDIT_JSON"/>
         </logger>
         <logger name="audit" level="INFO" additivity="false">
-            <AppenderRef ref="AUDIT"/>
+            <AppenderRef ref="AUDIT_JSON"/>
+        </logger>
+        <logger name="upgrade" level="INFO" additivity="false">
+            <AppenderRef ref="FILE_JSON"/>
         </logger>
         <logger name="org.apache.http" level="WARN"/>
         <logger name="org.springframework" level="WARN"/>
@@ -43,8 +65,8 @@
         <logger name="org.jose4j" level="WARN"/>
         <logger name="class org.jose4j" level="WARN"/>
         <Root level="debug">
-            <AppenderRef level="info" ref="STDOUT"/>
-            <AppenderRef level="debug" ref="FILE"/>
+            <AppenderRef level="info" ref="STDOUT_JSON"/>
+            <AppenderRef level="debug" ref="FILE_JSON"/>
         </Root>
     </Loggers>
 </Configuration>

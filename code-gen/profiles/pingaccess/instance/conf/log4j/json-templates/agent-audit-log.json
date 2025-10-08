@@ -1,4 +1,5 @@
 {
+  "log_name": "pingaccess_agent_audit",
   "timestamp": {
     "$resolver": "timestamp",
     "pattern": {
@@ -17,7 +18,7 @@
   },
   "roundTripMS": {
     "$resolver": "pattern",
-    "pattern":"%X{AUDIT.roundTripMS} ms"
+    "pattern": "%X{AUDIT.roundTripMS} ms"
   },
   "resource": {
     "$resolver": "mdc",
