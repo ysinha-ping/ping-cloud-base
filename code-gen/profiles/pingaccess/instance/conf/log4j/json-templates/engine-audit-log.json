@@ -18,11 +18,11 @@
   },
   "roundTripMS": {
     "$resolver": "pattern",
-    "pattern": "%X{AUDIT.roundTripMS} ms"
+    "pattern":"%X{AUDIT.roundTripMS} ms"
   },
   "proxyRoundTripMS": {
     "$resolver": "pattern",
-    "pattern": "%X{AUDIT.proxyRoundTripMS} ms"
+    "pattern":"%X{AUDIT.proxyRoundTripMS} ms"
   },
   "resource": {
     "$resolver": "mdc",

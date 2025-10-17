@@ -18,12 +18,7 @@
   },
   "roundTripMS": {
     "$resolver": "pattern",
-    "pattern": "%X{AUDIT.roundTripMS} ms"
-  },
-  "resource": {
-    "$resolver": "mdc",
-    "key": "AUDIT.resource",
-    "stringified": true
+    "pattern":"%X{AUDIT.roundTripMS} ms"
   },
   "client": {
     "$resolver": "mdc",
@@ -45,24 +40,14 @@
     "key": "AUDIT.responseCode",
     "stringified": true
   },
-  "applicationName": {
-    "$resolver": "mdc",
-    "key": "AUDIT.applicationName",
-    "stringified": true
-  },
-  "resourceName": {
-    "$resolver": "mdc",
-    "key": "AUDIT.resourceName",
-    "stringified": true
-  },
-  "pathPrefix": {
-    "$resolver": "mdc",
-    "key": "AUDIT.pathPrefix",
-    "stringified": true
-  },
   "sidebandName": {
     "$resolver": "mdc",
     "key": "AUDIT.sidebandName",
+    "stringified": true
+  },
+  "sidebandDecision": {
+    "$resolver": "mdc",
+    "key": "AUDIT.sidebandDecision",
     "stringified": true
   }
 }

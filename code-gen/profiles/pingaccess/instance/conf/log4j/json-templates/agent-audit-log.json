@@ -18,7 +18,7 @@
   },
   "roundTripMS": {
     "$resolver": "pattern",
-    "pattern": "%X{AUDIT.roundTripMS} ms"
+    "pattern":"%X{AUDIT.roundTripMS} ms"
   },
   "resource": {
     "$resolver": "mdc",

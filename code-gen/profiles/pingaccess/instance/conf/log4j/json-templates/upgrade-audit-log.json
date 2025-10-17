@@ -3,6 +3,8 @@
     "$resolver": "timestamp",
     "pattern": { "format": "yyyy-MM-dd'T'HH:mm:ss.SSSXX" }
   },
-  "message": { "$resolver": "message" },
+  "message": {
+    "$resolver": "message"
+  },
   "log_name": "pingaccess_audit"
 }
