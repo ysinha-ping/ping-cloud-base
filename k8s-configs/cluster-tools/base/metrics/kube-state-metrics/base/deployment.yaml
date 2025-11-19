@@ -25,7 +25,7 @@ spec:
         args:
         - --resources=persistentvolumeclaims,persistentvolumes,pods,nodes,endpoints,jobs,ingresses,horizontalpodautoscalers
         - --namespaces-denylist=default, health, kube-node-lease, kube-public, kube-system, pod-reaper, newrelic
-        - --metric-labels-allowlist=horizontalpodautoscalers=[*]
+        - --metric-labels-allowlist=horizontalpodautoscalers=[hpa]
         livenessProbe:
           httpGet:
             path: /healthz
