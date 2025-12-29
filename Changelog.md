@@ -34,7 +34,7 @@
 - Add Self-service IP allowlist vars and bootstrap config
 - Adding JSON parsing support for PingAccess and PingAccess-WAS logs
 - Add backward compatible JSON filters for customer pipelines (PD)
-- Add horizontalpodautoscalers resource to kube-state-metrics deployment to expose HPA metrics and enable label.hpa
+- Add horizontalpodautoscalers resource to kube-state-metrics deployment to expose HPA metrics and enable label.horizontalpodautoscaler and label.namespace dimensions.
 
 _Changes:_
 
