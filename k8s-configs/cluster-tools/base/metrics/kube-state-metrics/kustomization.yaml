@@ -39,6 +39,7 @@ patches:
                   memory: 50Mi
               args:
                 - --resources=persistentvolumeclaims,persistentvolumes,pods,nodes,endpoints,jobs,ingresses,horizontalpodautoscalers
+                # NOTE: kube-state-metrics doesn't actually require this allowlist for emitting HPA label dimensions, but due to an existing bug in NewRelic , we currently need it to populate NRQL label dimensions for HorizontalPodAutoscaler resource. See Support Case 00296373.
                 - --metric-labels-allowlist=horizontalpodautoscalers=[horizontalpodautoscaler,namespace]
                 - --namespaces-denylist=default, health, kube-node-lease, kube-public, kube-system, pod-reaper, newrelic
   target:
