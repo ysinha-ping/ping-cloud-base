@@ -39,7 +39,7 @@ patches:
                   memory: 50Mi
               args:
                 - --resources=persistentvolumeclaims,persistentvolumes,pods,nodes,endpoints,jobs,ingresses,horizontalpodautoscalers
-                - --metric-labels-allowlist=horizontalpodautoscalers=[hpa]
+                - --metric-labels-allowlist=horizontalpodautoscalers=[horizontalpodautoscaler,namespace]
                 - --namespaces-denylist=default, health, kube-node-lease, kube-public, kube-system, pod-reaper, newrelic
   target:
     kind: Deployment
