@@ -19,7 +19,7 @@ patches:
     name: kube-state-metrics
     namespace: kube-system
 - patch: |-
-    # Add resources into kube-state-metrics container
+    # Add resources into kube-state-metrics container and customizations for enabling HPA metrics and allowlist HPA and namespace labels for NRQL queries
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -37,3 +37,11 @@ patches:
                 requests:
                   cpu: 10m
                   memory: 50Mi
+              args:
+                - --resources=persistentvolumeclaims,persistentvolumes,pods,nodes,endpoints,jobs,ingresses,horizontalpodautoscalers
+                - --metric-labels-allowlist=horizontalpodautoscalers=[hpa]
+                - --namespaces-denylist=default, health, kube-node-lease, kube-public, kube-system, pod-reaper, newrelic
+  target:
+    kind: Deployment
+    name: kube-state-metrics
+    namespace: kube-system
