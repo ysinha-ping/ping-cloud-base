@@ -4,3 +4,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
 - cluster-tools
 - ping-cloud
+- p1as-observability
