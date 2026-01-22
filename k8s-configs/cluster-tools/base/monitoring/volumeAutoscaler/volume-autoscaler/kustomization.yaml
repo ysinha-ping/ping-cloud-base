@@ -4,6 +4,7 @@ namespace: prometheus
 
 resources:
 - base
+- ../../../../../../code-gen/templates/p1as-observability/base/namespace.yaml
 
 images:
   - name: devopsnirvana/kubernetes-volume-autoscaler
