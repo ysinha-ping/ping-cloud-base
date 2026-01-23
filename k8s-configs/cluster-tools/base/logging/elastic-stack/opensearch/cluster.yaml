@@ -25,7 +25,7 @@ spec:
     serviceName: opensearch
     serviceAccount: opensearch
     version: 2.19.0
-    image: public.ecr.aws/r2h3l6e4/pingcloud-monitoring/opensearch/dev:v2.3-release-branch-latest
+    image: 705370621539.dkr.ecr.us-west-2.amazonaws.com/pingcloud-monitoring/opensearch:pdo-11030-osd-pf
     podSecurityContext:
       runAsNonRoot: true
       runAsUser: 1000
