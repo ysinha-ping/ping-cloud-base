@@ -72,11 +72,6 @@ spec:
           secretKeyRef:
             name: opensearch-dashboard-oidc
             key: client_secret
-      - name: ENABLE_IMPOSSIBLE_LOGIN
-        valueFrom:
-          configMapKeyRef:
-            name: elk-environment-variables
-            key: ENABLE_IMPOSSIBLE_LOGIN
     additionalConfig:
       opensearch.ssl.verificationMode: "Full"
       opensearch_security.auth.anonymous_auth_enabled: "false"
