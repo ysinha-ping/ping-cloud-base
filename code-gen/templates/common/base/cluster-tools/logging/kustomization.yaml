@@ -92,6 +92,19 @@ patchesStrategicMerge:
       additionalConfig:
         opensearch_security.openid.base_redirect_url: "https://logs.${DNS_ZONE}"
 
+- |-
+  apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    name: logstash-elastic
+    namespace: elastic-stack-logging
+  spec:
+    template:
+      metadata:
+        annotations:
+          # Change this string (e.g v1 to v2) to force the Logstash pods to restart
+          checksum/config: "enable-impossible-login-v1"
+
 patchesJson6902:
 - target:
     kind: Service
