@@ -13,7 +13,7 @@ spec:
     matchLabels:
       app: logstash-elastic
     annotations:
-      checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      checksum/config: "impossible-login-v1"
   template:
     metadata:
       labels:
