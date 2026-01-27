@@ -141,7 +141,7 @@ spec:
               cpu: "150m"
               memory: 100Mi
         - name: logstash
-          image: 705370621539.dkr.ecr.us-west-2.amazonaws.com/pingcloud-monitoring/logstash:pdo-11030-osd-pf
+          image: public.ecr.aws/r2h3l6e4/pingcloud-monitoring/logstash/dev:v2.3-release-branch-latest
           imagePullPolicy: Always
           command:
             - "/bin/sh"
