@@ -12,8 +12,6 @@ spec:
   selector:
     matchLabels:
       app: logstash-elastic
-    annotations:
-      checksum/config: "impossible-login-v1"
   template:
     metadata:
       labels:

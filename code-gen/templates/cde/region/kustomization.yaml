@@ -135,6 +135,8 @@ configMapGenerator:
   literals:
     - SERVICE_SSM_PATH_PREFIX=${SERVICE_SSM_PATH_PREFIX}
     - REGION=${REGION}
+  envs:
+    - logging/env_vars
 
 - name: elk-environment-variables
   behavior: merge
