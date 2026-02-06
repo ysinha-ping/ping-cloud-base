@@ -248,8 +248,8 @@ CUSTOMER_PINGONE_ENABLED=${CUSTOMER_PINGONE_ENABLED}
 SLACK_CHANNEL=${SLACK_CHANNEL}
 
 # Dashboards repo variables
-DASH_REPO_URL=https://github.com/ysinha-ping/ping-cloud-dashboards
-DASH_REPO_BRANCH=pdo-11030-os-dashboard
+DASH_REPO_URL=https://github.com/pingidentity/ping-cloud-dashboards
+DASH_REPO_BRANCH=v2.3-dev-branch
 
 # Healthcheck variables
 CLUSTER_HEALTHCHECK_SCHEDULE="* * * * *"
