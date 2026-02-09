@@ -97,10 +97,10 @@ spec:
               mountPath: /usr/share/opensearch/data/dashboards/pa
             - name: os-dashboards-pa-was
               mountPath: /usr/share/opensearch/data/dashboards/pa-was
-            - name: os-dashboard-pf-impossible-login
-              mountPath: /usr/share/opensearch/data/dashboard/pf-impossible-login
-            - name: os-dashboard-pf-threat-impossible-login
-              mountPath: /usr/share/opensearch/data/dashboard/pf-threat-impossible-login
+            - name: os-dashboards-pf-impossible-login
+              mountPath: /usr/share/opensearch/data/dashboards/pf-impossible-login
+            - name: os-dashboards-pf-threat-impossible-login
+              mountPath: /usr/share/opensearch/data/dashboards/pf-threat-impossible-login
         - name: create-enrichment-cache-files
           securityContext:
             runAsNonRoot: true
@@ -333,12 +333,12 @@ spec:
         - name: os-dashboards-pa-was
           configMap:
             name: os-dashboards-pa-was
-        - name: os-dashboard-pf-impossible-login
+        - name: os-dashboards-pf-impossible-login
           configMap:
-            name: os-dashboard-pf-impossible-login
-        - name: os-dashboard-pf-threat-impossible-login
+            name: os-dashboards-pf-impossible-login
+        - name: os-dashboards-pf-threat-impossible-login
           configMap:
-            name: os-dashboard-pf-threat-impossible-login
+            name: os-dashboards-pf-threat-impossible-login
   serviceName: logstash-elastic
   volumeClaimTemplates:
     - metadata:
