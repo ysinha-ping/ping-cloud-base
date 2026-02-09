@@ -9,3 +9,11 @@ resources:
 - secret.yaml
 - pdb.yaml
 - customer_pipelines
+
+configMapGenerator:
+  - name: elk-environment-variables
+    envs:
+      - env_vars
+
+generatorOptions:
+  disableNameSuffixHash: true
