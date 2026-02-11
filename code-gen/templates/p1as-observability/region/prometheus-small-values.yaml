@@ -1,0 +1,14 @@
+# Prometheus resource limits for small environments
+# These values override the defaults in values.yaml
+
+# p1as-prometheus (main prometheus server) resource settings
+# Path: prometheus.server.resources (prometheus is the subchart alias)
+prometheus:
+  server:
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 8Gi
+      requests:
+        cpu: 1000m
+        memory: 4Gi

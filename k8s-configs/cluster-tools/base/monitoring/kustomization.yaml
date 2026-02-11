@@ -2,5 +2,5 @@ kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 
 resources:
- - ../../../../code-gen/templates/p1as-observability/base/namespace.yaml
- - volumeAutoscaler/volume-autoscaler
+  - ../../../../code-gen/templates/p1as-observability/base/namespace.yaml
+  - volume-autoscaler

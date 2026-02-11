@@ -19,3 +19,55 @@ cloudwatch:
 #Newrelic related values
 global:
   cluster: ${TENANT_NAME}_${ENV}_${REGION}_k8s-cluster
+
+#######################################################
+# Prometheus Server (p1as-prometheus) settings
+# Note: Resource limits are set in prometheus-${SIZE}-values.yaml
+#######################################################
+prometheus:
+  server:
+    # Retention time for Prometheus. Could be set in years(y), weeks(w), days(d), hours(h), minutes(m) or seconds(s)
+    retention: "15d"
+
+    persistentVolume:
+      # Storage size for prometheus data volume
+      # Adjust based on retention period and scrape volume
+      size: 30Gi
+
+    statefulSet:
+      headless:
+        annotations:
+          # Prometheus cross-region communication - DNS hostname for the headless service
+          external-dns.alpha.kubernetes.io/hostname: prometheus-central.${DNS_ZONE}
+
+#######################################################
+# Prometheus Job Exporter settings
+#######################################################
+prometheusJobExporter:
+  # Commands and schedules to obtain users count. Values should be in single quotes. 
+  promUserCount1Command: "echo 0"
+  promUserCount2Command: "echo 0"
+  promUserCount3Command: "echo 0"
+  promUserCount4Command: "echo 0"
+
+  # Schedules should be in cron format. Command should return only numeric value(int\float)
+  promUserCount1Schedule: "* * * * *"
+  promUserCount2Schedule: "* * * * *"
+  promUserCount3Schedule: "* * * * *"
+  promUserCount4Schedule: "* * * * *"
+
+  # Namespace where pingdirectory pods run (for user count commands)
+  containerNamespace: ${PING_CLOUD_NAMESPACE}
+
+#######################################################
+# Prometheus Agent resource settings
+#######################################################
+prometheus-agent:
+  server:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 4000Mi
+      requests:
+        cpu: 100m
+        memory: 512Mi
