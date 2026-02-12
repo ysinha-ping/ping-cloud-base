@@ -1,0 +1,12 @@
+# Prometheus resource limits for production environments (small/medium/large)
+# These values override the defaults in values.yaml for stage/prod environments
+
+prometheus:
+  server:
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 8Gi
+      requests:
+        cpu: 1000m
+        memory: 4Gi

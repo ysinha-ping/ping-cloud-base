@@ -41,7 +41,6 @@ helmCharts:
       - ../../values-files/base/values.yaml   # base values.yaml
       - ../../values-files/${REGION_NICK_NAME}/values.yaml   # regional values.yaml
       - values.yaml   # app specific values.yaml
-      - prometheus-${SIZE}-values.yaml   # size-specific prometheus resource limits
     version: v2.3-release-branch-latest
     namespace: prometheus
     repo: oci://${ECR_REGISTRY_NAME}/dev

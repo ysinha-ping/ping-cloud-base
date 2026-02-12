@@ -22,7 +22,6 @@ global:
 
 #######################################################
 # Prometheus Server (p1as-prometheus) settings
-# Note: Resource limits are set in prometheus-${SIZE}-values.yaml
 #######################################################
 prometheus:
   server:
@@ -39,6 +38,22 @@ prometheus:
         annotations:
           # Prometheus cross-region communication - DNS hostname for the headless service
           external-dns.alpha.kubernetes.io/hostname: prometheus-central.${DNS_ZONE}
+
+    # External labels for cluster identification (required for federation/remote-write)
+    global:
+      external_labels:
+        k8s_cluster_name: ${CLUSTER_NAME}-${TENANT_NAME}-${REGION_NICK_NAME}
+        k8s_cluster_region: ${REGION_NICK_NAME}
+
+    # Resource limits for dev/test environments (x-small)
+    # For prod environments, these are overridden by prod-values.yaml
+    resources:
+      limits:
+        cpu: 1500m
+        memory: 6Gi
+      requests:
+        cpu: 750m
+        memory: 3Gi
 
 #######################################################
 # Prometheus Job Exporter settings

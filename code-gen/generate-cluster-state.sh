@@ -476,8 +476,7 @@ ${DASH_REPO_BRANCH}
 ${APP_RESYNC_SECONDS}
 ${CERT_RENEW_BEFORE}
 ${TELEPORT_RESOURCE_ID}
-${STAGE}
-${SIZE}'
+${STAGE}'
 
 # Variables to replace within the generated cluster state code
 REPO_VARS="${REPO_VARS:-${DEFAULT_VARS}}"
