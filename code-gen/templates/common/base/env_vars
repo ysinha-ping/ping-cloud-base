@@ -249,7 +249,7 @@ SLACK_CHANNEL=${SLACK_CHANNEL}
 
 # Dashboards repo variables
 DASH_REPO_URL=https://github.com/ysinha-ping/ping-cloud-dashboards
-DASH_REPO_BRANCH=pdo-11030-os-dashboards
+DASH_REPO_BRANCH=pdo-11030-os-dashboard
 
 # Set to true to enable the "Impossible Login" OpenSearch dashboard (default: false)
 ENABLE_IMPOSSIBLE_LOGIN=false
