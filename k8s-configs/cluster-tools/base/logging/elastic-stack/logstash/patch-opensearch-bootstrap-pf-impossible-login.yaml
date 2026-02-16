@@ -24,4 +24,10 @@ spec:
               mountPath: /usr/share/opensearch/data/dashboards/pf-impossible-login
             - name: os-dashboards-pf-threat-impossible-login
               mountPath: /usr/share/opensearch/data/dashboards/pf-threat-impossible-login
-
+      volumes:
+        - name: os-dashboards-pf-impossible-login
+          configMap:
+            name: os-dashboards-pf-impossible-login
+        - name: os-dashboards-pf-threat-impossible-login
+          configMap:
+            name: os-dashboards-pf-threat-impossible-login
