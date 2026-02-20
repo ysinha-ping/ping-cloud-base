@@ -24,6 +24,13 @@ global:
 # Prometheus Server (p1as-prometheus) settings
 #######################################################
 prometheus:
+  # Use mirrored config-reloader image from pingcloud-clustertools
+  configmapReload:
+    prometheus:
+      image:
+        repository: public.ecr.aws/r2h3l6e4/pingcloud-clustertools/prom/prometheus-config-reloader
+        tag: v0.73.1
+
   server:
     # Retention time for Prometheus. Could be set in years(y), weeks(w), days(d), hours(h), minutes(m) or seconds(s)
     retention: "15d"
@@ -59,6 +66,9 @@ prometheus:
 # Prometheus Job Exporter settings
 #######################################################
 prometheusJobExporter:
+  image:
+    repository: public.ecr.aws/r2h3l6e4/pingcloud-monitoring/prometheus-job-exporter/dev
+    tag: v2.3-release-branch-latest
   # Commands and schedules to obtain users count. Values should be in single quotes. 
   promUserCount1Command: "echo 0"
   promUserCount2Command: "echo 0"
@@ -78,6 +88,13 @@ prometheusJobExporter:
 # Prometheus Agent resource settings
 #######################################################
 prometheus-agent:
+  # Use mirrored config-reloader image from pingcloud-clustertools
+  configmapReload:
+    prometheus:
+      image:
+        repository: public.ecr.aws/r2h3l6e4/pingcloud-clustertools/prom/prometheus-config-reloader
+        tag: v0.73.1
+
   server:
     resources:
       limits:

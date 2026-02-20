@@ -1,6 +1,3 @@
-# Prometheus resource limits for production environments (small/medium/large)
-# These values override the defaults in values.yaml for stage/prod environments
-
 prometheus:
   server:
     resources:

@@ -11,6 +11,27 @@ metadata:
 ---
 
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: prometheus
+
+---
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: amazon-cloudwatch
+
+---
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: newrelic
+
+---
+
+apiVersion: v1
 kind: Secret
 type: Opaque
 metadata:
