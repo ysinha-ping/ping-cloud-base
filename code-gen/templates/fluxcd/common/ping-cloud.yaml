@@ -11,13 +11,6 @@ metadata:
 ---
 
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: prometheus
-
----
-
-apiVersion: v1
 kind: Secret
 type: Opaque
 metadata:
