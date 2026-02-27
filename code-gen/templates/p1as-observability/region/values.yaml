@@ -89,3 +89,16 @@ prometheus-agent:
       requests:
         cpu: 100m
         memory: 512Mi
+
+    # In PCB deploy, opensearch-grafana-credentials secret is always created by
+    # p14c-integration (opensearch_sso_config.py) before prometheus starts.
+    # Override optional: true (the microservice chart default) to fail fast
+    # if the secret is unexpectedly missing.
+    extraVolumes:
+      - name: os-creds
+        secret:
+          secretName: opensearch-grafana-credentials
+          optional: false
+          items:
+            - key: password
+              path: os-password
