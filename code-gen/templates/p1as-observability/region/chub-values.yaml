@@ -1,0 +1,15 @@
+# Customer-hub does not deploy OpenSearch, so the opensearch-grafana-credentials
+# secret will not exist. Keep optional: true (the microservice chart default)
+# to prevent prometheus-agent from crash-looping on a missing secret.
+prometheus-agent:
+  server:
+    extraVolumes:
+      - name: os-creds
+        secret:
+          secretName: opensearch-grafana-credentials
+          optional: true
+          items:
+            - key: password
+              path: os-password
+
+
