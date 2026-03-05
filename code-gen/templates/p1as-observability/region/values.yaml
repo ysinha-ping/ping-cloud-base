@@ -39,11 +39,17 @@ prometheus:
           # Prometheus cross-region communication - DNS hostname for the headless service
           external-dns.alpha.kubernetes.io/hostname: prometheus-central.${DNS_ZONE}
 
-    # External labels for cluster identification (required for federation/remote-write)
-    global:
-      external_labels:
-        k8s_cluster_name: ${CLUSTER_NAME}-${TENANT_NAME}-${REGION_NICK_NAME}
-        k8s_cluster_region: ${REGION_NICK_NAME}
+    # Environment variables injected into the Prometheus container.
+    # The base chart sets external_labels with ${CLUSTER_NAME}, ${TENANT_NAME},
+    # ${REGION_NICK_NAME} placeholders and enables --enable-feature=expand-external-labels,
+    # so Prometheus expands them at runtime from these env vars.
+    env:
+      - name: CLUSTER_NAME
+        value: ${CLUSTER_NAME}
+      - name: TENANT_NAME
+        value: ${TENANT_NAME}
+      - name: REGION_NICK_NAME
+        value: ${REGION_NICK_NAME}
 
     # Resource limits for dev/test environments (matches legacy PCB base/test size)
     # For prod environments, these are overridden by prod-values.yaml
@@ -82,11 +88,15 @@ prometheusJobExporter:
 #######################################################
 prometheus-agent:
   server:
-    # External labels for cluster identification (required for federation/remote-write)
-    global:
-      external_labels:
-        k8s_cluster_name: ${CLUSTER_NAME}-${TENANT_NAME}-${REGION_NICK_NAME}
-        k8s_cluster_region: ${REGION_NICK_NAME}
+    # Environment variables for expand-external-labels (same as prometheus server above)
+    env:
+      - name: CLUSTER_NAME
+        value: ${CLUSTER_NAME}
+      - name: TENANT_NAME
+        value: ${TENANT_NAME}
+      - name: REGION_NICK_NAME
+        value: ${REGION_NICK_NAME}
+
     resources:
       limits:
         cpu: 500m
@@ -95,10 +105,12 @@ prometheus-agent:
         cpu: 100m
         memory: 512Mi
 
-    # In PCB deploy, opensearch-grafana-credentials secret is always created by
-    # p14c-integration (opensearch_sso_config.py) before prometheus starts.
-    # Override optional: true (the microservice chart default) to fail fast
-    # if the secret is unexpectedly missing.
+    # opensearch-grafana-credentials is created by p14c-integration (opensearch_sso_config.py)
+    # which runs as an init container on the OpenSearch operator deployment.
+    # In primary CDE regions the secret will exist — optional: false to fail fast if missing.
+    # For child/secondary CDE regions, secondary-values.yaml overrides this to optional: true
+    # (merged at code-gen time by generate-cluster-state.sh).
+    # For customer-hub, chub-values.yaml overrides this to optional: true.
     extraVolumes:
       - name: os-creds
         secret:

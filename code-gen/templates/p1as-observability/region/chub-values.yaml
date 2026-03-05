@@ -1,6 +1,7 @@
-# Customer-hub does not deploy OpenSearch, so the opensearch-grafana-credentials
-# secret will not exist. Keep optional: true (the microservice chart default)
-# to prevent prometheus-agent from crash-looping on a missing secret.
+# Customer-hub overrides for p1as-observability.
+# Customer-hub does not deploy OpenSearch, so opensearch-grafana-credentials
+# will never exist. Override optional: false (base) to optional: true so
+# prometheus-agent can start without the secret.
 prometheus-agent:
   server:
     extraVolumes:

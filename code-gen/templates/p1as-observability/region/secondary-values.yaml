@@ -1,0 +1,23 @@
+# Overrides applied to child/secondary CDE regions at code-gen time.
+# Merged into values.yaml by generate-cluster-state.sh when REGION != PRIMARY_REGION.
+#
+# 1. remoteWrite: In child regions p1as-prometheus (server) is removed via
+#    PRIMARY_REGION_ONLY_DEPLOY, so "prometheus-headless:9090" does not resolve.
+#    Override the URL to point to the primary region's Prometheus server via
+#    the cross-region DNS record created by external-dns on the headless service.
+#
+# 2. opensearch-grafana-credentials: The secret is created by p14c-integration
+#    which only runs in the primary region. Override optional to true so
+#    prometheus-agent can start without the secret in child regions.
+prometheus-agent:
+  server:
+    remoteWrite:
+      - url: 'http://prometheus-central.${PRIMARY_DNS_ZONE}:9090/api/v1/write'
+    extraVolumes:
+      - name: os-creds
+        secret:
+          secretName: opensearch-grafana-credentials
+          optional: true
+          items:
+            - key: password
+              path: os-password
