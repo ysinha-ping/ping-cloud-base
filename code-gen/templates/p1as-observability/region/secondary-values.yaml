@@ -13,11 +13,5 @@ prometheus-agent:
   server:
     remoteWrite:
       - url: 'http://prometheus-central.${PRIMARY_DNS_ZONE}:9090/api/v1/write'
+    #Extra volumes is intentionally left blank to remove the opensearch-grafana-credentials secret volume mount from child regions.
     extraVolumes:
-      - name: os-creds
-        secret:
-          secretName: opensearch-grafana-credentials
-          optional: true
-          items:
-            - key: password
-              path: os-password
