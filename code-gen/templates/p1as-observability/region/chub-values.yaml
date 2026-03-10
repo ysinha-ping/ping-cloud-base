@@ -4,7 +4,8 @@
 # prometheus-agent can start without the secret.
 prometheus-agent:
   server:
-    #Extra volumes is intentionally left blank to remove the opensearch-grafana-credentials secret volume mount from customer-hub.
+    #Extra volumes and volume mounts are intentionally left blank to remove the opensearch-grafana-credentials secret from customer-hub.
     extraVolumes:
+    extraVolumeMounts:
 
 
