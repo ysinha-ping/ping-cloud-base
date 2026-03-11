@@ -759,17 +759,15 @@ organize_code_for_csr() {
       # Handle secondary/child region values overrides.
       # secondary-values.yaml is merged into values.yaml for non-primary regions,
       # allowing region-specific overrides (e.g. optional secrets that only exist in primary).
-      secondary_values_files=$(find "${app_target_dir}" -type f -name "secondary-values.yaml")
-      if [ -n "${secondary_values_files}" ]; then
+      local secondary_values_file="${app_target_dir}/${REGION_NICK_NAME}/secondary-values.yaml"
+      if [ -f "${secondary_values_file}" ]; then
         if test "${REGION}" != "${PRIMARY_REGION}"; then
-          for secondary_values_file in ${secondary_values_files}; do
-            echo "Child region (${REGION}) — merging ${secondary_values_file} into values.yaml"
-            yq -i ". *= load(\"${secondary_values_file}\")" "${secondary_values_file//secondary-/}"
-            rm -f $secondary_values_file
-          done
+          echo "Child region (${REGION}) — merging ${secondary_values_file} into values.yaml"
+          yq -i ". *= load(\"${secondary_values_file}\")" "${secondary_values_file//secondary-/}"
+          rm -f "${secondary_values_file}"
         else
-          # Primary region — delete secondary-values.yaml files (not needed)
-          find "${app_target_dir}" -type f -name "secondary-values.yaml" -exec rm -f {} +
+          # Primary region — delete secondary-values.yaml (not needed)
+          rm -f "${secondary_values_file}"
         fi
       fi
     fi
