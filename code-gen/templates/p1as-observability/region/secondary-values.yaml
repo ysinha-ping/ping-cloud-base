@@ -16,3 +16,6 @@ prometheus-agent:
     #Extra volumes and volume mounts are intentionally left blank to remove the opensearch-grafana-credentials secret from child regions.
     extraVolumes: []
     extraVolumeMounts: []
+    # Disable prometheus-headless service in secondary regions (handled via Helm values, not kustomize)
+    service:
+      enabled: false
