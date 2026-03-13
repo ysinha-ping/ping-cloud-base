@@ -15,7 +15,8 @@
 #    There is no risk of Helm conflicts because p1as-prometheus is not deployed in secondary regions, so the default headless service is never created.
 prometheus-agent:
   extraManifests:
-    - apiVersion: v1
+    - |
+      apiVersion: v1
       kind: Service
       metadata:
         name: prometheus-headless
