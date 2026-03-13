@@ -693,7 +693,7 @@ organize_code_for_csr() {
         echo "Found PRIMARY_REGION_ONLY_DEPLOY set to True, removing ${app_target_dir}/region entirely"
         rm -rf "${app_target_dir}/region"
       else
-        if { test "${REGION}" = "${PRIMARY_REGION}" && declare -p PRIMARY_REGION_ONLY_DEPLOY 2>/dev/null | grep -q 'declare -a\|typeset -a'; }; then
+        if { test "${REGION}" != "${PRIMARY_REGION}" && declare -p PRIMARY_REGION_ONLY_DEPLOY 2>/dev/null | grep -q 'declare -a\|typeset -a'; }; then
           # If PRIMARY_REGION_ONLY_DEPLOY is an array, iterate through it and remove entries
           for chart_name in "${PRIMARY_REGION_ONLY_DEPLOY[@]}"; do
             echo "Chart ${chart_name} is set for PRIMARY_REGION_ONLY_DEPLOY, removing reference in ${app_target_dir}/region/kustomization.yaml"
