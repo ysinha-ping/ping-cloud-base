@@ -9,22 +9,7 @@
 # 2. opensearch-grafana-credentials: The secret is created by p14c-integration
 #    which only runs in the primary region. Override optional to true so
 #    prometheus-agent can start without the secret in child regions.
-#
-# 3. extraManifests: We use extraManifests because the base Prometheus Helm chart lacks a native toggle to set the service type to ExternalName.
-#    This injects a cross-region DNS alias so the legacy volume-autoscaler can safely route its hardcoded metrics traffic to the primary region.
-#    There is no risk of Helm conflicts because p1as-prometheus is not deployed in secondary regions, so the default headless service is never created.
 prometheus-agent:
-  extraManifests:
-    - |
-      apiVersion: v1
-      kind: Service
-      metadata:
-        name: prometheus-headless
-        namespace: prometheus
-      spec:
-        type: ExternalName
-        externalName: prometheus-central.${PRIMARY_DNS_ZONE}
-
   server:
     remoteWrite:
       - url: 'http://prometheus-central.${PRIMARY_DNS_ZONE}:9090/api/v1/write'
