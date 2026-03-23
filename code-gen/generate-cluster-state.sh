@@ -762,10 +762,29 @@ organize_code_for_csr() {
       secondary_values_files=$(find "${app_target_dir}" -type f -name "secondary-values.yaml")
       if [ -n "${secondary_values_files}" ]; then
         if test "${REGION}" != "${PRIMARY_REGION}"; then
+          echo "Secondary region detected: ${REGION} (Primary: ${PRIMARY_REGION})"
           for secondary_values_file in ${secondary_values_files}; do
+            VALUES_FILE="$(dirname "${secondary_values_file}")/values.yaml"
+            
+            # Validate both files exist before attempting merge
+            if [ ! -f "${secondary_values_file}" ]; then
+              echo "ERROR: Secondary values file not found: ${secondary_values_file}"
+              exit 1
+            fi
+            if [ ! -f "${VALUES_FILE}" ]; then
+              echo "ERROR: Target values file not found: ${VALUES_FILE}"
+              exit 1
+            fi
+            
             echo "Child region (${REGION}) — merging ${secondary_values_file} into values.yaml"
-            yq -i ". *= load(\"${secondary_values_file}\")" "${secondary_values_file//secondary-/}"
-            rm -f $secondary_values_file
+            yq -i ". *= load(\"${secondary_values_file}\")" "${VALUES_FILE}"
+            
+            if [ $? -ne 0 ]; then
+              echo "ERROR: Failed to merge ${secondary_values_file} into ${VALUES_FILE}"
+              exit 1
+            fi
+            
+            rm -f "${secondary_values_file}"
           done
         else
           # Primary region — delete secondary-values.yaml files (not needed)
