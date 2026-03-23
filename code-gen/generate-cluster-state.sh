@@ -761,7 +761,7 @@ organize_code_for_csr() {
       # allowing region-specific overrides (e.g. optional secrets that only exist in primary).
       secondary_values_files=$(find "${app_target_dir}" -type f -name "secondary-values.yaml")
       if [ -n "${secondary_values_files}" ]; then
-        if test "${REGION}" != "${PRIMARY_REGION}"; then
+        if test "${REGION}" = "${PRIMARY_REGION}"; then
           echo "Secondary region detected: ${REGION} (Primary: ${PRIMARY_REGION})"
           for secondary_values_file in ${secondary_values_files}; do
             VALUES_FILE="$(dirname "${secondary_values_file}")/values.yaml"
