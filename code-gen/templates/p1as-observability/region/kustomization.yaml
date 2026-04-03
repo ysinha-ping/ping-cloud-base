@@ -7,6 +7,9 @@ resources:
   - ../base/namespace.yaml
   - ../base/crds-annotations
 
+helmGlobals:
+  configHome: /helm-working-dir
+
 helmCharts:
   - name: p1as-cloudwatch
     additionalValuesFiles:
@@ -41,9 +44,9 @@ helmCharts:
       - ../../values-files/base/values.yaml   # base values.yaml
       - ../../values-files/${REGION_NICK_NAME}/values.yaml   # regional values.yaml
       - values.yaml   # app specific values.yaml
-    version: v2.3-release-branch-latest
+    version: v2.3-PromstorageClassfix
     namespace: prometheus
-    repo: oci://${ECR_REGISTRY_NAME}/dev
+    repo: oci://705370621539.dkr.ecr.us-west-2.amazonaws.com/dev
 
   - name: p1as-prometheus-agent
     additionalValuesFiles:
@@ -71,3 +74,4 @@ patchesStrategicMerge:
   ### PS/GSO customizations to OOTB resources should only go into this file. Otherwise, CSR auto-updates will break. ###
   - custom-patches.yaml
   - ../base/custom-patches.yaml
+
