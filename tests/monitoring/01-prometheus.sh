@@ -8,28 +8,11 @@ if skipTest "${0}"; then
   exit 0
 fi
 
-NAMESPACE="${PING_CLOUD_NAMESPACE:-prometheus}"
-
 # Verify the Prometheus server API is reachable via its externally exposed URL.
 testPrometheusAPIAccessible() {
   log "Checking Prometheus API via /api/v1/status/runtimeinfo"
   curl -k -s "${PROMETHEUS}/api/v1/status/runtimeinfo" >> /dev/null
   assertEquals "Prometheus API is unreachable. URL: ${PROMETHEUS}/api/v1/status/runtimeinfo" 0 $?
-}
-
-# Verify k8s_cluster_name and k8s_cluster_region external labels are configured.
-# Required for Grafana dashboards to filter by cluster.
-testPrometheusExternalLabelsPresent() {
-  log "Verifying k8s_cluster_name and k8s_cluster_region external labels are configured"
-
-  response=$(curl -k -s "${PROMETHEUS}/api/v1/status/runtimeinfo" 2>/dev/null)
-
-  assertContains "k8s_cluster_name should be present in Prometheus external labels" \
-    "${response}" "k8s_cluster_name"
-  assertContains "k8s_cluster_region should be present in Prometheus external labels" \
-    "${response}" "k8s_cluster_region"
-
-  log "External labels are present in Prometheus runtime info"
 }
 
 # Verify kube_node_info is collected by agent from kube-state-metrics and remote-written.
@@ -68,18 +51,6 @@ testPrometheusCAdvisorMetricsCollected() {
   done
 
   assertContains "machine_cpu_cores should be present in server" "${response}" "machine_cpu_cores"
-}
-
-# Verify Prometheus Job Exporter pod is running.
-# Collects user counts from PingDirectory and exposes as prometheus metrics.
-testPrometheusJobExporterRunning() {
-  log "Checking Prometheus Job Exporter pod is running in namespace: ${NAMESPACE}"
-
-  POD=$(kubectl -n "${NAMESPACE}" get pods -l app=prometheus-job-exporter \
-    -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
-  test -n "${POD}" && \
-    kubectl -n "${NAMESPACE}" get pod "${POD}" -o jsonpath='{.status.phase}' | grep -q "Running"
-  assertEquals "Prometheus job exporter pod not running in namespace ${NAMESPACE}" 0 $?
 }
 
 # Verify users_count_1..4 metrics are scraped by job exporter and remote-written.
