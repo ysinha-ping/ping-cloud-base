@@ -30,10 +30,12 @@
 - Add p1as-observability prometheus Helm chart to PCB
 - Update prometheus-job-exporter and prometheus-json-exporter image paths (v3.0.0) as part of migrating to ping-cloud-common repo
 - Update seal-secret-values.py to handle customSecrets entries for Helm charts
+- Enhance prometheus and prometheus-agent integration, system test
 
 _Changes:_
 
 - [X] PDO-5993 Prometheus: Add p1as-Observability to PCB
+- [X] PDO-6001 Enhance Prometheus tests (unit, integration, system)
 - [X] PDO-8391 Implement KMS changes for EBS
 - [X] PDO-8951 FluentBit: Remove K8s Metadata and Labels
 - [X] PDO-10079 Upgrade cert-manager to version v1.19.1
