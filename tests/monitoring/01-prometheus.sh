@@ -11,12 +11,21 @@ fi
 # Verify the Prometheus server API is reachable via its externally exposed URL.
 testPrometheusAPIAccessible() {
   log "Checking Prometheus API via /api/v1/status/runtimeinfo"
-  curl -k -s "${PROMETHEUS}/api/v1/status/runtimeinfo" >> /dev/null
-  assertEquals "Prometheus API is unreachable. URL: ${PROMETHEUS}/api/v1/status/runtimeinfo" 0 $?
+  
+  status=$(curl -k -s -o /dev/null -w "%{http_code}" \
+    "${PROMETHEUS}/api/v1/status/runtimeinfo" 2>/dev/null)
+  
+  assertEquals "Prometheus API should return 200 OK" "200" "${status}"
+}
+
+testPrometheusJobExporterRunning() {
+  POD=$(kubectl -n prometheus get pods -l app=prometheus-job-exporter -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
+  test -n "$POD" && kubectl -n prometheus get pod "$POD" -o jsonpath='{.status.phase}' | grep -q "Running"
+  assertEquals "Prometheus job exporter pod not running" 0 $?
 }
 
 # Verify kube_node_info is collected by agent from kube-state-metrics and remote-written.
-# Proves: agent scraping works + remote write pipeline is functional.
+# which proves agent scraping works and remote write pipeline is functional.
 testPrometheusKubeStateMetricsCollected() {
   log "Verifying kube_node_info is present (collected by agent from kube-state-metrics via remote write)"
 
