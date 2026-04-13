@@ -18,52 +18,80 @@ testPrometheusAPIAccessible() {
   assertEquals "Prometheus API should return 200 OK" "200" "${status}"
 }
 
+# Verify each agent scrape job has active targets collecting valid data.
+# Queries up{job="<name>"} per job — Prometheus sets up=1 for every successful scrape.
+# Covers all jobs defined in p1as-prometheus-agent values.yaml.
+testPrometheusAgentJobsCollectingData() {
+  log "Verifying each agent scrape job has active targets via up metric"
+
+  expected_jobs="prometheus kube-state-metrics kubernetes-apiservers kubernetes-nodes kubernetes-pods kubernetes-cadvisor kubernetes-service-endpoints opensearch-service"
+
+  for job in ${expected_jobs}; do
+    response=""
+    for i in {1..10}; do
+      encoded_job=$(echo "up{job=\"${job}\"}" | sed 's/{/%7B/g;s/}/%7D/g;s/"/%22/g')
+      response=$(curl -k -s "${PROMETHEUS}/api/v1/query?query=${encoded_job}" 2>/dev/null)
+      if echo "${response}" | grep -q '"resultType":"vector"' && \
+         echo "${response}" | grep -q '"result":\[{'; then
+        log "Job '${job}' has active targets (up=1 found)"
+        break
+      fi
+      log "Attempt ${i}/10 - waiting for up metric for job: ${job}..."
+      sleep 10
+    done
+    assertContains "Job '${job}' should have active scrape targets (up metric present)" \
+      "${response}" "${job}"
+  done
+}
+
 testPrometheusJobExporterRunning() {
   POD=$(kubectl -n prometheus get pods -l app=prometheus-job-exporter -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
   test -n "$POD" && kubectl -n prometheus get pod "$POD" -o jsonpath='{.status.phase}' | grep -q "Running"
   assertEquals "Prometheus job exporter pod not running" 0 $?
 }
 
-# Verify kube_node_info is collected by agent from kube-state-metrics and remote-written.
-# which proves agent scraping works and remote write pipeline is functional.
+# Verify kube_node_info{job="kube-state-metrics"} is present.
+# Proves kube-state-metrics job is successfully scraped by agent and remote-written.
 testPrometheusKubeStateMetricsCollected() {
   log "Verifying kube_node_info is present (collected by agent from kube-state-metrics via remote write)"
 
   for i in {1..10}; do
-    response=$(curl -k -s "${PROMETHEUS}/api/v1/query?query=kube_node_info" 2>/dev/null)
+    response=$(curl -k -s "${PROMETHEUS}/api/v1/query?query=kube_node_info%7Bjob%3D%22kube-state-metrics%22%7D" 2>/dev/null)
     if echo "${response}" | grep -q '"resultType":"vector"' && \
        echo "${response}" | grep -q '"result":\[{'; then
-      log "kube_node_info is present in Prometheus server"
+      log "kube_node_info{job=kube-state-metrics} is present in Prometheus server"
       break
     fi
     log "Attempt ${i}/10 - waiting for kube_node_info..."
     sleep 10
   done
 
-  assertContains "kube_node_info should be present in server" "${response}" "kube_node_info"
+  assertContains "kube_node_info from kube-state-metrics job should be present" "${response}" "kube_node_info"
 }
 
-# Verify machine_cpu_cores from kubernetes-cadvisor scrape job is remote-written.
+# Verify machine_cpu_cores{job="kubernetes-cadvisor"} is present.
+# Proves kubernetes-cadvisor job is scraping node cadvisor endpoints.
 # Used by kubernetes-dashboard for CPU utilisation calculations.
 testPrometheusCAdvisorMetricsCollected() {
   log "Verifying machine_cpu_cores is present (collected by agent from kubernetes-cadvisor job)"
 
   for i in {1..10}; do
-    response=$(curl -k -s "${PROMETHEUS}/api/v1/query?query=machine_cpu_cores" 2>/dev/null)
+    response=$(curl -k -s "${PROMETHEUS}/api/v1/query?query=machine_cpu_cores%7Bjob%3D%22kubernetes-cadvisor%22%7D" 2>/dev/null)
     if echo "${response}" | grep -q '"resultType":"vector"' && \
        echo "${response}" | grep -q '"result":\[{'; then
-      log "machine_cpu_cores is present in Prometheus server"
+      log "machine_cpu_cores{job=kubernetes-cadvisor} is present in Prometheus server"
       break
     fi
     log "Attempt ${i}/10 - waiting for machine_cpu_cores..."
     sleep 10
   done
 
-  assertContains "machine_cpu_cores should be present in server" "${response}" "machine_cpu_cores"
+  assertContains "machine_cpu_cores from kubernetes-cadvisor job should be present" "${response}" "machine_cpu_cores"
 }
 
-# Verify users_count_1..4 metrics are scraped by job exporter and remote-written.
-# Proves kubernetes-pods scrape job discovery is working.
+# Verify users_count metrics from the prometheus-job-exporter are present.
+# The job exporter runs ldapsearch commands against PingDirectory pods (pingdirectory-0)
+# to count users and exposes them as metrics. Scraped by agent's kubernetes-pods job.
 testPrometheusJobExporterMetricsScraped() {
   log "Verifying users_count metrics from Job Exporter are present in Prometheus server"
 
