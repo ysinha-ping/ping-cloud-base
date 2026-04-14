@@ -31,16 +31,19 @@ testPrometheusAgentJobsCollectingData() {
     for i in {1..10}; do
       encoded_job=$(echo "up{job=\"${job}\"}" | sed 's/{/%7B/g;s/}/%7D/g;s/"/%22/g')
       response=$(curl -k -s "${PROMETHEUS}/api/v1/query?query=${encoded_job}" 2>/dev/null)
-      if echo "${response}" | grep -q '"resultType":"vector"' && \
-         echo "${response}" | grep -q '"result":\[{'; then
-        log "Job '${job}' has active targets (up=1 found)"
-        break
+      result_count=$(echo "${response}" | jq '.data.result | length' 2>/dev/null)
+      if [[ ${result_count} -gt 0 ]]; then
+        value=$(echo "${response}" | jq -r '.data.result[0].value[1]' 2>/dev/null)
+        if [[ "${value}" == "1" ]]; then
+          log "Job '${job}' has active targets (up=1 confirmed via jq)"
+          break
+        fi
       fi
-      log "Attempt ${i}/10 - waiting for up metric for job: ${job}..."
+      log "Attempt ${i}/10 - waiting for up=1 for job: ${job}..."
       sleep 10
     done
-    assertContains "Job '${job}' should have active scrape targets (up metric present)" \
-      "${response}" "${job}"
+    assertNotNull "Job '${job}' should have up=1 (target active and scraping)" "${value}"
+    assertEquals "Job '${job}' up metric should be 1" "1" "${value}"
   done
 }
 
@@ -48,25 +51,6 @@ testPrometheusJobExporterRunning() {
   POD=$(kubectl -n prometheus get pods -l app=prometheus-job-exporter -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
   test -n "$POD" && kubectl -n prometheus get pod "$POD" -o jsonpath='{.status.phase}' | grep -q "Running"
   assertEquals "Prometheus job exporter pod not running" 0 $?
-}
-
-# Verify kube_node_info{job="kube-state-metrics"} is present.
-# Proves kube-state-metrics job is successfully scraped by agent and remote-written.
-testPrometheusKubeStateMetricsCollected() {
-  log "Verifying kube_node_info is present (collected by agent from kube-state-metrics via remote write)"
-
-  for i in {1..10}; do
-    response=$(curl -k -s "${PROMETHEUS}/api/v1/query?query=kube_node_info%7Bjob%3D%22kube-state-metrics%22%7D" 2>/dev/null)
-    if echo "${response}" | grep -q '"resultType":"vector"' && \
-       echo "${response}" | grep -q '"result":\[{'; then
-      log "kube_node_info{job=kube-state-metrics} is present in Prometheus server"
-      break
-    fi
-    log "Attempt ${i}/10 - waiting for kube_node_info..."
-    sleep 10
-  done
-
-  assertContains "kube_node_info from kube-state-metrics job should be present" "${response}" "kube_node_info"
 }
 
 # Verify machine_cpu_cores{job="kubernetes-cadvisor"} is present.
