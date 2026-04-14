@@ -28,6 +28,7 @@ testPrometheusAgentJobsCollectingData() {
 
   for job in ${expected_jobs}; do
     response=""
+    value=""
     for i in {1..10}; do
       encoded_job=$(echo "up{job=\"${job}\"}" | sed 's/{/%7B/g;s/}/%7D/g;s/"/%22/g')
       response=$(curl -k -s "${PROMETHEUS}/api/v1/query?query=${encoded_job}" 2>/dev/null)
@@ -35,7 +36,7 @@ testPrometheusAgentJobsCollectingData() {
       if [[ ${result_count} -gt 0 ]]; then
         value=$(echo "${response}" | jq -r '.data.result[0].value[1]' 2>/dev/null)
         if [[ "${value}" == "1" ]]; then
-          log "Job '${job}' has active targets (up=1 confirmed via jq)"
+          log "Job '${job}': up=1 (target active and scraping successfully)"
           break
         fi
       fi
@@ -63,7 +64,8 @@ testPrometheusCAdvisorMetricsCollected() {
     response=$(curl -k -s "${PROMETHEUS}/api/v1/query?query=machine_cpu_cores%7Bjob%3D%22kubernetes-cadvisor%22%7D" 2>/dev/null)
     if echo "${response}" | grep -q '"resultType":"vector"' && \
        echo "${response}" | grep -q '"result":\[{'; then
-      log "machine_cpu_cores{job=kubernetes-cadvisor} is present in Prometheus server"
+      cpu_cores=$(echo "${response}" | jq -r '.data.result[0].value[1] // "unknown"' 2>/dev/null)
+      log "machine_cpu_cores{job=kubernetes-cadvisor}: ${cpu_cores} cores reported"
       break
     fi
     log "Attempt ${i}/10 - waiting for machine_cpu_cores..."
@@ -82,7 +84,8 @@ testPrometheusJobExporterMetricsScraped() {
   for i in {1..10}; do
     response=$(curl -k -s "${PROMETHEUS}/api/v1/query?query=users_count_1" 2>/dev/null)
     if echo "${response}" | grep -q '"resultType":"vector"'; then
-      log "users_count_1 metric is present in Prometheus server"
+      count=$(echo "${response}" | jq -r '.data.result[0].value[1] // "unknown"' 2>/dev/null)
+      log "users_count_1 present in Prometheus server — value: ${count}"
       break
     fi
     log "Attempt ${i}/10 - waiting for users_count_1..."
@@ -101,7 +104,9 @@ testPrometheusOpenSearchMetricsScraped() {
   for i in {1..10}; do
     response=$(curl -k -s "${PROMETHEUS}/api/v1/query?query=opensearch_cluster_status" 2>/dev/null)
     if echo "${response}" | grep -q '"resultType":"vector"'; then
-      log "opensearch_cluster_status metric is present in Prometheus server"
+      os_status=$(echo "${response}" | jq -r '.data.result[0].value[1] // "unknown"' 2>/dev/null)
+      cluster=$(echo "${response}" | jq -r '.data.result[0].metric.cluster // "unknown"' 2>/dev/null)
+      log "opensearch_cluster_status present — cluster: ${cluster}, status: ${os_status}"
       break
     fi
     log "Attempt ${i}/10 - waiting for opensearch_cluster_status..."
