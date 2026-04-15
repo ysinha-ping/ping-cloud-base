@@ -1,0 +1,59 @@
+# Applied when LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED=true for customer-hub.
+# Deploys logstash-elastic with customer pipeline: redirects probes to port 8084, disables opensearch main pipeline,
+# adds IRSA annotation to logstash-elastic SA. FluentBit outputs to both logstash_customer_out and s3_app_out.
+# Substituted into region/kustomization.yaml at ArgoCD sync time via ${LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED}.
+# Note: opensearch-bootstrap init container is already removed by disable-opensearch-primary-region-patch.yaml
+# in primary CHUB. In secondary CHUB, opensearch runs so the init container executes normally.
+---
+# Redirects logstash-elastic probes from port 8080 (opensearch main pipeline) to port 8084 (customer pipeline).
+# Required because opensearch is disabled in customer-hub; probes targeting port 8080 would fail.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: logstash-elastic
+  namespace: elastic-stack-logging
+spec:
+  template:
+    spec:
+      containers:
+      - name: logstash
+        readinessProbe:
+          httpGet:
+            port: 8084
+        startupProbe:
+          httpGet:
+            port: 8084
+        volumeMounts:
+        - name: logstash-pipelines
+          mountPath: /usr/share/logstash/config/pipelines.yml
+          subPath: pipelines.yml
+      volumes:
+      - name: logstash-pipelines
+        configMap:
+          name: logstash-pipelines
+          items:
+          - key: pipelines.yml
+            path: pipelines.yml
+---
+# Overwrites logstash-pipelines ConfigMap to disable the main opensearch pipeline,
+# routing all traffic through the customer pipeline only.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-pipelines
+  namespace: elastic-stack-logging
+data:
+  pipelines.yml: |
+    - pipeline.id: customer
+      path.config: "/usr/share/logstash/pipeline/customer"
+---
+# Adds IRSA role annotation to logstash-elastic ServiceAccount.
+# Must be absent when logstash-elastic is not deployed (handled by logstash-chub-false-patch.yaml).
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: logstash-elastic
+  namespace: elastic-stack-logging
+  annotations:
+    purpose: service-account-for-logstash-elastic
+    ${IRSA_LOGSTASH_ANNOTATION_KEY_VALUE}

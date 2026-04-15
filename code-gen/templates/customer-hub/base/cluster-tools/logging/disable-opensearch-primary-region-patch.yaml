@@ -1,3 +1,6 @@
+# Removes the opensearch cluster and controller-manager from the primary customer-hub region.
+# Always applied in primary customer-hub (uncommented by generate-cluster-state.sh for primary regions).
+# Customer-hub does not deploy opensearch; these resources must be explicitly deleted.
 ---
 
 apiVersion: opensearch.opster.io/v1
@@ -15,19 +18,3 @@ metadata:
   name: os-controller-manager
   namespace: elastic-stack-logging
 $patch: delete
-
----
-
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: logstash-elastic
-  namespace: elastic-stack-logging
-spec:
-  template:
-    spec:
-      initContainers:
-      - name: opensearch-bootstrap
-        $patch: delete
-      - name: wait-for-os-health
-        $patch: delete

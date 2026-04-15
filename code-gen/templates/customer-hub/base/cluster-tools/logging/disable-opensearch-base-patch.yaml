@@ -1,12 +1,13 @@
-# Overwrite the configMap fluent-bit-pipeline-outputs
-# config in order to disable the main(opensearch) pipeline.
+# Overwrites fluent-bit-pipeline-outputs ConfigMap to remove the opensearch (elk) pipeline output (port 8080).
+# Always applied in customer-hub. Produces two outputs: logstash_customer_out (port 8084) and s3_app_out.
+# disable-logstash-chub-fluentbit-output-patch.yaml (applied after this) further reduces to S3-only when customer pipeline is disabled.
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: fluent-bit-pipeline-outputs
   namespace: elastic-stack-logging
 data:
- pipeline-outputs.conf: |
+  pipeline-outputs.conf: |
     [OUTPUT]
         Name                http
         Alias               logstash_customer_out
@@ -32,32 +33,3 @@ data:
         net.keepalive_idle_timeout  10
         net.keepalive_max_recycle   100
         storage.total_limit_size  3000M
-
----
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: logstash-elastic
-  namespace: elastic-stack-logging
-spec:
-  template:
-    spec:
-      containers:
-      - name: logstash
-        readinessProbe:
-          httpGet:
-            port: 8084
-        startupProbe:
-          httpGet:
-            port: 8084
-        volumeMounts:
-        - name: logstash-pipelines
-          mountPath: /usr/share/logstash/config/pipelines.yml
-          subPath: pipelines.yml
-      volumes:
-      - name: logstash-pipelines
-        configMap:
-          name: logstash-pipelines
-          items:
-          - key: pipelines.yml
-            path: pipelines.yml 

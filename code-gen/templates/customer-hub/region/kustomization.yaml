@@ -32,6 +32,13 @@ patchesStrategicMerge:
 #- ../base/cluster-tools/health/chub-healthchecks-primary-region-patch.yaml
 #- ../base/cluster-tools/health/chub-healthchecks-child-region-patch.yaml
 
+## Logstash-elastic customer pipeline
+# Toggle by setting LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED=true/false in base/env_vars and committing.
+# ArgoCD sync substitutes the value into the patch filename below — no kustomization editing needed.
+# generate-cluster-state.sh sets the initial value at CSR creation/upgrade time.
+
+- ../base/cluster-tools/logging/logstash-chub-${LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED}-patch.yaml
+
 
 ### MANUAL UPDATES SECTION - END
 
@@ -48,9 +55,6 @@ patchesStrategicMerge:
 ### Remove opensearch from chub
 - ../base/cluster-tools/logging/disable-opensearch-base-patch.yaml
 #- ../base/cluster-tools/logging/disable-opensearch-primary-region-patch.yaml
-
-### Remove main pipeline from chub
-- ../base/cluster-tools/logging/pipelines-config.yaml
 
 ### Regional enablement - remove admins, backups, etc. from secondary ###
 ### The removal of these patches is handled automatically via generate-cluster-state script, manual toggling is not needed ###

@@ -473,6 +473,7 @@ ${EXTERNAL_INGRESS_ENABLED}
 ${HEALTHCHECKS_ENABLED}
 ${CUSTOMER_PINGONE_ENABLED}
 ${ENABLE_IMPOSSIBLE_LOGIN_DASHBOARD}
+${LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED}
 ${ARGOCD_BOOTSTRAP_ENABLED}
 ${SELF_SERVICE_TEMPLATES_ENABLED}
 ${CLOUDWATCH_ENABLED}
@@ -545,6 +546,17 @@ add_derived_variables() {
   fi
 
   export PRIMARY_TENANT_DOMAIN_DERIVED="\${PRIMARY_TENANT_DOMAIN}"
+
+  # Set per-environment default for LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED.
+  # customer-hub: default false → customer pipeline not deployed, FluentBit outputs only to S3
+  # non-chub CDE: default true → customer pipeline deployed, FluentBit outputs to both S3 and customer pipeline
+  if test -z "${LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED}"; then
+    if test "${ENV}" = "${CUSTOMER_HUB}"; then
+      export LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED="false"
+    else
+      export LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED="true"
+    fi
+  fi
 
   # This variable's value will make it onto the branding for all admin consoles and
   # will include the name of the environment and the region where it's deployed.
@@ -1033,6 +1045,7 @@ export ARGOCD_BOOTSTRAP_ENABLED="${ARGOCD_BOOTSTRAP_ENABLED:-true}"
 export EXTERNAL_INGRESS_ENABLED="${EXTERNAL_INGRESS_ENABLED:-""}"
 export HEALTHCHECKS_ENABLED="${HEALTHCHECKS_ENABLED:-false}"
 export CUSTOMER_PINGONE_ENABLED="${CUSTOMER_PINGONE_ENABLED:-false}"
+
 export ENABLE_IMPOSSIBLE_LOGIN_DASHBOARD="${ENABLE_IMPOSSIBLE_LOGIN_DASHBOARD:-false}"
 
 # For SELF_SERVICE_TEMPLATES_ENABLED, we want to default it to true for new clusters but false for upgrades,
@@ -1655,15 +1668,28 @@ for ENV_OR_BRANCH in ${SUPPORTED_ENVIRONMENT_TYPES}; do
     fi
   done
 
+  # Uncomment logstash-elastic IRSA patch for non-customer-hub CDEs.
+  # For customer-hub: IRSA annotation is included inline in logstash-chub-true-patch.yaml.
+  LOGGING_KUST_FILE="${K8S_CONFIGS_DIR}/base/cluster-tools/logging/kustomization.yaml"
+  if test "${LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED}" = "true" && test "${ENV}" != "${CUSTOMER_HUB}"; then
+    echo "Non-CHUB + LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED=true: enabling logstash-elastic IRSA patch."
+    sed -i.bak '/logstash-elastic-irsa-patch\.yaml/s/#//' "${LOGGING_KUST_FILE}"
+    rm -f "${LOGGING_KUST_FILE}.bak"
+  fi
+
   if test "${ENV}" = "${CUSTOMER_HUB}"; then
     echo "CHUB deploy identified, retaining only PingCentral and PingAccess profiles"
     # Retain only the pingcentral & pingaccess profiles
     find "${ENV_PROFILES_DIR}" -type d -mindepth 1 -maxdepth 1 -not -name "${PING_CENTRAL}" -not -name "${PING_ACCESS}" -exec rm -rf {} +
 
+    # The customer pipeline toggle is handled via ${LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED} in the region
+    # kustomization.yaml filename at ArgoCD sync time (envsubst by git-ops-command.sh). No sed needed here.
+    CHUB_REGION_KUST_FILE="${K8S_CONFIGS_DIR}/${REGION_NICK_NAME}/kustomization.yaml"
+
     if test "${TENANT_DOMAIN}" = "${PRIMARY_TENANT_DOMAIN}"; then
       echo "Primary CHUB identified, disabling opensearch cluster."
-      sed -i.bak '/disable-opensearch-primary-region-patch.yaml/s/#//' "${PRIMARY_PING_KUST_FILE}"
-      rm -f "${PRIMARY_PING_KUST_FILE}.bak"
+      sed -i.bak '/disable-opensearch-primary-region-patch\.yaml/s/#//' "${CHUB_REGION_KUST_FILE}"
+      rm -f "${CHUB_REGION_KUST_FILE}.bak"
     fi
 
   elif test "${ENV}" = "dev" && "${IS_BELUGA_ENV}" &&  test "${CI_SERVER}" = "yes"; then

@@ -1,0 +1,11 @@
+# Add IRSA role annotation to logstash-elastic service account.
+# Managed by generate-cluster-state.sh: uncommented when LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED=true (or for non-customer-hub CDEs).
+# Must be absent (commented) when logstash-elastic is not deployed (customer-hub default), as the ServiceAccount won't exist.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: logstash-elastic
+  namespace: elastic-stack-logging
+  annotations:
+    purpose: service-account-for-logstash-elastic
+    ${IRSA_LOGSTASH_ANNOTATION_KEY_VALUE}

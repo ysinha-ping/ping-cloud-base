@@ -62,16 +62,10 @@ patchesStrategicMerge:
       purpose: service-account-for-ping-cloud-stack
       ${IRSA_BOOTSTRAP_ANNOTATION_KEY_VALUE}
 
-- |-
-  # Add IRSA role annotation to logstash-elastic service account
-  apiVersion: v1
-  kind: ServiceAccount
-  metadata:
-    name: logstash-elastic
-    namespace: elastic-stack-logging
-    annotations:
-      purpose: service-account-for-logstash-elastic
-      ${IRSA_LOGSTASH_ANNOTATION_KEY_VALUE}
+# IRSA annotation for logstash-elastic SA.
+# For non-customer-hub CDEs: uncommented by generate-cluster-state.sh (LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED always true).
+# For customer-hub: handled inline in logstash-chub-true-patch.yaml; this line stays commented.
+#- logstash-elastic-irsa-patch.yaml
 
 - |-
   # Add IRSA role annotation to logstash-elastic-s3 service account
