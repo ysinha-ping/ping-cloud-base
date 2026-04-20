@@ -1,94 +1,68 @@
-# Disables OpenSearch stack for customer-hub.
-# Always applied (opensearch is not deployed in any customer-hub region).
-# Deletes all OpenSearch resources and the opensearch-bootstrap init container from logstash-elastic.
-# Overwrites: FluentBit pipeline outputs to logstash_customer_out (8084) + s3_app_out (8081).
+# Applied when LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED=false (default for customer-hub).
+# Removes logstash-elastic and its associated resources, and reduces FluentBit to S3-only output.
 ---
-
-apiVersion: opensearch.opster.io/v1
-kind: OpenSearchCluster
-metadata:
-  name: opensearch-cluster
-  namespace: elastic-stack-logging
-$patch: delete
-
----
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: os-controller-manager
-  namespace: elastic-stack-logging
-$patch: delete
-
----
-
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: opensearch
-  namespace: elastic-stack-logging
-$patch: delete
-
----
-
-apiVersion: v1
-kind: Secret
-metadata:
-  name: opensearch-securityconfig
-  namespace: elastic-stack-logging
-$patch: delete
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: opensearch-cluster-headless
-  namespace: elastic-stack-logging
-$patch: delete
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: opensearch-ingest
-  namespace: elastic-stack-logging
-$patch: delete
-
----
-
-apiVersion: opensearch.opster.io/v1
-kind: OpensearchTenant
-metadata:
-  name: customer
-  namespace: elastic-stack-logging
-$patch: delete
-
----
-
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: opensearch-gp3
-$patch: delete
-
----
-
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: logstash-elastic
   namespace: elastic-stack-logging
-spec:
-  template:
-    spec:
-      initContainers:
-      - name: opensearch-bootstrap
-        $patch: delete
-
+$patch: delete
 ---
-
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: logstash-elastic
+  namespace: elastic-stack-logging
+$patch: delete
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-pipelines
+  namespace: elastic-stack-logging
+$patch: delete
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-pipeline-customer
+  namespace: elastic-stack-logging
+$patch: delete
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: logstash-elastic
+  namespace: elastic-stack-logging
+$patch: delete
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: logstash-elastic
+  namespace: elastic-stack-logging
+$patch: delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: logstash-elastic
+$patch: delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: logstash-elastic
+$patch: delete
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: logstash-pdb
+  namespace: elastic-stack-logging
+$patch: delete
+---
+# Overwrites FluentBit outputs to S3-only (removes logstash_customer_out set by disable-opensearch-base-patch.yaml).
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -96,20 +70,6 @@ metadata:
   namespace: elastic-stack-logging
 data:
   pipeline-outputs.conf: |
-    [OUTPUT]
-        Name                http
-        Alias               app_customer_out
-        Match               elk.cust.*
-        workers             1
-        Host                logstash-elastic.elastic-stack-logging
-        Port                8084
-        Format              json
-        Retry_Limit         15
-        compress            gzip
-        net.keepalive_idle_timeout  10
-        net.keepalive_max_recycle   100
-        storage.total_limit_size    2000M
-
     [OUTPUT]
         Name                http
         Alias               app_s3_archive_out
@@ -122,7 +82,7 @@ data:
         compress            gzip
         net.keepalive_idle_timeout  10
         net.keepalive_max_recycle   100
-        storage.total_limit_size    4000M
+        storage.total_limit_size    2000M
 
     [OUTPUT]
         Name                http
@@ -136,4 +96,7 @@ data:
         compress            gzip
         net.keepalive_idle_timeout  10
         net.keepalive_max_recycle   100
-        storage.total_limit_size    4000M
+        storage.total_limit_size    2000M
+
+
+

@@ -229,6 +229,15 @@ HEALTHCHECKS_ENABLED=${HEALTHCHECKS_ENABLED}
 CUSTOMER_PINGONE_ENABLED=${CUSTOMER_PINGONE_ENABLED}
 
 SELF_SERVICE_TEMPLATES_ENABLED=${SELF_SERVICE_TEMPLATES_ENABLED}
+
+# Feature flag to enable or disable the Logstash customer pipeline in the customer-hub environment.
+# When set to true:
+# -> The logstash-elastic StatefulSet is deployed
+# -> Required pipeline configurations are applied to enable the customer pipeline
+# When set to false (default):
+# -> The logstash-elastic StatefulSet is not deployed
+# -> Any customer pipeline-related configurations are removed
+LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED=${LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED}
 ########################################################################################################################
 
 # For ArgoCD-status slack notifications (notifications.argoproj.io/subscribe.on-sync-failed.slack)
