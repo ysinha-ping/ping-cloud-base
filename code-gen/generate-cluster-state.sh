@@ -1465,6 +1465,15 @@ for ENV_OR_BRANCH in ${SUPPORTED_ENVIRONMENT_TYPES}; do
     export CLOUDWATCH_ENABLED="true"
   fi
 
+  # Set default for LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED per environment
+  if test "${ENV}" = "${CUSTOMER_HUB}"; then
+      if test -z "${LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED}"; then
+          export LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED="false"
+      fi
+  else
+      export LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED="false"
+  fi
+
   ######################################################################################################################
   # Print out the final value being used for each environment specific variable.
   ######################################################################################################################
@@ -1488,15 +1497,6 @@ for ENV_OR_BRANCH in ${SUPPORTED_ENVIRONMENT_TYPES}; do
   echo "Using TELEPORT_RESOURCE_ID: ${TELEPORT_RESOURCE_ID}"
   echo "Using STAGE: ${STAGE}"
   echo "Using CLOUDWATCH_ENABLED: ${CLOUDWATCH_ENABLED}"
-
-  # Set default for LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED per environment
-  if test "${ENV}" = "${CUSTOMER_HUB}"; then
-      if test -z "${LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED}"; then
-          export LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED="false"
-      fi
-  else
-      export LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED="false"
-  fi
   echo "Using LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED: ${LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED}"
 
 
