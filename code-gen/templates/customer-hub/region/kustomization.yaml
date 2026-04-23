@@ -148,4 +148,3 @@ configMapGenerator:
     - ../base/cluster-tools/health/env_vars
     - ../base/env_vars
     - env_vars
-
