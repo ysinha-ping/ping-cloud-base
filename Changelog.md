@@ -33,7 +33,7 @@
 - p1as-karpenter GA vs non-ga settings
 - Remove metrics-server and kube-state-metrics from PCB
 - Add support for NewRelic Prometheus to scrape OpenSearch metrics
-- Add LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED feature flag to conditionally deploy logstash-elastic STS (customer pipeline) in customer-hub accounts
+- Add patch to conditionally deploy logstash-elastic STS (customer pipeline) in customer-hub accounts
 
 _Changes:_
 

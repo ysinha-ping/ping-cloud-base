@@ -1,94 +1,5 @@
-# Disables OpenSearch stack for customer-hub.
-# Always applied (opensearch is not deployed in any customer-hub region).
-# Deletes all OpenSearch resources and the opensearch-bootstrap init container from logstash-elastic.
-# Overwrites: FluentBit pipeline outputs to logstash_customer_out (8084) + s3_app_out (8081).
----
-
-apiVersion: opensearch.opster.io/v1
-kind: OpenSearchCluster
-metadata:
-  name: opensearch-cluster
-  namespace: elastic-stack-logging
-$patch: delete
-
----
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: os-controller-manager
-  namespace: elastic-stack-logging
-$patch: delete
-
----
-
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: opensearch
-  namespace: elastic-stack-logging
-$patch: delete
-
----
-
-apiVersion: v1
-kind: Secret
-metadata:
-  name: opensearch-securityconfig
-  namespace: elastic-stack-logging
-$patch: delete
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: opensearch-cluster-headless
-  namespace: elastic-stack-logging
-$patch: delete
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: opensearch-ingest
-  namespace: elastic-stack-logging
-$patch: delete
-
----
-
-apiVersion: opensearch.opster.io/v1
-kind: OpensearchTenant
-metadata:
-  name: customer
-  namespace: elastic-stack-logging
-$patch: delete
-
----
-
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: opensearch-gp3
-$patch: delete
-
----
-
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: logstash-elastic
-  namespace: elastic-stack-logging
-spec:
-  template:
-    spec:
-      initContainers:
-      - name: opensearch-bootstrap
-        $patch: delete
-
----
-
+# Overwrite the configMap fluent-bit-pipeline-outputs
+# config in order to disable the main(opensearch) pipeline.
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -137,3 +48,32 @@ data:
         net.keepalive_idle_timeout  10
         net.keepalive_max_recycle   100
         storage.total_limit_size    4000M
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: logstash-elastic
+  namespace: elastic-stack-logging
+spec:
+  template:
+    spec:
+      containers:
+      - name: logstash
+        readinessProbe:
+          httpGet:
+            port: 8084
+        startupProbe:
+          httpGet:
+            port: 8084
+        volumeMounts:
+        - name: logstash-pipelines
+          mountPath: /usr/share/logstash/config/pipelines.yml
+          subPath: pipelines.yml
+      volumes:
+      - name: logstash-pipelines
+        configMap:
+          name: logstash-pipelines
+          items:
+          - key: pipelines.yml
+            path: pipelines.yml

@@ -474,7 +474,6 @@ ${EXTERNAL_INGRESS_ENABLED}
 ${HEALTHCHECKS_ENABLED}
 ${CUSTOMER_PINGONE_ENABLED}
 ${ENABLE_IMPOSSIBLE_LOGIN_DASHBOARD}
-${LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED}
 ${ARGOCD_BOOTSTRAP_ENABLED}
 ${SELF_SERVICE_TEMPLATES_ENABLED}
 ${CLOUDWATCH_ENABLED}
@@ -870,7 +869,7 @@ echo "Initial CUSTOMER_PINGONE_ENABLED: ${CUSTOMER_PINGONE_ENABLED}"
 echo "Initial SELF_SERVICE_TEMPLATES_ENABLED: ${SELF_SERVICE_TEMPLATES_ENABLED}"
 
 echo "Initial ENABLE_IMPOSSIBLE_LOGIN_DASHBOARD: ${ENABLE_IMPOSSIBLE_LOGIN_DASHBOARD}"
-echo "Initial LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED: ${LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED}"
+
 echo "Initial ARGOCD_BOOTSTRAP_ENABLED: ${ARGOCD_BOOTSTRAP_ENABLED}"
 echo "Initial ARGOCD_CDE_ROLE_SSM_TEMPLATE: ${ARGOCD_CDE_ROLE_SSM_TEMPLATE}"
 echo "Initial ARGOCD_CDE_URL_SSM_TEMPLATE: ${ARGOCD_CDE_URL_SSM_TEMPLATE}"
@@ -1465,15 +1464,6 @@ for ENV_OR_BRANCH in ${SUPPORTED_ENVIRONMENT_TYPES}; do
     export CLOUDWATCH_ENABLED="true"
   fi
 
-  # Set default for LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED per environment
-  if test "${ENV}" = "${CUSTOMER_HUB}"; then
-      if test -z "${LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED}"; then
-          export LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED="false"
-      fi
-  else
-      export LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED="false"
-  fi
-
   ######################################################################################################################
   # Print out the final value being used for each environment specific variable.
   ######################################################################################################################
@@ -1497,7 +1487,6 @@ for ENV_OR_BRANCH in ${SUPPORTED_ENVIRONMENT_TYPES}; do
   echo "Using TELEPORT_RESOURCE_ID: ${TELEPORT_RESOURCE_ID}"
   echo "Using STAGE: ${STAGE}"
   echo "Using CLOUDWATCH_ENABLED: ${CLOUDWATCH_ENABLED}"
-  echo "Using LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED: ${LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED}"
 
 
   ######################################################################################################################
@@ -1679,6 +1668,12 @@ for ENV_OR_BRANCH in ${SUPPORTED_ENVIRONMENT_TYPES}; do
     echo "CHUB deploy identified, retaining only PingCentral and PingAccess profiles"
     # Retain only the pingcentral & pingaccess profiles
     find "${ENV_PROFILES_DIR}" -type d -mindepth 1 -maxdepth 1 -not -name "${PING_CENTRAL}" -not -name "${PING_ACCESS}" -exec rm -rf {} +
+
+    if test "${TENANT_DOMAIN}" = "${PRIMARY_TENANT_DOMAIN}"; then
+      echo "Primary CHUB identified, disabling opensearch cluster."
+      sed -i.bak '/disable-opensearch-primary-region-patch.yaml/s/#//' "${PRIMARY_PING_KUST_FILE}"
+      rm -f "${PRIMARY_PING_KUST_FILE}.bak"
+    fi
 
   elif test "${ENV}" = "dev" && "${IS_BELUGA_ENV}" &&  test "${CI_SERVER}" = "yes"; then
     echo "Running a dev cluster in CI/CD pipeline, not removing PingCentral profiles"

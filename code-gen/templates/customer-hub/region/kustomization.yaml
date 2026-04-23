@@ -45,13 +45,12 @@ patchesStrategicMerge:
 ### Cost saving measures
 - ../base/ping-cloud/pingaccess-was/engine/chub-pingaccess-was-scaledown-patch.yaml
 
-### Disable opensearch and reconfigure logging for customer-hub
+### Remove opensearch from chub
 - ../base/cluster-tools/logging/disable-opensearch-base-patch.yaml
+#- ../base/cluster-tools/logging/disable-opensearch-primary-region-patch.yaml
 
-## Logstash-elastic customer pipeline toggle
-# Set LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED=true/false in base/env_vars.
-# generate-cluster-state.sh substitutes the value into the filename below at CSR creation/upgrade.
-- ../base/cluster-tools/logging/logstash-chub-${LOGSTASH_CHUB_CUSTOMER_PIPELINE_ENABLED}-patch.yaml
+### Remove main pipeline from chub
+- ../base/cluster-tools/logging/pipelines-config.yaml
 
 ### Regional enablement - remove admins, backups, etc. from secondary ###
 ### The removal of these patches is handled automatically via generate-cluster-state script, manual toggling is not needed ###
@@ -148,3 +147,4 @@ configMapGenerator:
     - ../base/cluster-tools/health/env_vars
     - ../base/env_vars
     - env_vars
+
