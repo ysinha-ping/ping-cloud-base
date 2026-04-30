@@ -37,6 +37,7 @@
 - Add patch to conditionally deploy logstash-elastic STS (customer pipeline) in customer-hub accounts
 - Remove cloudwatch image override to rely on p1as-observability's p1as-cloudwatch chart default to simplify future Cloudwatch agent version upgrades
 - Implement Logstash HPA via custom metric
+- Add upgrade and server to Fluent Bit multiline_system_log cont rule exclusion list to fix missing fluentbit_ingest_timestamp in pa-was-upgrade-log-* and pf-server-* OpenSearch indexes
 
 _Changes:_
 
@@ -76,6 +77,7 @@ _Changes:_
 - [X] PDO-11340 Expose OpenSearch Metrics for Monitoring and Alerting on NewRelic
 - [X] PDO-11365 Logstash: Update to make logstash sts (customer pipeline) optional in customer-hub
 - [X] PDO-11376 Remove metrics-server and kube-state-metrics from PCB
+- [X] PDO-11383 [FLAKY] "fluentbit_ingest_timestamp" missing in OpenSearch for certain indexes on Invalid Logs
 - [X] PDO-11390 Adjust resource and config allocation for FluentBit & Logstash
 - [x] PDO-11586 Update Security Contexts for Argocd
 
