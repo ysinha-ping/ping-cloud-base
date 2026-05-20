@@ -118,3 +118,28 @@ prometheus-agent:
           items:
             - key: password
               path: os-password
+
+#######################################################
+# OpenSearch (p1as-opensearch) settings
+#######################################################
+# CDE primary regions: opensearch.enabled=true, IRSA wired, dashboards
+# baseRedirectUrl set, SSO bootstrap drives credentials from SSM.
+# Secondary regions: secondary-values.yaml drops the sso block + sets
+# opensearch.enabled=false implicitly via primaryRegion gating in chart templates.
+# CHUB: chub-values.yaml sets opensearch.enabled=false outright.
+opensearch:
+  enabled: true
+  irsaRoleArn: "${IRSA_OPENSEARCH_ROLE_ARN}"
+  imageTag: "v2.4-release-branch-latest"
+  dashboards:
+    baseRedirectUrl: "https://logs.${DNS_ZONE}"
+
+sso:
+  enabled: true
+  customerSsoSsmPathPrefix: "${CUSTOMER_SSO_SSM_PATH_PREFIX}"
+  serviceSsmPathPrefix: "${SERVICE_SSM_PATH_PREFIX}"
+
+# CRDs are owned by PCB at opensearch-operator/crd/ with ServerSideApply patches.
+# Chart default is already false; this is an explicit no-op safety override.
+opensearch-operator:
+  installCRDs: false

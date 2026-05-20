@@ -7,10 +7,11 @@ resources:
 - enrichment
 - logstash
 - namespace.yaml
+# PDO-5984: opensearch operator manifests, OpenSearchCluster CR, security
+# configs, storageclass, services, tenants, and cluster-info ConfigMap moved
+# to the p1as-opensearch Helm chart in p1as-observability. CRDs are still
+# owned by PCB (chart installs no CRDs).
 - opensearch-operator/crd
-- opensearch-operator
-- opensearch
-- common
 
 configMapGenerator:
 - name: elk-environment-variables

@@ -32,3 +32,12 @@ prometheus-agent:
     #Extra volumes and volume mounts are intentionally left blank to remove the opensearch-grafana-credentials secret from child regions.
     extraVolumes: []
     extraVolumeMounts: []
+
+# OpenSearch in secondary regions: keep opensearch.enabled=true so the chart's
+# cluster-info ConfigMap and the opensearch-ingest ExternalName Service render
+# (logstash-elastic in this region targets opensearch.${PRIMARY_DNS_ZONE} via
+# this ExternalName). The cluster CR, dashboards, security configs, storageclass
+# and SSO PreSync Job are all gated on `eq global.primaryRegion global.region`
+# inside the chart and will not render here. Disable SSO bootstrap explicitly.
+sso:
+  enabled: false

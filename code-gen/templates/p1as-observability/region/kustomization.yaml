@@ -7,6 +7,9 @@ resources:
   - ../base/namespace.yaml
   - ../base/crds-annotations
 
+helmGlobals:
+  configHome: /helm-working-dir
+
 helmCharts:
   - name: p1as-cloudwatch
     additionalValuesFiles:
@@ -53,6 +56,17 @@ helmCharts:
     version: v2.3-release-branch-latest
     namespace: prometheus
     repo: oci://${ECR_REGISTRY_NAME}/dev
+
+  - name: p1as-opensearch
+    additionalValuesFiles:
+      - ../../values-files/base/values.yaml   # base values.yaml
+      - ../../values-files/${REGION_NICK_NAME}/values.yaml   # regional values.yaml
+      - values.yaml   # app specific values.yaml
+    version: v2.4-os-micro-spike
+    namespace: elastic-stack-logging
+    repo: oci://705370621539.dkr.ecr.us-west-2.amazonaws.com/dev
+    valuesInline:
+      ecrRegistryName: "705370621539.dkr.ecr.us-west-2.amazonaws.com/dev"
 
 ### This field is used to trigger a resync of the helm chart ###
 configMapGenerator:
