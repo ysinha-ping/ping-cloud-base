@@ -33,11 +33,24 @@ prometheus-agent:
     extraVolumes: []
     extraVolumeMounts: []
 
-# OpenSearch in secondary regions: keep opensearch.enabled=true so the chart's
-# cluster-info ConfigMap and the opensearch-ingest ExternalName Service render
-# (logstash-elastic in this region targets opensearch.${PRIMARY_DNS_ZONE} via
-# this ExternalName). The cluster CR, dashboards, security configs, storageclass
-# and SSO PreSync Job are all gated on `eq global.primaryRegion global.region`
-# inside the chart and will not render here. Disable SSO bootstrap explicitly.
+# OpenSearch in secondary regions:
+# - global.region and global.primaryRegion are set to the real values by
+#   code-gen (base values.yaml: region="${REGION}", primaryRegion="${PRIMARY_REGION}").
+#   Since REGION != PRIMARY_REGION in a secondary, the chart's
+#   `eq global.primaryRegion global.region` gate evaluates false, so the
+#   cluster CR, dashboards, security configs, storageclass and SSO PreSync
+#   Job are all suppressed automatically.
+# - opensearch.enabled remains true so cluster-info CM and the opensearch-ingest
+#   ExternalName Service render. Logstash-elastic in this region reads
+#   cluster.name/logs.region from cluster-info, and routes to the primary via
+#   the ExternalName (opensearch.<primaryDnsZone>).
+# - Disable SSO bootstrap explicitly (belt-and-suspenders: it would also be
+#   skipped by the primaryRegion gate, but sso.enabled=false is clearer intent).
+# - Set opensearch-operator replicaCount to 0 so the operator pod does not run
+#   in secondary regions. There is no OpenSearchCluster CR to manage here, and
+#   running the operator wastes resources.
 sso:
   enabled: false
+
+opensearch-operator:
+  replicaCount: 0

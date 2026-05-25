@@ -7,3 +7,19 @@ prometheus:
       requests:
         cpu: 1500m
         memory: 5Gi
+
+#######################################################
+# OpenSearch prod sizing
+# Source: live cluster uber.yaml (os_uber.yaml hotNodes section).
+# Nonprod defaults (values.yaml): JVM -Xmx3000M/-Xms3000M, 4Gi/4Gi, CPU 1/4.
+#######################################################
+opensearch:
+  hotNodes:
+    jvm: "-Xms6g -Xmx6g"
+    resources:
+      requests:
+        cpu: "2"
+        memory: 6Gi
+      limits:
+        cpu: "6"
+        memory: 10Gi

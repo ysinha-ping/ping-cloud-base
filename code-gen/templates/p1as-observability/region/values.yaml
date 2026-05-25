@@ -124,9 +124,22 @@ prometheus-agent:
 #######################################################
 # CDE primary regions: opensearch.enabled=true, IRSA wired, dashboards
 # baseRedirectUrl set, SSO bootstrap drives credentials from SSM.
-# Secondary regions: secondary-values.yaml drops the sso block + sets
-# opensearch.enabled=false implicitly via primaryRegion gating in chart templates.
+# Secondary regions: secondary-values.yaml keeps opensearch.enabled=true so
+# cluster-info CM and the ExternalName ingest Service render; all primary-only
+# resources are gated on `eq global.primaryRegion global.region` in templates.
 # CHUB: chub-values.yaml sets opensearch.enabled=false outright.
+
+# p1as-opensearch chart global settings. These values are consumed by the chart
+# to determine per-region rendering (primary vs secondary) and OIDC mode.
+# isMicroserviceDeploy must be false for all real CDE deployments — it gates
+# OIDC env vars, dashboards auth type, and the SSO PreSync Job.
+global:
+  region: "${REGION}"
+  primaryRegion: "${PRIMARY_REGION}"
+  dnsZone: "${DNS_ZONE}"
+  primaryDnsZone: "${PRIMARY_DNS_ZONE}"
+  isMicroserviceDeploy: false
+
 opensearch:
   enabled: true
   irsaRoleArn: "${IRSA_OPENSEARCH_ROLE_ARN}"
