@@ -141,7 +141,7 @@ sso:
   customerSsoSsmPathPrefix: "${CUSTOMER_SSO_SSM_PATH_PREFIX}"
   serviceSsmPathPrefix: "${SERVICE_SSM_PATH_PREFIX}"
 
-# CRDs are managed as chart templates (p1as-opensearch/templates/crds.yaml)
+# CRDs are managed as chart templates. (p1as-opensearch/templates/crds.yaml)
 # with argocd ServerSideApply. Keep installCRDs=false.
 opensearch-operator:
   installCRDs: false
