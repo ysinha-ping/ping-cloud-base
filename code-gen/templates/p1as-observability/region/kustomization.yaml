@@ -65,6 +65,7 @@ helmCharts:
     version: v2.4-os-micro-spike
     namespace: elastic-stack-logging
     repo: oci://705370621539.dkr.ecr.us-west-2.amazonaws.com/dev
+    includeCRDs: true
     valuesInline:
       ecrRegistryName: "705370621539.dkr.ecr.us-west-2.amazonaws.com/dev"
 

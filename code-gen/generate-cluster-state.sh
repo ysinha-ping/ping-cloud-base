@@ -700,6 +700,18 @@ organize_code_for_csr() {
         done
       fi
 
+      # Handle CHUB_EXCLUDE: remove specific charts from CHUB even when CHUB_DEPLOY=true
+      if { test "${ENV}" == "${CUSTOMER_HUB}" && declare -p CHUB_EXCLUDE 2>/dev/null | grep -q 'declare -a\|typeset -a'; }; then
+        for chart_name in "${CHUB_EXCLUDE[@]}"; do
+          echo "Chart ${chart_name} is set for CHUB_EXCLUDE, removing reference in ${app_target_dir}/region/kustomization.yaml"
+          yq -i 'del(.helmCharts[] | select(.name == "'"${chart_name}"'"))' "${app_target_dir}/region/kustomization.yaml"
+          if [[ $? -ne 0 ]]; then
+            log "yq command failed while removing chart references for ${chart_name} in ${app_target_dir}/region/kustomization.yaml"
+            exit 1
+          fi
+        done
+      fi
+
       # Handle region deploy
       if { test "${REGION}" != "${PRIMARY_REGION}" && test "${PRIMARY_REGION_ONLY_DEPLOY}" = "true"; }; then
         # Remove the region directory if not primary region and PRIMARY_REGION_ONLY_DEPLOY is true.
