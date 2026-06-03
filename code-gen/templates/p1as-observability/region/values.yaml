@@ -138,83 +138,15 @@ opensearch:
 
 sso:
   enabled: true
-  customerSsoSsmPathPrefix: "${CUSTOMER_SSO_SSM_PATH_PREFIX}"
-  serviceSsmPathPrefix: "${SERVICE_SSM_PATH_PREFIX}"
 
-# CRDs are managed as chart templates. (p1as-opensearch/templates/crds.yaml)
-# with argocd ServerSideApply. Keep installCRDs=false.
 opensearch-operator:
   installCRDs: false
-  manager:
-    extraInitContainers:
-      - name: p1as-bootstrap
-        image: "public.ecr.aws/r2h3l6e4/pingcloud-services/bootstrap/dev:v2.4-release-branch-latest"
-        imagePullPolicy: Always
-        securityContext:
-          allowPrivilegeEscalation: false
-          privileged: false
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          runAsGroup: 9999
-          runAsUser: 9031
-        env:
-          - name: NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-          - name: CUSTOMER_SSO_SSM_PATH_PREFIX
-            value: "${CUSTOMER_SSO_SSM_PATH_PREFIX}"
-          - name: SERVICE_SSM_PATH_PREFIX
-            value: "${SERVICE_SSM_PATH_PREFIX}"
-        volumeMounts:
-          - mountPath: /app/config/app_config.yaml
-            name: p1as-bootstrap-resources
-            readOnly: true
-            subPath: p1as-bootstrap-resources.yaml
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "300m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-      - name: p1as-oauth
-        image: "public.ecr.aws/r2h3l6e4/pingcloud-services/p14c-integration/dev:v2.4-release-branch-latest"
-        imagePullPolicy: Always
-        securityContext:
-          allowPrivilegeEscalation: false
-          privileged: false
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          runAsGroup: 9999
-          runAsUser: 9031
-        env:
-          - name: NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-          - name: TENANT_NAME
-            value: "${TENANT_NAME}"
-          - name: REGION
-            value: "${REGION}"
-          - name: ENV
-            value: "${ENV}"
-          - name: OSD_PUBLIC_HOSTNAME
-            value: "logs.${DNS_ZONE}"
-          - name: SELF_SERVICE_PUBLIC_HOSTNAME
-            value: "self-service-api.${PRIMARY_DNS_ZONE}"
-        command:
-          - /bin/sh
-          - -c
-          - python3 -u /app/oauth_client_services_controller.py --app opensearch
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "300m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-  extraVolumes:
-    - name: p1as-bootstrap-resources
-      configMap:
-        name: p1as-bootstrap-resources
+  sso:
+    enabled: true
+    customerSsoSsmPathPrefix: "${CUSTOMER_SSO_SSM_PATH_PREFIX}"
+    serviceSsmPathPrefix: "${SERVICE_SSM_PATH_PREFIX}"
+    tenantName: "${TENANT_NAME}"
+    region: "${REGION}"
+    env: "${ENV}"
+    osdPublicHostname: "logs.${DNS_ZONE}"
+    selfServicePublicHostname: "self-service-api.${PRIMARY_DNS_ZONE}"
