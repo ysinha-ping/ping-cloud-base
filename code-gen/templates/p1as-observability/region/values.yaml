@@ -135,9 +135,8 @@ opensearch:
   imageTag: "v2.4-release-branch-latest"
   dashboards:
     baseRedirectUrl: "https://logs.${DNS_ZONE}"
-
-sso:
-  enabled: true
+  sso:
+    enabled: true
 
 opensearch-operator:
   installCRDs: false

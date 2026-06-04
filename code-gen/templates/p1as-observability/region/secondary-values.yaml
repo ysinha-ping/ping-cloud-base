@@ -45,12 +45,13 @@ prometheus-agent:
 #   cluster.name/logs.region from cluster-info, and routes to the primary via
 #   the ExternalName (opensearch.<primaryDnsZone>).
 # - Disable SSO bootstrap explicitly (belt-and-suspenders: it would also be
-#   skipped by the primaryRegion gate, but sso.enabled=false is clearer intent).
+#   skipped by the primaryRegion gate, but opensearch.sso.enabled=false is clearer intent).
 # - Set opensearch-operator replicaCount to 0 so the operator pod does not run
 #   in secondary regions. There is no OpenSearchCluster CR to manage here, and
 #   running the operator wastes resources.
-sso:
-  enabled: false
+opensearch:
+  sso:
+    enabled: false
 
 opensearch-operator:
   replicaCount: 0

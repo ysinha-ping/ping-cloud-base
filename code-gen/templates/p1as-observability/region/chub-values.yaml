@@ -15,5 +15,5 @@ prometheus-agent:
 #     `condition: opensearch.enabled` declared in p1as-opensearch/Chart.yaml
 opensearch:
   enabled: false
-sso:
-  enabled: false
+  sso:
+    enabled: false
