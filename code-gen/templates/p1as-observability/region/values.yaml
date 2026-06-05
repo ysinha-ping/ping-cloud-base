@@ -131,7 +131,6 @@ prometheus-agent:
 
 opensearch:
   enabled: true
-  irsaRoleArn: "${IRSA_OPENSEARCH_ROLE_ARN}"
   imageTag: "v2.4-release-branch-latest"
   dashboards:
     baseRedirectUrl: "https://logs.${DNS_ZONE}"
