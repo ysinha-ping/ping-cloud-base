@@ -44,14 +44,10 @@ prometheus-agent:
 #   ExternalName Service render. Logstash-elastic in this region reads
 #   cluster.name/logs.region from cluster-info, and routes to the primary via
 #   the ExternalName (opensearch.<primaryDnsZone>).
-# - Disable SSO bootstrap explicitly (belt-and-suspenders: it would also be
-#   skipped by the primaryRegion gate, but opensearch.sso.enabled=false is clearer intent).
-# - Set opensearch-operator replicaCount to 0 so the operator pod does not run
-#   in secondary regions. There is no OpenSearchCluster CR to manage here, and
-#   running the operator wastes resources.
-opensearch:
-  sso:
-    enabled: false
-
+# - SSO bootstrap is suppressed by the primaryRegion gate (isMicroserviceDeploy=false
+#   in CDE but primaryRegion != region, so the gate evaluates false).
+# - Set opensearch-operator.enabled=false to suppress the entire operator
+#   subchart (Deployment, RBAC, SA, ConfigMap) in secondary regions. There is
+#   no OpenSearchCluster CR to manage here so the operator serves no purpose.
 opensearch-operator:
-  replicaCount: 0
+  enabled: false

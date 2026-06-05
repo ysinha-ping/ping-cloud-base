@@ -1,7 +1,7 @@
 # Overwrite the configMap fluent-bit-pipeline-outputs to disable the main
 # (opensearch) pipeline for CustomerHub. The OpenSearchCluster + operator
-# themselves are disabled in CHUB regions by opensearch.enabled=false in the
-# p1as-opensearch chart values (p1as-observability/region/chub-values.yaml).
+# themselves are disabled in CHUB regions by opensearch.enabled=false and
+# opensearch-operator.enabled=false in p1as-observability/region/chub-values.yaml.
 apiVersion: v1
 kind: ConfigMap
 metadata:
