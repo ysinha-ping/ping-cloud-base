@@ -82,35 +82,6 @@ configMapGenerator:
   - name: observability-custom-placeholder-base  
     namespace: ${PING_CLOUD_NAMESPACE}
 
-### Inject namespace into opensearch-operator subchart resources that upstream v2.7.0 does not
-### set. Argo/kustomize helmCharts passes --namespace to helm template (filling .Release.Namespace)
-### but does not back-fill metadata.namespace on resources that omit the field entirely.
-patches:
-  - target:
-      kind: ServiceAccount
-      name: os-controller-manager
-    patch: '[{"op":"add","path":"/metadata/namespace","value":"elastic-stack-logging"}]'
-  - target:
-      kind: Deployment
-      name: os-controller-manager
-    patch: '[{"op":"add","path":"/metadata/namespace","value":"elastic-stack-logging"}]'
-  - target:
-      kind: Service
-      name: os-controller-manager-metrics-service
-    patch: '[{"op":"add","path":"/metadata/namespace","value":"elastic-stack-logging"}]'
-  - target:
-      kind: Role
-      name: os-leader-election-role
-    patch: '[{"op":"add","path":"/metadata/namespace","value":"elastic-stack-logging"}]'
-  - target:
-      kind: RoleBinding
-      name: os-leader-election-rolebinding
-    patch: '[{"op":"add","path":"/metadata/namespace","value":"elastic-stack-logging"}]'
-  - target:
-      kind: ConfigMap
-      name: os-manager-config
-    patch: '[{"op":"add","path":"/metadata/namespace","value":"elastic-stack-logging"}]'
-
 patchesStrategicMerge:
   ### PS/GSO customizations to OOTB resources should only go into this file. Otherwise, CSR auto-updates will break. ###
   - custom-patches.yaml
