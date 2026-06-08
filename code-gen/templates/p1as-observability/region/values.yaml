@@ -139,5 +139,14 @@ serviceAccount:
   annotations:
     eks.amazonaws.com/role-arn: "${IRSA_OPENSEARCH_ANNOTATION_KEY_VALUE}"
 
+bootstrap:
+  tenantName: "${TENANT_NAME}"
+  region: "${REGION}"
+  env: "${ENV}"
+  customerSsoSsmPathPrefix: "${CUSTOMER_SSO_SSM_PATH_PREFIX}"
+  serviceSsmPathPrefix: "${SERVICE_SSM_PATH_PREFIX}"
+  osdPublicHostname: "logs.${DNS_ZONE}"
+  selfServicePublicHostname: "self-service-api.${PRIMARY_DNS_ZONE}"
+
 opensearch-operator:
   installCRDs: false
