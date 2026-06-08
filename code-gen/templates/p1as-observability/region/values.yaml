@@ -135,13 +135,9 @@ opensearch:
   dashboards:
     baseRedirectUrl: "https://logs.${DNS_ZONE}"
 
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: "${IRSA_OPENSEARCH_ANNOTATION_KEY_VALUE}"
+
 opensearch-operator:
   installCRDs: false
-  sso:
-    customerSsoSsmPathPrefix: "${CUSTOMER_SSO_SSM_PATH_PREFIX}"
-    serviceSsmPathPrefix: "${SERVICE_SSM_PATH_PREFIX}"
-    tenantName: "${TENANT_NAME}"
-    region: "${REGION}"
-    env: "${ENV}"
-    osdPublicHostname: "logs.${DNS_ZONE}"
-    selfServicePublicHostname: "self-service-api.${PRIMARY_DNS_ZONE}"
