@@ -137,7 +137,7 @@ opensearch:
 
 serviceAccount:
   annotations:
-    eks.amazonaws.com/role-arn: "${IRSA_OPENSEARCH_ANNOTATION_KEY_VALUE}"
+    ${IRSA_OPENSEARCH_ANNOTATION_KEY_VALUE}
 
 bootstrap:
   tenantName: "${TENANT_NAME}"
