@@ -131,7 +131,7 @@ prometheus-agent:
 
 opensearch:
   enabled: true
-  imageTag: "v2.4-release-branch-latest"
+  imageTag: "${OPENSEARCH_IMAGE_TAG}"
   dashboards:
     baseRedirectUrl: "https://logs.${DNS_ZONE}"
 
