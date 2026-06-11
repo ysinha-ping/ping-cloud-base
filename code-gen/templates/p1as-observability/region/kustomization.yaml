@@ -7,6 +7,9 @@ resources:
   - ../base/namespace.yaml
   - ../base/crds-annotations
 
+helmGlobals:
+  configHome: /helm-working-dir
+
 helmCharts:
   - name: p1as-cloudwatch
     additionalValuesFiles:
@@ -54,6 +57,18 @@ helmCharts:
     namespace: prometheus
     repo: oci://${ECR_REGISTRY_NAME}/dev
 
+  - name: p1as-opensearch
+    additionalValuesFiles:
+      - ../../values-files/base/values.yaml   # base values.yaml
+      - ../../values-files/${REGION_NICK_NAME}/values.yaml   # regional values.yaml
+      - values.yaml   # app specific values.yaml
+    version: v2.4-pdo-8110
+    namespace: elastic-stack-logging
+    repo: oci://705370621539.dkr.ecr.us-west-2.amazonaws.com/dev
+    includeCRDs: true
+    valuesInline:
+      ecrRegistryName: "705370621539.dkr.ecr.us-west-2.amazonaws.com/dev"
+
 ### This field is used to trigger a resync of the helm chart ###
 configMapGenerator:
   - name: observability-last-update-reason
@@ -64,8 +79,37 @@ configMapGenerator:
   - name: observability-custom-placeholder
     namespace: ${PING_CLOUD_NAMESPACE}
   ### This is needed for the empty custom-patches.yaml file to work in base folder ###
-  - name: observability-custom-placeholder-base  
+  - name: observability-custom-placeholder-base
     namespace: ${PING_CLOUD_NAMESPACE}
+
+### Inject namespace into opensearch-operator subchart resources that upstream v2.7.0 does not
+### set. Argo/kustomize helmCharts passes --namespace to helm template (filling .Release.Namespace)
+### but does not back-fill metadata.namespace on resources that omit the field entirely.
+patches:
+  - target:
+      kind: ServiceAccount
+      name: os-controller-manager
+    patch: '[{"op":"add","path":"/metadata/namespace","value":"elastic-stack-logging"}]'
+  - target:
+      kind: Deployment
+      name: os-controller-manager
+    patch: '[{"op":"add","path":"/metadata/namespace","value":"elastic-stack-logging"}]'
+  - target:
+      kind: Service
+      name: os-controller-manager-metrics-service
+    patch: '[{"op":"add","path":"/metadata/namespace","value":"elastic-stack-logging"}]'
+  - target:
+      kind: Role
+      name: os-leader-election-role
+    patch: '[{"op":"add","path":"/metadata/namespace","value":"elastic-stack-logging"}]'
+  - target:
+      kind: RoleBinding
+      name: os-leader-election-rolebinding
+    patch: '[{"op":"add","path":"/metadata/namespace","value":"elastic-stack-logging"}]'
+  - target:
+      kind: ConfigMap
+      name: os-manager-config
+    patch: '[{"op":"add","path":"/metadata/namespace","value":"elastic-stack-logging"}]'
 
 patchesStrategicMerge:
   ### PS/GSO customizations to OOTB resources should only go into this file. Otherwise, CSR auto-updates will break. ###

@@ -7,3 +7,17 @@ prometheus:
       requests:
         cpu: 1500m
         memory: 5Gi
+
+#######################################################
+# OpenSearch prod sizing
+#######################################################
+opensearch:
+  hotNodes:
+    jvm: "-Xms6g -Xmx6g"
+    resources:
+      requests:
+        cpu: "2"
+        memory: 6Gi
+      limits:
+        cpu: "6"
+        memory: 10Gi

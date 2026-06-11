@@ -7,10 +7,8 @@ resources:
 - enrichment
 - logstash
 - namespace.yaml
-- opensearch-operator/crd
-- opensearch-operator
-- opensearch
-- common
+# PDO-5984: OpenSearch stack moved to p1as-opensearch Helm chart.
+# CRDs now in p1as-opensearch/templates/crds.yaml, applied by Argo with ServerSideApply.
 
 configMapGenerator:
 - name: elk-environment-variables
