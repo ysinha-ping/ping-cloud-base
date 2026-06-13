@@ -147,6 +147,16 @@ bootstrap:
   serviceSsmPathPrefix: "${SERVICE_SSM_PATH_PREFIX}"
   osdPublicHostname: "logs.${DNS_ZONE}"
   selfServicePublicHostname: "self-service-api.${PRIMARY_DNS_ZONE}"
+  # Target namespaces consumed by the OpenSearch operator init containers
+  # (p1as-bootstrap, p1as-oauth) when creating SSO/credentials secrets.
+  # CI/microservice deploys leave these unset so they fall back to
+  # .Release.Namespace.
+  opensearchNamespace: "elastic-stack-logging"
+  prometheusNamespace: "prometheus"
+  newrelicNamespace: "newrelic"
+  # In CDE, os-logstash-creds is owned by a SealedSecret seeded by
+  # logstash/secret.yaml — the oauth init container must wait for it.
+  logstashCredsExternal: "true"
 
 opensearch-operator:
   installCRDs: false
