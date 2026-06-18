@@ -154,9 +154,6 @@ bootstrap:
   opensearchNamespace: "elastic-stack-logging"
   prometheusNamespace: "prometheus"
   newrelicNamespace: "newrelic"
-  # In CDE, os-logstash-creds is owned by a SealedSecret seeded by
-  # logstash/secret.yaml — the oauth init container must wait for it.
-  logstashCredsExternal: "true"
 
 opensearch-operator:
   installCRDs: false
