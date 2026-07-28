@@ -34,20 +34,15 @@ prometheus-agent:
     extraVolumeMounts: []
 
 # OpenSearch in secondary regions:
-# - global.region and global.primaryRegion are set to the real values by
-#   code-gen (base values.yaml: region="${REGION}", primaryRegion="${PRIMARY_REGION}").
-#   Since REGION != PRIMARY_REGION in a secondary, the chart's
-#   `eq global.primaryRegion global.region` gate evaluates false, so the
-#   cluster CR, dashboards, security configs, storageclass and SSO PreSync
-#   Job are all suppressed automatically.
-# - opensearch.enabled remains true so cluster-info CM and the opensearch-ingest
-#   ExternalName Service render. Logstash-elastic in this region reads
-#   cluster.name/logs.region from cluster-info, and routes to the primary via
-#   the ExternalName (opensearch.<primaryDnsZone>).
-# - SSO bootstrap is suppressed by the primaryRegion gate (isMicroserviceDeploy=false
-#   in CDE but primaryRegion != region, so the gate evaluates false).
-# - Set opensearch-operator.enabled=false to suppress the entire operator
-#   subchart (Deployment, RBAC, SA, ConfigMap) in secondary regions. There is
-#   no OpenSearchCluster CR to manage here so the operator serves no purpose.
+# - opensearch-cluster subchart is disabled — no cluster CR, dashboards, security
+#   configs, storageclass, tenants, or SSO bootstrap ConfigMaps here. The
+#   parent-scope ingest-service.yaml still renders (ExternalName CNAME to the
+#   primary region's opensearch service via global.primaryDnsZone), plus the
+#   os-logstash-creds Secret.
+# - opensearch-operator is disabled — no OpenSearchCluster CR to manage here
+#   so the operator serves no purpose.
+opensearch-cluster:
+  enabled: false
+
 opensearch-operator:
   enabled: false

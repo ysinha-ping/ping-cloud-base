@@ -19,6 +19,16 @@ cloudwatch:
 #Newrelic related values
 global:
   cluster: ${TENANT_NAME}_${ENV}_${REGION}_k8s-cluster
+  tenantName: "${TENANT_NAME}"
+  region: "${REGION}"
+  env: "${ENV}"
+  customerSsoSsmPathPrefix: "${CUSTOMER_SSO_SSM_PATH_PREFIX}"
+  serviceSsmPathPrefix: "${SERVICE_SSM_PATH_PREFIX}"
+  # Target namespaces consumed by the OpenSearch operator init containers
+  # (p1as-bootstrap, p1as-oauth) — read via os.getenv() in opensearch_sso_config.py.
+  opensearchNamespace: "elastic-stack-logging"
+  prometheusNamespace: "prometheus"
+  newrelicNamespace: "newrelic"
 
 #######################################################
 # Prometheus Server (p1as-prometheus) settings
@@ -122,38 +132,8 @@ prometheus-agent:
 #######################################################
 # OpenSearch (p1as-opensearch) settings
 #######################################################
-# CDE primary regions: opensearch.enabled=true, IRSA wired, dashboards
-# baseRedirectUrl set, SSO bootstrap drives credentials from SSM.
-# Secondary regions: secondary-values.yaml keeps opensearch.enabled=true so
-# cluster-info CM and the ExternalName ingest Service render; all primary-only
-# resources are gated on `eq global.primaryRegion global.region` in templates.
-# CHUB: chub-values.yaml sets opensearch.enabled=false outright.
 
-opensearch:
-  enabled: true
-  imageTag: "${OPENSEARCH_IMAGE_TAG}"
+opensearch-cluster:
+  irsaAnnotationKeyValue: "eks.amazonaws.com/role-arn: ${IRSA_OPENSEARCH_ANNOTATION_KEY_VALUE}"
   dashboards:
     baseRedirectUrl: "https://logs.${DNS_ZONE}"
-
-serviceAccount:
-  annotations:
-    ${IRSA_OPENSEARCH_ANNOTATION_KEY_VALUE}
-
-bootstrap:
-  tenantName: "${TENANT_NAME}"
-  region: "${REGION}"
-  env: "${ENV}"
-  customerSsoSsmPathPrefix: "${CUSTOMER_SSO_SSM_PATH_PREFIX}"
-  serviceSsmPathPrefix: "${SERVICE_SSM_PATH_PREFIX}"
-  osdPublicHostname: "logs.${DNS_ZONE}"
-  selfServicePublicHostname: "self-service-api.${PRIMARY_DNS_ZONE}"
-  # Target namespaces consumed by the OpenSearch operator init containers
-  # (p1as-bootstrap, p1as-oauth) when creating SSO/credentials secrets.
-  # CI/microservice deploys leave these unset so they fall back to
-  # .Release.Namespace.
-  opensearchNamespace: "elastic-stack-logging"
-  prometheusNamespace: "prometheus"
-  newrelicNamespace: "newrelic"
-
-opensearch-operator:
-  installCRDs: false

@@ -13,7 +13,7 @@ prometheus:
 # Source: live cluster uber.yaml (os_uber.yaml hotNodes section).
 # Nonprod defaults (values.yaml): JVM -Xmx3000M/-Xms3000M, 4Gi/4Gi, CPU 1/4.
 #######################################################
-opensearch:
+opensearch-cluster:
   hotNodes:
     jvm: "-Xms6g -Xmx6g"
     resources:

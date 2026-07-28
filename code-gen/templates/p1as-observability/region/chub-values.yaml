@@ -8,14 +8,9 @@ prometheus-agent:
     extraVolumes: []
     extraVolumeMounts: []
 
-# CHUB does not run OpenSearch.
-# opensearch.enabled=false skips all chart-emitted OS resources (cluster CR,
-# dashboards, services, storageclass, security secret, tenants, SSO PreSync
-# Job, cluster-info).
-# opensearch-operator.enabled=false suppresses the entire operator subchart
-# (Deployment, RBAC, SA, ConfigMap) via the `condition: opensearch-operator.enabled`
-# declared in p1as-opensearch/Chart.yaml.
-opensearch:
+# CHUB does not run OpenSearch. The condition: guards on both dep entries in
+# p1as-opensearch/Chart.yaml short-circuit rendering to zero resources.
+opensearch-cluster:
   enabled: false
 
 opensearch-operator:
