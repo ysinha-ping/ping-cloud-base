@@ -134,6 +134,6 @@ prometheus-agent:
 #######################################################
 
 opensearch-cluster:
-  irsaAnnotationKeyValue: "eks.amazonaws.com/role-arn: ${IRSA_OPENSEARCH_ANNOTATION_KEY_VALUE}"
+  irsaAnnotationKeyValue: "${IRSA_OPENSEARCH_ANNOTATION_KEY_VALUE}"
   dashboards:
     baseRedirectUrl: "https://logs.${DNS_ZONE}"
