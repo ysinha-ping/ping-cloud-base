@@ -19,6 +19,16 @@ cloudwatch:
 #Newrelic related values
 global:
   cluster: ${TENANT_NAME}_${ENV}_${REGION}_k8s-cluster
+  tenantName: "${TENANT_NAME}"
+  region: "${REGION}"
+  env: "${ENV}"
+  customerSsoSsmPathPrefix: "${CUSTOMER_SSO_SSM_PATH_PREFIX}"
+  serviceSsmPathPrefix: "${SERVICE_SSM_PATH_PREFIX}"
+  # Target namespaces consumed by the OpenSearch operator init containers
+  # (p1as-bootstrap, p1as-oauth) — read via os.getenv() in opensearch_sso_config.py.
+  opensearchNamespace: "elastic-stack-logging"
+  prometheusNamespace: "prometheus"
+  newrelicNamespace: "newrelic"
 
 #######################################################
 # Prometheus Server (p1as-prometheus) settings
@@ -118,10 +128,10 @@ prometheus-agent:
             - key: password
               path: os-password
 
-# opensearch-newrelic-credentials is created in p14c-integration container by the 
-# OpenSearch controller manager.  In primary CDE regions the secret will exist, 
-# for child/secondary CDE regions and customer-hub envs  OpenSearch is not deployed 
-# and the secret will not exist.  secondary-values.yaml and chub-values.yaml override 
+# opensearch-newrelic-credentials is created in p14c-integration container by the
+# OpenSearch controller manager.  In primary CDE regions the secret will exist,
+# for child/secondary CDE regions and customer-hub envs  OpenSearch is not deployed
+# and the secret will not exist.  secondary-values.yaml and chub-values.yaml override
 # this to remove the volume mount
 nri-bundle:
   newrelic-prometheus-agent:
@@ -178,3 +188,11 @@ prometheus-adapter:
             )) by (<<.GroupBy>>),
             1
           )
+#######################################################
+# OpenSearch (p1as-opensearch) settings
+#######################################################
+
+opensearch-cluster:
+  irsaAnnotationKeyValue: "${IRSA_OPENSEARCH_ANNOTATION_KEY_VALUE}"
+  dashboards:
+    baseRedirectUrl: "https://logs.${DNS_ZONE}"

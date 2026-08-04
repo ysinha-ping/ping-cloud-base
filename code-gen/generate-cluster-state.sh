@@ -440,6 +440,7 @@ ${ANSIBLE_BELUGA_IMAGE_TAG}
 ${PINGCENTRAL_IMAGE_TAG}
 ${PINGDELEGATOR_IMAGE_TAG}
 ${OS_BOOTSTRAP_IMAGE_TAG}
+${OPENSEARCH_IMAGE_TAG}
 ${LOGSTASH_IMAGE_TAG}
 ${IRSA_PING_ANNOTATION_KEY_VALUE}
 ${IRSA_BOOTSTRAP_ANNOTATION_KEY_VALUE}
@@ -691,6 +692,7 @@ organize_code_for_csr() {
           fi
         done
       fi
+
 
       # Handle region deploy
       if { test "${REGION}" != "${PRIMARY_REGION}" && test "${PRIMARY_REGION_ONLY_DEPLOY}" = "true"; }; then
@@ -1034,6 +1036,7 @@ export HEALTHCHECKS_ENABLED="${HEALTHCHECKS_ENABLED:-false}"
 export CUSTOMER_PINGONE_ENABLED="${CUSTOMER_PINGONE_ENABLED:-false}"
 export ENABLE_IMPOSSIBLE_LOGIN_DASHBOARD="${ENABLE_IMPOSSIBLE_LOGIN_DASHBOARD:-false}"
 export SALESFORCE_ID="${SALESFORCE_ID:-""}"
+export OPENSEARCH_IMAGE_TAG="${OPENSEARCH_IMAGE_TAG:-v2.4-release-branch-latest}"
 
 # For SELF_SERVICE_TEMPLATES_ENABLED, we want to default it to true for new clusters but false for upgrades,
 # since we don't want to introduce new functionality via an upgrade without explicit opt-in.

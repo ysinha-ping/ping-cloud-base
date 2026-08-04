@@ -29,6 +29,9 @@ global:
   secrets:
     newrelic:
       newRelicLicenseKey: ${NEW_RELIC_LICENSE_KEY_BASE64}
+    elastic-stack-logging:
+      osLogstashUsername: bG9nc3Rhc2g=
+      osLogstashPassword: YnIzU1JlaVVuVmtzMURmN21oajB6YzlwQQ==
     ping-cloud:
       ###### Shared Secrets ######
 
@@ -266,6 +269,8 @@ global:
   ########################################################
 
   # pingcloud-p14c-bootstrap application settings
+  bootstrap:
+    image: public.ecr.aws/r2h3l6e4/pingcloud-services/bootstrap/dev:v2.4-release-branch-latest
   p14cIntegration:
     image: public.ecr.aws/r2h3l6e4/pingcloud-services/p14c-integration/dev:v2.4-release-branch-latest
   grpRadiusProxy:
