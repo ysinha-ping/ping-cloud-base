@@ -1,6 +1,7 @@
 # Overrides applied to child/secondary CDE regions at code-gen time.
 # Merged into values.yaml by generate-cluster-state.sh when REGION != PRIMARY_REGION.
 #
+# ### prometheus-agent ###
 # 1. remoteWrite: In child regions p1as-prometheus (server) is removed via
 #    PRIMARY_REGION_ONLY_DEPLOY, so "prometheus-headless:9090" does not resolve.
 #    Override the URL to point to the primary region's Prometheus server via
