@@ -7,8 +7,8 @@
 #    the cross-region DNS record created by external-dns on the headless service.
 #
 # 2. opensearch-grafana-credentials: The secret is created by p14c-integration
-#    which only runs in the primary region. Override optional to true so
-#    prometheus-agent can start without the secret in child regions.
+#    which only runs in the primary region. Override extraVolumes/extraVolumeMounts
+#    to empty arrays so prometheus-agent can start without the secret in child regions.
 #
 # 3. extraManifests: We use extraManifests because the base Prometheus Helm chart lacks a native toggle to set the service type to ExternalName.
 #    This injects a cross-region DNS alias so that the prometheus agent in child regions can send its data to the primary region,
