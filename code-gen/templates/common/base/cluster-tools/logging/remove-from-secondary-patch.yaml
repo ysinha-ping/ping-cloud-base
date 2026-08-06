@@ -5,8 +5,8 @@
 #
 # The only piece still needed in PCB for secondary regions is the logstash
 # StatefulSet initContainer cleanup (opensearch-bootstrap + wait-for-os-health
-# init containers run only in the primary region; the chart's SSO PreSync Job
-# replaces them for the operator side, but logstash itself still ships them
+# init containers run only in the primary region; the chart's p1as-oauth init container on the operator Deployment handles
+# SSO config for the operator side, but logstash itself still ships them
 # from PCB and needs them removed in secondary regions).
 apiVersion: apps/v1
 kind: StatefulSet
