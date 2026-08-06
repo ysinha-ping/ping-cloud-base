@@ -124,6 +124,23 @@ prometheus-agent:
             - key: password
               path: os-password
 
+# opensearch-newrelic-credentials is created in p14c-integration container by the
+# OpenSearch controller manager.  In primary CDE regions the secret will exist,
+# for child/secondary CDE regions and customer-hub envs  OpenSearch is not deployed
+# and the secret will not exist.  secondary-values.yaml and chub-values.yaml override
+# this to remove the volume mount
+nri-bundle:
+  newrelic-prometheus-agent:
+    extraVolumes:
+      - name: os-password
+        secret:
+          secretName: opensearch-newrelic-credentials
+          optional: false
+    extraVolumeMounts:
+      - name: os-password
+        mountPath: /etc/secrets
+        readOnly: true
+
 #######################################################
 # Prometheus Adapter settings
 #######################################################
