@@ -19,6 +19,16 @@ cloudwatch:
 #Newrelic related values
 global:
   cluster: ${TENANT_NAME}_${ENV}_${REGION}_k8s-cluster
+  tenantName: "${TENANT_NAME}"
+  region: "${REGION}"
+  env: "${ENV}"
+  customerSsoSsmPathPrefix: "${CUSTOMER_SSO_SSM_PATH_PREFIX}"
+  serviceSsmPathPrefix: "${SERVICE_SSM_PATH_PREFIX}"
+  # Target namespaces consumed by the OpenSearch operator init containers
+  # (p1as-bootstrap, p1as-oauth) — read via os.getenv() in opensearch_sso_config.py.
+  opensearchNamespace: "elastic-stack-logging"
+  prometheusNamespace: "prometheus"
+  newrelicNamespace: "newrelic"
 
 #######################################################
 # Prometheus Server (p1as-prometheus) settings
@@ -37,7 +47,7 @@ prometheus:
       headless:
         annotations:
           # Prometheus cross-region communication - DNS hostname for the headless service
-          external-dns.alpha.kubernetes.io/hostname: prometheus-central.${VALUES_FILES_DNS_ZONE}
+          external-dns.alpha.kubernetes.io/hostname: prometheus-central.${DNS_ZONE}
 
     # Environment variables injected into the Prometheus container.
     # The base chart sets external_labels with ${CLUSTER_NAME}, ${TENANT_NAME},
@@ -104,11 +114,12 @@ prometheus-agent:
         cpu: 100m
         memory: 512Mi
 
-    # opensearch-grafana-credentials is created in p14c-integration container by the 
-    # OpenSearch controller manager.  In primary CDE regions the secret will exist, 
-    # for child/secondary CDE regions and customer-hub envs  OpenSearch is not deployed 
-    # and the secret will not exist.  secondary-values.yaml and chub-values.yaml override 
-    # this to remove the volume mount
+    # opensearch-grafana-credentials is created by p14c-integration (opensearch_sso_config.py)
+    # which runs as an init container on the OpenSearch operator deployment.
+    # In primary CDE regions the secret will exist — optional: false to fail fast if missing.
+    # For child/secondary CDE regions, secondary-values.yaml overrides this to optional: true
+    # (merged at code-gen time by generate-cluster-state.sh).
+    # For customer-hub, chub-values.yaml overrides this to optional: true.
     extraVolumes:
       - name: os-creds
         secret:
@@ -118,63 +129,11 @@ prometheus-agent:
             - key: password
               path: os-password
 
-# opensearch-newrelic-credentials is created in p14c-integration container by the 
-# OpenSearch controller manager.  In primary CDE regions the secret will exist, 
-# for child/secondary CDE regions and customer-hub envs  OpenSearch is not deployed 
-# and the secret will not exist.  secondary-values.yaml and chub-values.yaml override 
-# this to remove the volume mount
-nri-bundle:
-  newrelic-prometheus-agent:
-    extraVolumes:
-      - name: os-password
-        secret:
-          secretName: opensearch-newrelic-credentials
-          optional: false
-    extraVolumeMounts:
-      - name: os-password
-        mountPath: /etc/secrets
-        readOnly: true
 #######################################################
-# Prometheus Adapter settings
+# OpenSearch (p1as-opensearch) settings
 #######################################################
-prometheus-adapter:
-  rules:
-    custom:
-      - seriesQuery: 'logstash_node_queue_size_bytes{kubernetes_namespace="elastic-stack-logging"}'
-        resources:
-          overrides:
-            kubernetes_namespace:
-              resource: namespace
-            instance:
-              resource: pod
-        name:
-          matches: logstash_node_queue_size_bytes
-          as: logstash_queue_utilization_percent
-        metricsQuery: >-
-          sum((
-            logstash_node_queue_size_bytes{<<.LabelMatchers>>, k8s_cluster_region="${REGION_NICK_NAME}", kubernetes_namespace="elastic-stack-logging"}
-            /
-            logstash_node_queue_max_size_bytes{<<.LabelMatchers>>, k8s_cluster_region="${REGION_NICK_NAME}", kubernetes_namespace="elastic-stack-logging"}
-          ) * 100) by (<<.GroupBy>>)
 
-      - seriesQuery: 'logstash_node_pipeline_events_in_total{kubernetes_namespace="elastic-stack-logging"}'
-        resources:
-          overrides:
-            kubernetes_namespace:
-              resource: namespace
-            instance:
-              resource: pod
-        name:
-          matches: logstash_node_pipeline_events_in_total
-          as: logstash_events_in_rate
-        metricsQuery: >-
-          sum(rate(
-            logstash_node_pipeline_events_in_total{<<.LabelMatchers>>, k8s_cluster_region="${REGION_NICK_NAME}", kubernetes_namespace="elastic-stack-logging"}[5m]
-          )) by (<<.GroupBy>>)
-          /
-          clamp_min(
-            sum(avg_over_time(
-              rate(logstash_node_pipeline_events_in_total{<<.LabelMatchers>>, k8s_cluster_region="${REGION_NICK_NAME}", kubernetes_namespace="elastic-stack-logging"}[5m])[1h:5m]
-            )) by (<<.GroupBy>>),
-            1
-          )
+opensearch-cluster:
+  irsaAnnotationKeyValue: "${IRSA_OPENSEARCH_ANNOTATION_KEY_VALUE}"
+  dashboards:
+    baseRedirectUrl: "https://logs.${DNS_ZONE}"

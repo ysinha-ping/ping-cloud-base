@@ -7,6 +7,7 @@ resources:
 - ../../../base/logging/
 
 patchesStrategicMerge:
+# PDO-5984: opensearch tier sizing (os-limits.yaml) moved to p1as-opensearch
+# chart values; tier-specific overlay support is a follow-up MR.
 - elastic-stack/logstash/logstash-limits.yaml
 - elastic-stack/logstash/hpa-limits.yaml
-- elastic-stack/opensearch/os-limits.yaml
