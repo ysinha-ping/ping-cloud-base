@@ -8,8 +8,8 @@ prometheus-agent:
     extraVolumes: []
     extraVolumeMounts: []
 
-# CHUB does not run OpenSearch. The condition: guards on both dep entries in
-# p1as-opensearch/Chart.yaml short-circuit rendering to zero resources.
+# CHUB does not run OpenSearch. Disabling both subcharts prevents the operator
+# and cluster CR from rendering any resources.
 opensearch-cluster:
   enabled: false
 
