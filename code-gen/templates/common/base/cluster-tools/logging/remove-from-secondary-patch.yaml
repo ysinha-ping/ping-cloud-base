@@ -1,4 +1,4 @@
-# PDO-5984: opensearch resources (cluster CR, headless service, storageclass,
+# OpenSearch resources (cluster CR, headless service, storageclass,
 # operator + RBAC, os-manager-config, opensearch-ingest ExternalName) moved to
 # the p1as-opensearch chart, which handles secondary-region deletion via
 # `eq global.primaryRegion global.region` gating in its templates.
