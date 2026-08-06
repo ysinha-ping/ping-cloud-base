@@ -10,6 +10,11 @@ prometheus-agent:
     extraVolumes: []
     extraVolumeMounts: []
 
+nri-bundle:
+  newrelic-prometheus-agent:
+    extraVolumes: []
+    extraVolumeMounts: []
+
 # CHUB does not run OpenSearch. Disabling both subcharts prevents the operator
 # and cluster CR from rendering any resources.
 opensearch-cluster:
