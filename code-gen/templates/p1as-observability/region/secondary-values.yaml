@@ -7,8 +7,8 @@
 #    Override the URL to point to the primary region's Prometheus server via
 #    the cross-region DNS record created by external-dns on the headless service.
 #
-# 2. opensearch-grafana-credentials: The secret is created by p14c-integration
-#    which only runs in the primary region. Override extraVolumes/extraVolumeMounts
+# 1. opensearch-grafana-credentials: The secret is created by p14c-integration in os-controller-manager which only
+#    runs in the primary region. Override extraVolumes/extraVolumeMounts
 #    to empty arrays so prometheus-agent can start without the secret in child regions.
 #
 # 3. extraManifests: We use extraManifests because the base Prometheus Helm chart lacks a native toggle to set the service type to ExternalName.
