@@ -14,4 +14,3 @@ data:
   log.level: info
   tenant_domain: tenant_domain
   primary_tenant_domain: tenant_domain
-
