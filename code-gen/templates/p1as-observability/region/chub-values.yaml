@@ -3,6 +3,11 @@
 # ### prometheus-agent ###
 # 1. opensearch-grafana-credentials: The secret is created by p14c-integration in os-controller-manager which only
 #    runs in non-chub envs. Remove volume mounts so prometheus-agent can start without the secret in customer-hub envs.
+#
+# ### nri-bundle.newrelic-prometheus-agent ###
+# 1. opensearch-newrelic-credentials: The secret is created by p14c-integration in os-controller-manager which only
+#    runs in non-chub envs. Remove volume mounts for the newrelic-prometheus-agent so it can start without the
+#    secret in customer-hub envs.
 prometheus-agent:
   server:
     # Override extraVolumes and extraVolumeMounts to empty arrays. Since customer-hub does not deploy OpenSearch,
