@@ -29,6 +29,9 @@ global:
   secrets:
     newrelic:
       newRelicLicenseKey: ${NEW_RELIC_LICENSE_KEY_BASE64}
+    elastic-stack-logging:
+      osLogstashUsername: bG9nc3Rhc2g=
+      osLogstashPassword: YnIzU1JlaVVuVmtzMURmN21oajB6YzlwQQ==
     ping-cloud:
       ###### Shared Secrets ######
 
