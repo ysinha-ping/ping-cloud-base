@@ -1,13 +1,3 @@
-# OpenSearch resources (cluster CR, headless service, storageclass,
-# operator + RBAC, os-manager-config, opensearch-ingest ExternalName) moved to
-# the p1as-opensearch chart, which handles secondary-region deletion via
-# `eq global.primaryRegion global.region` gating in its templates.
-#
-# The only piece still needed in PCB for secondary regions is the logstash
-# StatefulSet initContainer cleanup: opensearch-bootstrap + wait-for-os-health
-# run only in the primary region, but logstash ships them from PCB and needs
-# them removed in secondary regions. SSO config for the operator side is
-# handled by the chart's p1as-oauth init container on the operator Deployment.
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:

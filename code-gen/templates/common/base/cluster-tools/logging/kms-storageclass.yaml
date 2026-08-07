@@ -1,6 +1,4 @@
 # KMS-encrypted gp3 StorageClass for Logstash.
-# The OpenSearch KMS StorageClass is owned by the p1as-opensearch chart
-# (templates/storageclass.yaml, gated on global.ebsKmsKeyArn).
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:

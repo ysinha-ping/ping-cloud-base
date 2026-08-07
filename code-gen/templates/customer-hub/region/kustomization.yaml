@@ -43,9 +43,6 @@ patchesStrategicMerge:
 - ../base/cluster-tools/logging/remove-chub-dashboards.yaml
 
 ### Remove opensearch from chub
-# OpenSearchCluster + operator are disabled in CHUB regions via
-# opensearch.enabled=false in p1as-observability chub-values.yaml.
-# This patch only redirects fluent-bit and logstash readiness probes for CHUB.
 - ../base/cluster-tools/logging/disable-opensearch-base-patch.yaml
 
 ### Remove main pipeline from chub
