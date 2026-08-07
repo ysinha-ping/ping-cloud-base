@@ -47,12 +47,11 @@ nri-bundle:
 
 # OpenSearch in secondary regions:
 # - opensearch-cluster subchart is disabled — no cluster CR, dashboards, security
-#   configs, storageclass, tenants, or SSO bootstrap ConfigMaps here. The
-#   parent-scope ingest-service.yaml still renders (ExternalName CNAME to the
-#   primary region's opensearch service via global.primaryDnsZone), plus the
-#   os-logstash-creds Secret.
-# - opensearch-operator is disabled — no OpenSearchCluster CR to manage here
-#   so the operator serves no purpose.
+#   configs, storageclass, or SSO bootstrap here.
+# - The parent-chart ingest-service.yaml (ExternalName Service) and
+#   logstash-creds.yaml still render unconditionally, providing the ingest
+#   endpoint and credentials logstash needs to route to the primary region.
+# - opensearch-operator is disabled — no OpenSearchCluster CR to manage here.
 opensearch-cluster:
   enabled: false
 

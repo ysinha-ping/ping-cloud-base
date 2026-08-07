@@ -12,9 +12,11 @@
 - Added Testcase to validate JSON nginx ingress logs
 - Get Karpenter IRSA role arn from SSM
 - Add integration test for PingDirectory replication log ingestion into OpenSearch
+- Add p1as-observability Opensearch Helm chart to PCB
 
 _Changes:_
 
+- [X] PDO-5990 Opensearch: Add p1as-observability to PCB
 - [X] PDO-7316 JSON Logging: Implement JSON logging for PingDelegator logs
 - [X] PDO-8875 Add deploy wrapper to capture deploy failure logs
 - [X] PDO-9115 Introduce 'revisionHistoryLimit' to Delegated Admin deployment object to avoid cluttering
