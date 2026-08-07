@@ -4,8 +4,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
 - ${K8S_GIT_URL}/k8s-configs/cluster-tools/${KUSTOMIZE_BASE}/logging?ref=${K8S_GIT_BRANCH}
 - ${DASH_REPO_URL}/os-dashboards?ref=${DASH_REPO_BRANCH}
-# This patch must be enabled manually to use KMS encryption (logstash KMS only,
-# opensearch KMS is handled by the p1as-opensearch chart via global.ebsKmsKeyArn).
+# This patch must be enabled manually to use KMS encryption.
+# Uncomment the KMS-related resources/patches when EBS_KMS_KEY_ARN is set.
 #- kms-storageclass.yaml
 
 components:
@@ -99,8 +99,8 @@ patchesStrategicMerge:
       purpose: service-account-for-logstash-elastic-s3
       ${IRSA_LOGSTASH_ANNOTATION_KEY_VALUE}
 
-# Logstash KMS storageclass patch must be enabled manually when EBS_KMS_KEY_ARN
-# is set. OpenSearch KMS storageclass is handled by the p1as-opensearch chart.
+# This patch must be enabled manually to use KMS encryption.
+# Uncomment the KMS-related resources/patches when EBS_KMS_KEY_ARN is set.
 #- kms-patch.yaml
 
 patchesJson6902:
