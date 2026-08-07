@@ -1,7 +1,5 @@
 # Removes the unencrypted Logstash StorageClass and points logstash-elastic +
 # logstash-elastic-s3 StatefulSets to the KMS-encrypted gp3 StorageClass.
-# The OpenSearch KMS StorageClass is owned by the p1as-opensearch chart
-# (templates/storageclass.yaml, gated on global.ebsKmsKeyArn).
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
