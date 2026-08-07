@@ -10,7 +10,7 @@ prometheus:
 
 #######################################################
 # OpenSearch prod sizing
-# Chart defaults (opensearch-cluster/values.yaml): JVM -Xms6g -Xmx6g, 6Gi/10Gi, CPU 2/6.
+# Chart defaults (p1as-opensearch/charts/opensearch-cluster/values.yaml): JVM -Xms6g -Xmx6g, 6Gi/10Gi, CPU 2/6.
 #######################################################
 opensearch-cluster:
   hotNodes:
