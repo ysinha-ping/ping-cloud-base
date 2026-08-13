@@ -75,6 +75,17 @@ patchesStrategicMerge:
       purpose: service-account-for-logstash-elastic-s3
       ${IRSA_LOGSTASH_ANNOTATION_KEY_VALUE}
 
+- |-
+  # Add IRSA role annotation to logstash-elastic-compliance service account
+  apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    name: logstash-elastic-compliance
+    namespace: elastic-stack-logging
+    annotations:
+      purpose: service-account-for-logstash-elastic-compliance
+      ${IRSA_LOGSTASH_COMPLIANCE_ANNOTATION_KEY_VALUE}
+
 # This patch must be enabled manually to use KMS encryption.
 # Uncomment the KMS-related resources/patches when EBS_KMS_KEY_ARN is set.
 #- kms-patch.yaml
