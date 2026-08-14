@@ -103,32 +103,36 @@ prometheus-agent:
         memory: 512Mi
 
     # opensearch-grafana-credentials is created by the p1as-oauth init container on the
-    # OpenSearch controller manager.
-    # In primary CDE regions the secret will exist — optional: false to fail fast if missing.
-    # For child/secondary CDE regions, secondary-values.yaml clears extraVolumes/extraVolumeMounts
-    # so prometheus-agent starts without the mount.
-    # For customer-hub, chub-values.yaml does the same.
+    # OpenSearch controller manager. Since PDO-5990 moved OpenSearch into this same
+    # p1as-observability ArgoCD app, the secret may not exist on fresh install —
+    # the OS operator creates it during its first sync. optional: true avoids a deadlock
+    # where prometheus-agent crashes (secret missing) and blocks the OS operator from
+    # deploying (which would create the secret).
+    # secondary-values.yaml and chub-values.yaml clear extraVolumes/extraVolumeMounts
+    # for secondary CDE regions and customer-hub where OpenSearch is not deployed.
     extraVolumes:
       - name: os-creds
         secret:
           secretName: opensearch-grafana-credentials
-          optional: false
+          optional: true
           items:
             - key: password
               path: os-password
 
-# opensearch-newrelic-credentials is created in p1as-oauth init container by the
-# OpenSearch controller manager.  In primary CDE regions the secret will exist,
-# for child/secondary CDE regions and customer-hub envs  OpenSearch is not deployed
-# and the secret will not exist.  secondary-values.yaml and chub-values.yaml override
-# this to remove the volume mount
+# opensearch-newrelic-credentials is created by the p1as-oauth init container on the
+# OpenSearch controller manager. Since PDO-5990 moved OpenSearch into this same
+# p1as-observability ArgoCD app, the secret may not exist on fresh install —
+# the OS operator creates it during its first sync. optional: true avoids the same
+# intra-app deadlock as opensearch-grafana-credentials above.
+# secondary-values.yaml and chub-values.yaml override this to remove the volume mount
+# entirely for environments where OpenSearch is not deployed.
 nri-bundle:
   newrelic-prometheus-agent:
     extraVolumes:
       - name: os-password
         secret:
           secretName: opensearch-newrelic-credentials
-          optional: false
+          optional: true
     extraVolumeMounts:
       - name: os-password
         mountPath: /etc/secrets
