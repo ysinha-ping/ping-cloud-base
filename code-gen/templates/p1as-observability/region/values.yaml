@@ -185,7 +185,5 @@ prometheus-adapter:
 
 opensearch-cluster:
   irsaAnnotationKeyValue: "${IRSA_OPENSEARCH_ANNOTATION_KEY_VALUE}"
-  hotNodes:
-    kmsKeyArn: "${EBS_KMS_KEY_ARN}"
   dashboards:
     baseRedirectUrl: "https://logs.${VALUES_FILES_DNS_ZONE}"
