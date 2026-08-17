@@ -21,7 +21,7 @@ nri-bundle:
     extraVolumeMounts: []
 
 # CHUB does not run OpenSearch. Disabling both subcharts prevents the operator
-# and cluster CR from rendering any resources.
+# Deployment and the OpenSearchCluster custom resource from being created in the cluster.
 opensearch-cluster:
   enabled: false
 
