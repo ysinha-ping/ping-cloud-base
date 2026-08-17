@@ -57,3 +57,6 @@ opensearch-cluster:
 
 opensearch-operator:
   enabled: false
+
+global:
+  primaryRegion: fake-primary-region
