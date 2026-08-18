@@ -12,7 +12,7 @@
 - Added Testcase to validate JSON nginx ingress logs
 - Get Karpenter IRSA role arn from SSM
 - Add integration test for PingDirectory replication log ingestion into OpenSearch
-- Add p1as-observability Opensearch Helm chart to PCB
+- Add p1as-observability OpenSearch Helm chart to PCB
 
 _Changes:_
 
