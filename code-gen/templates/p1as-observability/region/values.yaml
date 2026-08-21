@@ -14,9 +14,6 @@ cloudwatch:
 
 
 #Newrelic related values
-global:
-  cluster: ${TENANT_NAME}_${ENV}_${REGION}_k8s-cluster
-  customerSsoSsmPathPrefix: "${CUSTOMER_SSO_SSM_PATH_PREFIX}"
 
 #######################################################
 # Prometheus Server (p1as-prometheus) settings
@@ -188,6 +185,18 @@ prometheus-adapter:
 #######################################################
 
 opensearch-cluster:
+  hotNodes:
+    # Default sizing for dev/test environments.
+    # Stage/prod values override these fields in prod-values.yaml.
+    jvm: "-Xms6g -Xmx6g"
+    resources:
+      requests:
+        cpu: "2"
+        memory: 6Gi
+      limits:
+        cpu: "6"
+        memory: 10Gi
+
   irsaAnnotationKeyValue: "${IRSA_OPENSEARCH_ANNOTATION_KEY_VALUE}"
   dashboards:
     baseRedirectUrl: "https://logs.${VALUES_FILES_DNS_ZONE}"
