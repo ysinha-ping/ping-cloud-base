@@ -13,8 +13,6 @@ cloudwatch:
       memory: 200Mi
 
 
-#Newrelic related values
-
 #######################################################
 # Prometheus Server (p1as-prometheus) settings
 #######################################################
