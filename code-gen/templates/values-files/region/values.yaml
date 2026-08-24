@@ -10,8 +10,6 @@ global:
   # The name of the tenant
   tenantName: "${TENANT_NAME}"
 
-  # Cluster identifier shared by regional application charts
-  cluster: "${TENANT_NAME}_${ENV}_${REGION}_k8s-cluster"
 
   # tenantDomain is the domain suffix for customer for region
   tenantDomain: "${TENANT_DOMAIN}"
