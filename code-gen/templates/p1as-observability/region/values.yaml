@@ -13,6 +13,9 @@ cloudwatch:
       memory: 200Mi
 
 
+global:
+  cluster: ${TENANT_NAME}_${ENV}_${REGION}_k8s-cluster
+
 #######################################################
 # Prometheus Server (p1as-prometheus) settings
 #######################################################
@@ -184,16 +187,14 @@ prometheus-adapter:
 
 opensearch-cluster:
   hotNodes:
-    # Default sizing for dev/test environments.
-    # Stage/prod values override these fields in prod-values.yaml.
-    jvm: "-Xms6g -Xmx6g"
+    jvm: "-Xms3g -Xmx3g -XX:MaxDirectMemorySize=1g"
     resources:
       requests:
         cpu: "2"
         memory: 6Gi
       limits:
-        cpu: "6"
-        memory: 10Gi
+        cpu: "2"
+        memory: 8Gi
 
   irsaAnnotationKeyValue: "${IRSA_OPENSEARCH_ANNOTATION_KEY_VALUE}"
   dashboards:
