@@ -112,7 +112,7 @@ prometheus-agent:
       - name: os-creds
         secret:
           secretName: opensearch-grafana-credentials
-          optional: false
+          optional: true
           items:
             - key: password
               path: os-password
@@ -130,7 +130,7 @@ nri-bundle:
       - name: os-password
         secret:
           secretName: opensearch-newrelic-credentials
-          optional: false
+          optional: true
     extraVolumeMounts:
       - name: os-password
         mountPath: /etc/secrets
