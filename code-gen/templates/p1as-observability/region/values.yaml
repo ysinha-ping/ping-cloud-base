@@ -117,13 +117,11 @@ prometheus-agent:
             - key: password
               path: os-password
 
-# opensearch-newrelic-credentials is created by the p1as-oauth init container on the
-# OpenSearch controller manager. Since PDO-5990 moved OpenSearch into this same
-# p1as-observability ArgoCD app, the secret may not exist on fresh install —
-# the OS operator creates it during its first sync. optional: true avoids the same
-# intra-app deadlock as opensearch-grafana-credentials above.
-# secondary-values.yaml and chub-values.yaml override this to remove the volume mount
-# entirely for environments where OpenSearch is not deployed.
+# opensearch-newrelic-credentials is created in p1as-oauth init container by the
+# OpenSearch controller manager.  In primary CDE regions the secret will exist,
+# for child/secondary CDE regions and customer-hub envs  OpenSearch is not deployed
+# and the secret will not exist.  secondary-values.yaml and chub-values.yaml override
+# this to remove the volume mount
 nri-bundle:
   newrelic-prometheus-agent:
     extraVolumes:
