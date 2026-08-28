@@ -15,8 +15,8 @@ cloudwatch:
 
 global:
   cluster: ${TENANT_NAME}_${ENV}_${REGION}_k8s-cluster
-  # OpenSearch sizing tier: tier1 (default), tier2, or tier3.
-  opensearchTier: tier1
+  # OpenSearch sizing follows LOGGING_TIER; generator defaults it to tier1.
+  loggingTier: ${LOGGING_TIER}
 
 #######################################################
 # Prometheus Server (p1as-prometheus) settings
