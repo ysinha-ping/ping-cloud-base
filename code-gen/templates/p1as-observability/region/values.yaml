@@ -15,6 +15,8 @@ cloudwatch:
 
 global:
   cluster: ${TENANT_NAME}_${ENV}_${REGION}_k8s-cluster
+  # OpenSearch sizing tier: tier1 (default), tier2, or tier3.
+  opensearchTier: tier1
 
 #######################################################
 # Prometheus Server (p1as-prometheus) settings
@@ -181,16 +183,6 @@ prometheus-adapter:
 #######################################################
 
 opensearch-cluster:
-  hotNodes:
-    jvm: "-Xms3g -Xmx3g -XX:MaxDirectMemorySize=1g"
-    resources:
-      requests:
-        cpu: "2"
-        memory: 6Gi
-      limits:
-        cpu: "2"
-        memory: 8Gi
-
   irsaAnnotationKeyValue: "${IRSA_OPENSEARCH_ANNOTATION_KEY_VALUE}"
   dashboards:
     baseRedirectUrl: "https://logs.${VALUES_FILES_DNS_ZONE}"
