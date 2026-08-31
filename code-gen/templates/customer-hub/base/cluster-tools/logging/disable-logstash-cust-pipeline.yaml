@@ -62,7 +62,7 @@ metadata:
   namespace: elastic-stack-logging
 $patch: delete
 ---
-# Overwrites FluentBit outputs to S3-only (removes logstash_customer_out set by disable-opensearch-base-patch.yaml).
+# Overwrites FluentBit outputs to S3-only (removes logstash_customer_out set by disable-opensearch-routing-patch.yaml).
 apiVersion: v1
 kind: ConfigMap
 metadata:
