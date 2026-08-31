@@ -42,7 +42,7 @@ patchesStrategicMerge:
 - ../base/cluster-tools/monitoring/remove-chub-dashboards.yaml
 - ../base/cluster-tools/logging/remove-chub-dashboards.yaml
 
-### Remove OpenSearch specific routing from CHUB
+### Remove OpenSearch specific references and routing from CHUB
 - ../base/cluster-tools/logging/disable-opensearch-routing-patch.yaml
 #- ../base/cluster-tools/logging/disable-opensearch-primary-region-patch.yaml
 
