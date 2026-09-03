@@ -182,16 +182,6 @@ prometheus-adapter:
 #######################################################
 
 opensearch-cluster:
-  hotNodes:
-    jvm: "-Xms3g -Xmx3g -XX:MaxDirectMemorySize=1g"
-    resources:
-      requests:
-        cpu: "2"
-        memory: 6Gi
-      limits:
-        cpu: "2"
-        memory: 8Gi
-
   irsaAnnotationKeyValue: "${IRSA_OPENSEARCH_ANNOTATION_KEY_VALUE}"
   dashboards:
     baseRedirectUrl: "https://logs.${VALUES_FILES_DNS_ZONE}"
