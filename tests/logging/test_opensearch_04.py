@@ -186,6 +186,202 @@ class TestOpenSearchBootstrapResources(unittest.TestCase):
             )
             print(f"Monitor '{name}': enabled, {len(inputs)} input(s) (OK)")
 
+    def test_template_applies_to_new_index(self):
+        """
+        test_rollover_readiness only checks indices that already exist, so
+        it can't catch a template whose index_patterns glob is wrong --
+        existing indices already matched *something*. This creates one
+        throwaway index matching a template's pattern and verifies
+        OpenSearch actually stamped that template's rollover_alias onto it,
+        proving the template will fire on new indices, not just that it's
+        declared. The created index is always cleaned up.
+        """
+        template_name = "pdg-access"
+        test_index = f"{template_name}-template-apply-test"
+        try:
+            template = self.opensearch_client.indices.get_index_template(name=template_name)
+            tpl_entry = template["index_templates"][0]["index_template"]
+            expected_alias = (
+                tpl_entry.get("template", {}).get("settings", {}).get("index", {})
+                .get("plugins", {}).get("index_state_management", {}).get("rollover_alias")
+            )
+            self.assertIsNotNone(
+                expected_alias, f"Template '{template_name}' declares no rollover_alias to verify."
+            )
+
+            self.opensearch_client.indices.create(index=test_index)
+            new_index_settings = (
+                self.opensearch_client.indices.get(index=test_index)[test_index]
+                .get("settings", {}).get("index", {})
+            )
+            actual_alias = (
+                new_index_settings.get("plugins", {})
+                .get("index_state_management", {}).get("rollover_alias")
+            )
+            self.assertEqual(
+                actual_alias, expected_alias,
+                f"New index '{test_index}' did not inherit rollover_alias '{expected_alias}' "
+                f"from template '{template_name}' (got '{actual_alias}'). "
+                f"The template's index_patterns may not actually match this index name."
+            )
+            print(f"New index '{test_index}' correctly inherited rollover_alias '{actual_alias}' "
+                  f"from template '{template_name}'")
+        finally:
+            if self.opensearch_client.indices.exists(index=test_index):
+                self.opensearch_client.indices.delete(index=test_index)
+
+    def test_dr_repair_after_resource_deletion(self):
+        """
+        Simulates a DR scenario: a resource the bootstrap owns disappears
+        (e.g. lost in a restore). The real repair mechanism is NOT a
+        standalone Job -- it's the opensearch-bootstrap init container
+        inside each logstash-elastic pod (the same one
+        test_bootstrap_init_containers_ran verifies): on every pod
+        (re)start it runs os_bootstrap.py's validate/repair pass, which
+        re-PUTs every template/policy/monitor JSON it ships, idempotently.
+        This deletes one low-traffic index template (pf-transaction),
+        forces one logstash-elastic pod to restart, and asserts the
+        template comes back byte-for-byte. Runs on every invocation
+        (team-approved blast radius: one template briefly missing, one of
+        the logstash replicas briefly restarting).
+
+        Per the "Restore Missing OpenSearch Default Resources" runbook: a
+        RED cluster blocks all bootstrap and repair. Deleting a template
+        while RED would leave it unrepairable until the cluster recovers,
+        so this refuses to run in that state.
+        """
+        health = self.opensearch_client.cat.health(format="json")[0]
+        print(f"Pre-check: cluster status is '{health.get('status')}'")
+        if health.get("status") == "red":
+            self.skipTest(
+                f"Cluster status is RED ({health}); per the OpenSearch DR runbook, "
+                f"RED blocks all bootstrap and repair. Refusing to delete a template "
+                f"that could not be repaired until the cluster recovers."
+            )
+
+        template_name = "pf-transaction"
+        try:
+            snapshot = self.opensearch_client.indices.get_index_template(name=template_name)
+        except Exception as e:
+            self.skipTest(f"Sacrificial template '{template_name}' not found, cannot run DR test: {e}")
+        snapshot_body = snapshot["index_templates"][0]["index_template"]
+        print(f"Snapshotted template '{template_name}' before deletion (rollover_alias="
+              f"{snapshot_body.get('template', {}).get('settings', {}).get('index', {}).get('plugins', {}).get('index_state_management', {}).get('rollover_alias')})")
+
+        try:
+            print(f"Deleting template '{template_name}' to simulate a DR resource-loss event")
+            self.opensearch_client.indices.delete_index_template(name=template_name)
+            self.assertFalse(
+                self.opensearch_client.indices.exists_index_template(name=template_name),
+                f"Template '{template_name}' still present after delete."
+            )
+            print(f"Confirmed template '{template_name}' is gone")
+
+            print("Restarting one logstash-elastic pod to trigger the opensearch-bootstrap "
+                  "init container's targeted-repair pass")
+            exit_code = self._restart_logstash_pod_and_wait_for_bootstrap()
+            print(f"opensearch-bootstrap init container finished with exit code {exit_code}")
+            self.assertEqual(
+                exit_code, 0,
+                f"opensearch-bootstrap init container exited {exit_code} on the repair restart."
+            )
+
+            print(f"Checking whether template '{template_name}' was recreated by the repair pass")
+            repaired = self.opensearch_client.indices.get_index_template(name=template_name)
+            repaired_body = repaired["index_templates"][0]["index_template"]
+            self.assertEqual(
+                repaired_body, snapshot_body,
+                f"Repaired template '{template_name}' does not match its pre-deletion snapshot."
+            )
+            print(f"Template '{template_name}' correctly restored by bootstrap repair run "
+                  f"and matches its pre-deletion snapshot byte-for-byte")
+        finally:
+            if not self.opensearch_client.indices.exists_index_template(name=template_name):
+                print(f"Cleanup: template '{template_name}' is still missing after the test body, "
+                      f"restarting a logstash-elastic pod once more to repair it")
+                self._restart_logstash_pod_and_wait_for_bootstrap()
+
+    def _restart_logstash_pod_and_wait_for_bootstrap(self, timeout_seconds=180):
+        """
+        Deletes one logstash-elastic pod (it's a StatefulSet, so it's
+        recreated with the same name) and waits for its opensearch-bootstrap
+        init container to reach a terminal state. Returns the exit code.
+
+        Tracks the pre-deletion pod's UID: Kubernetes doesn't clear
+        init_container_statuses just because a pod is Terminating, so
+        reading status by name alone can return the OLD pod's already-
+        terminated (exit 0) status before the NEW pod's init container has
+        even started -- the deletion must produce a pod with a different
+        UID before its init-container status means anything.
+        """
+        pods = self.k8s.core_client.list_namespaced_pod(
+            namespace=NAMESPACE, label_selector=LOGSTASH_LABEL
+        )
+        pod_name = pods.items[0].metadata.name
+        old_uid = pods.items[0].metadata.uid
+        print(f"Deleting pod '{pod_name}' (uid={old_uid}); StatefulSet will recreate it with the same name")
+        self.k8s.core_client.delete_namespaced_pod(name=pod_name, namespace=NAMESPACE)
+
+        deadline = time.time() + timeout_seconds
+        seen_new_pod = False
+        while time.time() < deadline:
+            try:
+                pod = self.k8s.core_client.read_namespaced_pod(pod_name, NAMESPACE)
+            except Exception:
+                print(f"Waiting for pod '{pod_name}' to be recreated...")
+                time.sleep(3)
+                continue
+            if pod.metadata.uid == old_uid:
+                print(f"Pod '{pod_name}' is still terminating (same uid={old_uid}), waiting...")
+                time.sleep(3)
+                continue
+            if not seen_new_pod:
+                print(f"New pod '{pod_name}' (uid={pod.metadata.uid}) detected, "
+                      f"waiting for its opensearch-bootstrap init container to finish")
+                seen_new_pod = True
+            statuses = pod.status.init_container_statuses or []
+            bootstrap_status = next(
+                (s for s in statuses if s.name == BOOTSTRAP_INIT_CONTAINER), None
+            )
+            if bootstrap_status is not None and bootstrap_status.state.terminated is not None:
+                return bootstrap_status.state.terminated.exit_code
+            time.sleep(3)
+        raise TimeoutError(
+            f"opensearch-bootstrap init container on '{pod_name}' did not complete "
+            f"within {timeout_seconds}s"
+        )
+
+    def test_security_roles_mapped(self):
+        """
+        test_opensearch_ui_login checks the login flow for the
+        os-configteam backend role but only proves the FRONT DOOR works.
+        os-configteam is not itself an OpenSearch role -- it's a backend
+        role that must be mapped INTO the kibana_user OpenSearch role for
+        Dashboards access to actually work (confirmed live: GET
+        .../rolesmapping shows kibana_user.backend_roles containing
+        'os-configteam'). This checks that mapping directly: if it's
+        missing or empty, RBAC is broken even if the login page happens
+        to load for an unrelated reason.
+        """
+        required_role = "kibana_user"
+        required_backend_role = "os-configteam"
+        response = self.opensearch_client.transport.perform_request(
+            "GET", "/_plugins/_security/api/rolesmapping"
+        )
+        print(f"Found {len(response)} role mapping(s)")
+        self.assertIn(
+            required_role, response,
+            f"OpenSearch role '{required_role}' has no role mapping configured."
+        )
+        backend_roles = response[required_role].get("backend_roles", [])
+        self.assertIn(
+            required_backend_role, backend_roles,
+            f"Backend role '{required_backend_role}' is not mapped to OpenSearch role "
+            f"'{required_role}' (mapped backend_roles: {backend_roles}). Dashboards "
+            f"access for '{required_backend_role}' users would be broken."
+        )
+        print(f"Backend role '{required_backend_role}' correctly mapped to OpenSearch role '{required_role}'")
+
 
 if __name__ == '__main__':
     unittest.main()
