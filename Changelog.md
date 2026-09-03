@@ -15,7 +15,7 @@
 - Add OpenSearch index template field coverage test and dashboard field validation test
 - JSON Logging: Implement JSON logging for PingCentral
 - Add p1as-observability Opensearch Helm chart to PCB
-- Implement Opensearch Tiers support
+- Implement OpenSearch Tiers support
 
 _Changes:_
 
