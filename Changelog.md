@@ -15,6 +15,7 @@
 - Add OpenSearch index template field coverage test and dashboard field validation test
 - JSON Logging: Implement JSON logging for PingCentral
 - Add p1as-observability Opensearch Helm chart to PCB
+- Implement Opensearch Tiers support
 
 _Changes:_
 
@@ -31,6 +32,7 @@ _Changes:_
 - [X] PDO-11651 Add resources for datalake telemetry pipeline
 - [X] PDO-11804 Add karpenter.sh/do-not-disrupt annotation to Jobs and CronJobs
 - [X] PDO-11929 Enable replication events in Console JSON Error Logger (PingDirectory)
+- [X] PDO-12181 Implement Logging tier patches for OpenSearch Chart
 
 ### 2.3.0
 
